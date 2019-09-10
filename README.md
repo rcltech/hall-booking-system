@@ -1,5 +1,8 @@
 # Hall Booking System - HaBoS
 
+### To open issues for project enhancement
+Open issues according to the project enhancement template.
+
 ### To make git commits according to an issue being worked
 Make sure that you are on a feature branch. If not, do
 
