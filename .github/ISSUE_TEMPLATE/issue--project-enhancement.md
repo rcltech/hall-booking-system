@@ -7,8 +7,13 @@ assignees: ''
 
 ---
 
-Todo:
+**Todo:**
+-
 
-Potential issues:
+**Potential issues:**
 
-Possible solutions:
+
+**Possible solutions:**
+
+
+**Additional notes (optional):**
