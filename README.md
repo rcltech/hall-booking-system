@@ -17,5 +17,11 @@ For first commit on branch: `git push -u origin branch-name`
 
 For subsequent commits on branch: `git push`
 
-### Important Note
-Please make sure to `git pull` before working on anything at the start of the day.
+### To merge into master branch
+1. Create a pull request to merge feature branch into `master`.
+2. Request for at least 1 review.
+3. Merge into `master` after the pull request has been approved.
+
+### Important Notes
+1. Make sure to `git pull` before working on anything at the start of the day.
+2. The `master` branch is protected from direct pushes. You have to make feature branches by following the instructions above.
