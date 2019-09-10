@@ -8,3 +8,5 @@ Initiate Nodejs server using nodemon on local development.
 Push to Heroku for testing.
 
 `npm run push-heroku`
+
+Go to [Heroku App](https://hall-booking-system.herokuapp.com/).
