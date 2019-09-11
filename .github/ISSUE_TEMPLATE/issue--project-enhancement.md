@@ -1,5 +1,5 @@
 ---
-name: 'Issue: Project Enhancement'
+name: 'Project Enhancement'
 about: To continue building the project.
 title: ''
 labels: enhancement
