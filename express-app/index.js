@@ -6,7 +6,8 @@ env.config();
 
 // connect to mongoose
 const mongo_uri = process.env.MONGO_URI;
-mongoose.connect(mongo_uri, {useNewUrlParser: true, useUnifiedTopology: true}).then(
+const database = process.env.DATABASE;
+mongoose.connect(mongo_uri, {dbName:database, useNewUrlParser: true, useUnifiedTopology: true}).then(
   () => {
     console.log("Mongoose connection successful");
   },
@@ -17,9 +18,12 @@ mongoose.connect(mongo_uri, {useNewUrlParser: true, useUnifiedTopology: true}).t
 );
 
 
+// routes
 const rootRoutes = require('./routes/root');
+const bookingRoutes = require('./routes/booking');
 
 app.use("/", rootRoutes);
+app.use("/booking", bookingRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, (err) => {
