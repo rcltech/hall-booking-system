@@ -1,1 +1,0 @@
-# Firebase back-end for Booking System App
