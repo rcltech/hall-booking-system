@@ -13,4 +13,8 @@ Push to Heroku for testing.
 
 `npm run push-heroku`
 
-Go to [Heroku App](https://hall-booking-system.herokuapp.com/).
+### API Endpoints
+Start with [https://hall-booking-system.herokuapp.com](https://hall-booking-system.herokuapp.com)
+
+1. Query all bookings for home page: `/` (get request)
+1. Create a new booking: `/booking/create` (post request)
