@@ -1,9 +1,11 @@
 # Express Back-end for Hall Booking System
 
 ### Development Mode
-Make sure that you have installed nodemon.
+Make sure that you have installed nodemon, and node modules.
 
-`npm install -g nodemon`
+`npm install -g nodemon` and `npm install`
+
+Configure your local environment variables in a `.env` file by referring to `.env.sample`.
 
 Initiate Nodejs server using nodemon on local development.
 
