@@ -1,9 +1,20 @@
 language: node_js
 node_js: lts/*
-before_install:
-- cd express-app
-install:
-- npm install
-- npm install -g nodemon
-script:
-- npm run start
+
+env:
+  global:
+    secure: QxdYUsnRrJ5taree41Wis/MTkcuaFE+zVTFktBAO4HCll2O512DVNm6CzKSKFRZaAq+d5nSK3ZjZw6Fv1t8D2FnzVr6ZOGYKZFriGvB/lCTbBjlzCgQuX12GG2HC+6BD7maVIkQCovPIJr0heIgGFsexa8vu2pD/2XOykK8RsYkxC5299gEO5SjPJyx3gLSbRSkj2VeHW/3SWIOPSOS++6IHOojnVg3bUFeP07klBAQRuCT4vT/r/m6RKnawWNp2N3ybttduSKH+TPRQfh6edMFnGpL916Bis9PM0kHVMxU6bIBavpWpgjOM3G5r/X8dCbORamKhldjj8VsKTr80byJ/mvCIG4xXRh9Yyd8pk4iAfdMCleSd4qbaiZ/tJeKPp/LI99FhY3lRbvcCxG6emETRFQEfRUlk0kkHdR6TsaOAF7C63ksLcPeEGg47L7gads22ydsYrd04e0EcdN9YOpwSWSXx0TOGbLJNqZgZLoByaIb1Y3Cavg8VCGdNatcKC6K0XDQIJ+k1hDkVdwRcGtHJBFbHjE94rptyhiS+BYYjeGeTd/OEpmH8mku5hC8yzRyqr0gjX1bXqyk4r8K1ydtSOchH4XHd4LadWAqh5PV8HYnapGDRfQTuKlSSINjjidRmcuE7IZ4nZKj75LtTBJNgrtCMb4wbPh1vpbEg2Ek=
+  matrix:
+    # - DATABASE=booking
+    - DATABASE=test
+
+jobs:
+  include:
+    - stage: test express
+      before_install:
+        - cd express-app
+      install:
+        - npm install
+      script:
+        - echo "Run express-app testing"
+        - npm run start
