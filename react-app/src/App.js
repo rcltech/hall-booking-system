@@ -1,14 +1,15 @@
 import React from 'react'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header'
-import Footer from './components/InfoSection'
+import InfoSection from './components/InfoSection'
 
 function App() {
   return (
     <div>
       <Header />
-      <Footer />
-    </div>  
+      <InfoSection />
+    </div>
   );
 }
 
