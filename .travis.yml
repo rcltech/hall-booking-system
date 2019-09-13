@@ -17,15 +17,15 @@ jobs:
     script:
     - echo "Run express-app testing"
     - npm run start
-  - stage: deploy to heroku
-    script: skip
-    pre-deploy:
-    - cd express-app
-    deploy:
-      provider: heroku
-      edge: true
-      app: hall-booking-system
-      api_key:
-        secure: Zpi0SV/T4suF5x+YUYf8+r9/muj860M4sEXFTzQlla4GxJtM9epJ/1MMApKYSbV8nhCWIS6uHKkweGEaRjaRjt/1nUEMqTp3wy3hilc8h6ve+97tz0+3F0wQo46FUo78p+rDHWpGPxCdwHerrGsm5faTKM/z9nLfeMhCFqTIoKWBPemeh8WsPpGOypsfcjmgM89TIjuEapFi9iUpNwG9LrC7TpzRSaGEhs8vrgj1yDEBon2L8di8h8CfXR/jiLXXq88lzFhlNQDi75Zw61Pbynf8U0q+uQo9YK6sqsEsGn7DA0SBi0Ys+LzwtOWIGYjkaDWaCJUU+B0BlITJ6tosqvcA943599mBzGia9m6HHsv8Mgc7aN/D3RMByo2efi1pD/avdNby+aOtoofBaPxEpYnBNFWH8/9bgnaocMJregAclCCFsgkEW0MgY+lyubRafgrpcLAoZE5GlmJtlf2umd4CCQl/ZhyocAwG/zHM8D468jxOTgoY5WBqoYxSj0ynR9ascjZym/nlXoZHn9CsphJPlqVtmVFAyg8HgcCcOTgAS8lABxPu06GGUfvT6dETWsQoQreycMjYUaiwAkpmXm203Iel+QpqElucCN+iD0TXRurZFXt/Lbzo18IroxvIczEAa7s6ye47fbBwzgyefcAexdkXixUXMQovRvIq8XE=
-  - stage: heroku tests
-    script: curl https://hall-booking-system.herokuapp.com/
+  # - stage: deploy to heroku
+  #   script: skip
+  #   pre-deploy:
+  #   - cd express-app
+  #   deploy:
+  #     provider: heroku
+  #     edge: true
+  #     app: hall-booking-system
+  #     api_key:
+  #       secure: Zpi0SV/T4suF5x+YUYf8+r9/muj860M4sEXFTzQlla4GxJtM9epJ/1MMApKYSbV8nhCWIS6uHKkweGEaRjaRjt/1nUEMqTp3wy3hilc8h6ve+97tz0+3F0wQo46FUo78p+rDHWpGPxCdwHerrGsm5faTKM/z9nLfeMhCFqTIoKWBPemeh8WsPpGOypsfcjmgM89TIjuEapFi9iUpNwG9LrC7TpzRSaGEhs8vrgj1yDEBon2L8di8h8CfXR/jiLXXq88lzFhlNQDi75Zw61Pbynf8U0q+uQo9YK6sqsEsGn7DA0SBi0Ys+LzwtOWIGYjkaDWaCJUU+B0BlITJ6tosqvcA943599mBzGia9m6HHsv8Mgc7aN/D3RMByo2efi1pD/avdNby+aOtoofBaPxEpYnBNFWH8/9bgnaocMJregAclCCFsgkEW0MgY+lyubRafgrpcLAoZE5GlmJtlf2umd4CCQl/ZhyocAwG/zHM8D468jxOTgoY5WBqoYxSj0ynR9ascjZym/nlXoZHn9CsphJPlqVtmVFAyg8HgcCcOTgAS8lABxPu06GGUfvT6dETWsQoQreycMjYUaiwAkpmXm203Iel+QpqElucCN+iD0TXRurZFXt/Lbzo18IroxvIczEAa7s6ye47fbBwzgyefcAexdkXixUXMQovRvIq8XE=
+  # - stage: heroku tests
+  #   script: curl https://hall-booking-system.herokuapp.com/
