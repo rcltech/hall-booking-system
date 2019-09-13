@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+.logo {
+  max-height: calc(112px + 1vmin);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
