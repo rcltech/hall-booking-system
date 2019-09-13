@@ -1,8 +1,14 @@
-import React from 'react';
+import React from 'react'
+import './App.css'
+import Header from './components/Header'
+import Footer from './components/InfoSection'
 
 function App() {
   return (
-    <h1>Let's Do This, Boys!</h1>
+    <div>
+      <Header />
+      <Footer />
+    </div>  
   );
 }
 
