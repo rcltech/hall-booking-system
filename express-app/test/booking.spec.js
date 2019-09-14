@@ -8,6 +8,7 @@ const handleError = require('../routes/errorHandler');
 chai.use(chaiHttp);
 
 const Booking = require('../models/booking');
+const Room = require('../models/room');
 
 describe('Bookings', () => {
   beforeEach((done) => {
@@ -31,10 +32,11 @@ describe('Bookings', () => {
           done();
         }
         res.should.have.status(201);
-        res.body.should.be.a('object');
-        res.body.should.have.property('room');
-        res.body.should.have.property('start');
-        res.body.should.have.property('end');
+        res.body.should.have.keys('savedBooking', 'savedRoom');
+        const savedBooking = res.body.savedBooking, savedRoom = res.body.savedRoom;
+        savedBooking.should.be.a('object').that.include.all.keys('room', 'start', 'end');
+        savedRoom.should.be.a('object').that.have.property('hoursBooked');
+        expect(savedRoom.hoursBooked).to.be.an('array').that.includes(savedBooking.start);
         done();
       })
     })
