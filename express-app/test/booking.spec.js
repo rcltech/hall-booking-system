@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 const Booking = require('../models/booking');
 
-describe('Books', () => {
+describe('Bookings', () => {
   beforeEach((done) => {
     Booking.deleteMany({}, (error) => {
       done();
