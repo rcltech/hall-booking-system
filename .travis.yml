@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+  - "stable"
+env:
+  - PORT=8000 DATABASE=test
+jobs:
+  include:
+  - stage: express-app tests
+    before_install:
+    - cd express-app
+    install:
+    - npm install
+    cache:
+      directories:
+        - "node_modules"
+    script:
+    - echo "Run express-app testing"
+    - npm run test
+  - stage: deploy to heroku
+    script:
+    - cd express-app
+    deploy:
+      skip_cleanup: true
+      provider: heroku
+      edge: true
+      app: hall-booking-system
+      api_key: $HEROKU_API_KEY
+      on:
+        all_branches: true
+  - stage: heroku tests
+    script: curl https://hall-booking-system.herokuapp.com/

@@ -11,3 +11,5 @@ const PORT = process.env.PORT;
 app.listen(PORT, (err) => {
   console.log("HaBoS server is running on port " + PORT);
 })
+
+module.exports = app;

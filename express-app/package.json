@@ -4,7 +4,7 @@
   "description": "backend for habos",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --timeout 10000 --exit",
     "develop": "nodemon index.js",
     "start": "node index.js",
     "push-heroku": "cd .. && git subtree push --prefix express-app/ heroku master && cd express-app"
@@ -12,7 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.1.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mocha": "^6.2.0"
   }
 }
