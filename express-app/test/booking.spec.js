@@ -11,7 +11,7 @@ const Booking = require('../models/booking');
 
 describe('Books', () => {
   beforeEach((done) => {
-    Booking.remove({}, (error) => {
+    Booking.deleteMany({}, (error) => {
       done();
     });
   })
