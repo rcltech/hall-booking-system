@@ -20,7 +20,6 @@ router.post('/create', async (req, res, next) => {
     newBooking.api_key = undefined;
     [error, savedBooking] = await to(Booking.create(newBooking));
     if (error) return handleError(res, error, 'Failed to create booking');
-    console.log("Inserted new booking:\n" + savedBooking);
     res.status(201).json(savedBooking);
     return;
   }
