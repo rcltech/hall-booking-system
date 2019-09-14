@@ -2,8 +2,7 @@ language: node_js
 node_js:
   - "stable"
 env:
-  - DATABASE=test
-  - PORT=8000
+  - PORT=8000 DATABASE=test
 jobs:
   include:
   - stage: express-app tests
