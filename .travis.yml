@@ -17,8 +17,7 @@ jobs:
     - echo "Run express-app testing"
     - npm run test
   - stage: deploy to heroku
-    script: skip
-    pre-deploy:
+    script:
     - cd express-app
     deploy:
       skip_cleanup: true
