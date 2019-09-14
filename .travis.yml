@@ -21,9 +21,12 @@ jobs:
     pre-deploy:
     - cd express-app
     deploy:
+      skip_cleanup: true
       provider: heroku
       edge: true
       app: hall-booking-system
       api_key: $HEROKU_API_KEY
+      on:
+        all_branches: true
   - stage: heroku tests
     script: curl https://hall-booking-system.herokuapp.com/
