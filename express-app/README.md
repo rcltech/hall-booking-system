@@ -11,12 +11,12 @@ Initiate Nodejs server using nodemon on local development.
 
 `npm run develop`
 
-Push to Heroku for testing.
+Push to Heroku for testing. This is **not recommended** because [Travis CI](https://travis-ci.org/) is able to automatically deploy to Heroku after testing the express-app.
 
 `npm run push-heroku`
 
 ### API Endpoints
 Start with [https://hall-booking-system.herokuapp.com](https://hall-booking-system.herokuapp.com)
 
-1. Query all bookings for home page: `/` (get request)
+1. Query all rooms for corresponding booking info: `/room` (get request)
 1. Create a new booking: `/booking/create` (post request)
