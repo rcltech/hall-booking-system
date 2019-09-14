@@ -3,6 +3,7 @@ node_js:
   - "stable"
 env:
   - DATABASE=test
+  - PORT=8000
 jobs:
   include:
   - stage: express-app tests
