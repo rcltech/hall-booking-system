@@ -1,11 +1,7 @@
 language: node_js
-node_js: lts/*
+node_js:
+  - "stable"
 env:
-  global:
-  - secure: QxdYUsnRrJ5taree41Wis/MTkcuaFE+zVTFktBAO4HCll2O512DVNm6CzKSKFRZaAq+d5nSK3ZjZw6Fv1t8D2FnzVr6ZOGYKZFriGvB/lCTbBjlzCgQuX12GG2HC+6BD7maVIkQCovPIJr0heIgGFsexa8vu2pD/2XOykK8RsYkxC5299gEO5SjPJyx3gLSbRSkj2VeHW/3SWIOPSOS++6IHOojnVg3bUFeP07klBAQRuCT4vT/r/m6RKnawWNp2N3ybttduSKH+TPRQfh6edMFnGpL916Bis9PM0kHVMxU6bIBavpWpgjOM3G5r/X8dCbORamKhldjj8VsKTr80byJ/mvCIG4xXRh9Yyd8pk4iAfdMCleSd4qbaiZ/tJeKPp/LI99FhY3lRbvcCxG6emETRFQEfRUlk0kkHdR6TsaOAF7C63ksLcPeEGg47L7gads22ydsYrd04e0EcdN9YOpwSWSXx0TOGbLJNqZgZLoByaIb1Y3Cavg8VCGdNatcKC6K0XDQIJ+k1hDkVdwRcGtHJBFbHjE94rptyhiS+BYYjeGeTd/OEpmH8mku5hC8yzRyqr0gjX1bXqyk4r8K1ydtSOchH4XHd4LadWAqh5PV8HYnapGDRfQTuKlSSINjjidRmcuE7IZ4nZKj75LtTBJNgrtCMb4wbPh1vpbEg2Ek=
-  - secure: Hszz4RrWNcOyk6Kg/yyw09APhpKWONQNM/ZfB2gjQl//Mz3LzbL9xV2JiAKC/hdh2tl8w+LWcAQaBg/1tov69VcnJtU0MiJoUsL2iW5in9ghemAQqE7ZpZEIq9ceWPmV+dTmf5KEF54OYfD9xFD+8oL3a3FFK7OONFq53g/9EO1Frp/dDs2+rw2IgaVIgam8cd2MMHAJNvT9Ucaek0lN3uP7bt4YZAVpjpXfuj16GiLBn3qx83bx8HnHP3bLrLQQYf6uYvM0q26qHlswoufsrJsGggJjWxa2BdTU2ub0TJTzd/ryYrn1m//FNwN0+YYSSoPGT0yJmbVcFih/VjeRB4RUFcT4jsn0HkfydMUhKwHctZbL5sHCnLSjqK0PSe1qGYmsYddCDwbD5TF2UVsTZzQJDJyUq67UGzHO/TMBBLMWbFy/98q7G4Z4ez+aFef4TF3nsdFcmMeK/5lSLsfP0/lX5KVrTIDhybZ+cu7AMSLProK4dvQfQos+kZJezzPVrrv14NDdn9vnLyhJsAxvO0bpjLQI8hzNNslO0qzRhP0ae+VUZkeYeUSnnt+I02CZzhlL88RbEoaCKe1pLix2vmfO4UI3n4Z5JHesMjiCHP7KjOkubgNSzivdOaly9tdgVAjzT0ygr6G8a3cdIM1pqVtaQAlbXhpk8GKSRVM/2eY=
-  matrix:
-  # - DATABASE=habos
   - DATABASE=test
 jobs:
   include:
@@ -14,9 +10,12 @@ jobs:
     - cd express-app
     install:
     - npm install
+    cache:
+      directories:
+        - "node_modules"
     script:
     - echo "Run express-app testing"
-    - npm run start
+    - npm run test
   # - stage: deploy to heroku
   #   script: skip
   #   pre-deploy:

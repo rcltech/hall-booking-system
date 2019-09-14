@@ -8,6 +8,8 @@ const rootRoutes = require('./routes/root');
 app.use("/", rootRoutes);
 
 const PORT = process.env.PORT;
-app.listen(PORT, (err) => {
+const server = app.listen(PORT, (err) => {
   console.log("HaBoS server is running on port " + PORT);
 })
+
+module.exports = server;
