@@ -18,8 +18,6 @@ jobs:
     - npm run test
     after_success:
     - echo "Successfully tested express-app"
-    after_script:
-    - exit 1
   # - stage: deploy to heroku
   #   script: skip
   #   pre-deploy:

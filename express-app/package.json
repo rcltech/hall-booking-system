@@ -4,7 +4,7 @@
   "description": "backend for habos",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --timeout 10000 --exit",
     "develop": "nodemon index.js",
     "start": "node index.js",
     "push-heroku": "cd .. && git subtree push --prefix express-app/ heroku master && cd express-app"
