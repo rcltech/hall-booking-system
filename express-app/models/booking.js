@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const bookingSchema = new Schema({
   user: {
@@ -9,6 +10,12 @@ const bookingSchema = new Schema({
   room: String,
   start: Date,
   end: Date
+})
+
+bookingSchema.pre('init', function(booking) {
+  booking.start = moment(booking.start).format();
+  booking.end = moment(booking.end).format();
+  return booking;
 })
 
 const Booking = mongoose.model('Booking', bookingSchema);

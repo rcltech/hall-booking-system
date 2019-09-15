@@ -28,7 +28,9 @@ const updateRoom = async (res, booking) => {
   [error, foundRoom] = await to(Room.findOne(query));
   if (error) return handleError(res, error, 'Failed to find a room with name: ' + query.roomName);
 
-  foundRoom.hoursBooked.push(booking.start);
+  error = foundRoom.updateHoursBooked(booking.start, booking.end);
+  if (error) return handleError(res, error, 'Failed to add hours booked');
+
   [error, savedRoom] = await to(Room.findOneAndUpdate(query, foundRoom, {new: true, useFindAndModify: false}));
   if (error) return handleError(res, error, 'Failed to update the room');
 
