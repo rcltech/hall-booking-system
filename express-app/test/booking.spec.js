@@ -1,4 +1,5 @@
 const server = require('../index');
+const to = require('await-to-js').default;
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -11,21 +12,27 @@ const Booking = require('../models/booking');
 const Room = require('../models/room');
 
 describe('Bookings', () => {
+  let booking = {
+    room: '305',
+    start: new Date(2019, 9, 20, 8),
+    end: new Date(2019, 9, 20, 9),
+    api_key: process.env.API_KEY
+  }
+
   beforeEach((done) => {
-    Booking.deleteMany({}, (error) => {
-      done();
+    Booking.deleteMany({}, (error) => {if (error) return done()});
+    Room.findOne({roomName: booking.room}, (error, foundRoom) => {
+      if (error) return done();
+      const index = foundRoom.hoursBooked.indexOf(booking.start.toString());
+      if (index > -1) foundRoom.hoursBooked.splice(index, 1);
+      Room.findOneAndUpdate({roomName: booking.room}, foundRoom, {useFindAndModify: false}, (error) => {
+        done();
+      });
     });
   })
 
-  describe('/POST create booking', () => {
-    it('should return saved booking', (done) => {
-      let booking = {
-        room: '305',
-        start: new Date(),
-        end: new Date(),
-        api_key: process.env.API_KEY
-      }
-
+  describe('/POST create booking and add to rooms', () => {
+    it('should return saved booking and saved room', (done) => {
       chai.request(server).post('/booking/create').send(booking).end((error, res) => {
         if (error) {
           handleError(res, error, 'Failed to create booking');
