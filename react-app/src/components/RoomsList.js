@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 
+const getRoomUrl = 'https://hall-booking-system.herokuapp.com/room';
+
 class RoomsList extends React.Component {
   constructor() {
     super()
@@ -8,20 +10,17 @@ class RoomsList extends React.Component {
       rooms: [],
     };
   }
-  
+
   componentDidMount() {
-    // const res = axios.get('https://hall-booking-system.herokuapp.com/room');
-    // alert(res);
-    
-    axios.get('https://hall-booking-system.herokuapp.com/room').then(res => res.data).then(data => {
-      console.log(data)
-      // this.setState({
-      //   rooms: data.rooms
-      // })
-    }) 
-    .catch(error => {
-      console.log(error)
-    })
+    axios.get(getRoomUrl)
+  .then((response) => {
+    console.log(response.data);
+    console.log(response.status);
+    console.log(response.statusText);
+    console.log(response.headers);
+    console.log(response.config);
+  });
+
   }
 
   render() {
