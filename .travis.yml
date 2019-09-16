@@ -27,6 +27,6 @@ jobs:
       api_key: $HEROKU_API_KEY
       on:
         all_branches: true
-        condition: $TRAVIS_BRANCH =~ ^(master|staging)$
+        condition: $TRAVIS_BRANCH =~ ^(master|testing)$
   - stage: heroku tests
     script: curl https://hall-booking-system.herokuapp.com/
