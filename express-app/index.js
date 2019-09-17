@@ -20,9 +20,11 @@ mongoose.connect(mongo_uri, {dbName:database, useNewUrlParser: true, useUnifiedT
 
 // routes
 const rootRoutes = require('./routes/root');
+const roomRoutes = require('./routes/room');
 const bookingRoutes = require('./routes/booking');
 
 app.use("/", rootRoutes);
+app.use("/room", roomRoutes);
 app.use("/booking", bookingRoutes);
 
 const PORT = process.env.PORT;
