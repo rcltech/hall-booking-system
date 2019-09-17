@@ -17,7 +17,6 @@ class RoomsList extends React.Component {
       if(response.status === 500) {
         return
       }
-      console.log(response.data);
       this.setState({
         rooms: response.data.rooms
       })
