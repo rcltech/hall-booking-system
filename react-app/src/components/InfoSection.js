@@ -65,9 +65,9 @@ class InfoSection extends React.Component {
     return (
       <Container style={styles.container}>
         <div style={styles.buttonContainer}>
-          <Button color='info' style={styles.button} onClick={this.toggleHelp}>Help</Button>
-          <Button color='warning' style={styles.button} onClick={this.toggleContact}>Report</Button>
-          <Button color='success' style={styles.button} onClick={this.toggleAbout}>About</Button>
+          <Button color='secondary' style={styles.button} onClick={this.toggleHelp}>Help</Button>
+          <Button color='danger' style={styles.button} onClick={this.toggleContact}>Report</Button>
+          <Button color='secondary' style={styles.button} onClick={this.toggleAbout}>About</Button>
         </div>
         <Help collapse={helpCollapse} collapseStyles={styles.collapseStyles} textBodyStyles={styles.textBody}/>
         <Contact collapse={contactCollapse} collapseStyles={styles.collapseStyles} textBodyStyles={styles.textBody}/>
