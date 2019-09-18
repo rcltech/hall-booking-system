@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import Room from './Room'
 
 const getRoomUrl = 'https://hall-booking-system.herokuapp.com/room';
 
@@ -24,10 +25,11 @@ class RoomsList extends React.Component {
   }
 
   render() {
+    const rooms = this.state.rooms.map(room => <Room key={room._id} roomName={room.roomName} />)
     return (
-      <ul>
-        {this.state.rooms.map(room => <li key={room._id}>{room.roomName}</li>)}
-      </ul>
+      <div className="roomsList">
+        {rooms}
+      </div>
     )
   }
 }
