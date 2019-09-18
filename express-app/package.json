@@ -7,7 +7,8 @@
     "test": "mocha --timeout 10000 --exit",
     "develop": "nodemon index.js",
     "start": "node index.js",
-    "push-heroku": "cd .. && git subtree push --prefix express-app/ heroku master && cd express-app"
+    "push-heroku": "cd .. && git subtree push --prefix express-app/ heroku master && cd express-app",
+    "push-heroku-force": "cd .. && git subtree split --prefix express-app/ -b heroku && git push -f heroku heroku:master && git branch -D heroku && cd express-app"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "chai-http": "^4.3.0",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "lodash.clonedeep": "^4.5.0",
     "mocha": "^6.2.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.7.1"
   }
 }
