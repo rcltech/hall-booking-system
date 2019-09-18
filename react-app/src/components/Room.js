@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
-
+import Timetable from './Timetable'
 class Room extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ class Room extends Component {
         <Collapse isOpen={this.state.collapse}>
           <Card>
             <CardBody>
-              Placeholder TimeTable
+              <Timetable />
             </CardBody>
           </Card>
         </Collapse>
