@@ -12,23 +12,26 @@ class RoomsList extends React.Component {
     };
   }
 
-  componentDidMount() {
-    axios.get(getRoomUrl)
+  async componentDidMount() {
+    await axios.get(getRoomUrl)
     .then((response) => {
       if(response.status === 500) {
         return
       }
-      this.setState({
-        rooms: response.data.rooms
-      })
-  });
+    this.setState({
+      rooms: response.data.rooms
+    })
+  })
+  .catch(error => {
+    console.error(error)
+  })
   }
 
   render() {
-    const rooms = this.state.rooms.map(room => <Room key={room._id} roomName={room.roomName} />)
+    const roomComponents = this.state.rooms.map(room => <Room key={room._id} roomName={room.roomName}/>)
     return (
       <div className="roomsList">
-        {rooms}
+        {roomComponents}
       </div>
     )
   }
