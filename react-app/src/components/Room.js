@@ -13,7 +13,8 @@ class Room extends Component {
   }
 
   render() {
-    const {collapse, roomName} = this.state
+    const { roomName,collapse } = this.state;
+    const { roomData } = this.props;
     return (
       <div>
         <Button outline color="info" onClick={this.toggle} style={{ marginBottom: '1rem' }} block>
@@ -22,7 +23,7 @@ class Room extends Component {
         <Collapse isOpen={collapse}>
           <Card>
             <CardBody>
-              <Timetable />
+              <Timetable roomName={roomName} roomData={roomData}/>
             </CardBody>
           </Card>
         </Collapse>

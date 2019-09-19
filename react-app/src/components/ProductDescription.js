@@ -28,7 +28,7 @@ class ProductDescription extends React.Component{
             <div style={style.container}>
                 <h1 style={style.titleStyle}>Product Description</h1>
                 <div style={style.descriptionStyle}>
-                    <p>{description}</p>
+                    {description}
                 </div>
             </div>
         );
