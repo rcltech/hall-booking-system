@@ -1,6 +1,6 @@
 import React from 'react';
 import Calendar from 'react-calendar';
-import { Table } from 'reactstrap';
+import { Table,Button } from 'reactstrap';
 
 
 const styles = {
@@ -13,11 +13,14 @@ const styles = {
     margin : '0 5%'
   },
   table : {
-    width : '50%',
+    width : '60%',
     textAlign : 'center',
     fontSize : '5vw',
     fontWeight : 'bold',
-    margin : '0 25%'
+    margin : '0 20%'
+  },
+  button : {
+    
   }
 }
 
@@ -64,6 +67,16 @@ class Timetable extends React.Component {
     }
   }
 
+  handleTimeslotOnClick = (isAvailable) => {
+    if(!isAvailable){
+      alert('We apologize, the timeslot you selected is not available!');
+      return;
+    }else{
+      alert('TODO : Make form component for user confirmation');
+      return;
+    }
+  }
+
   render() {
     const { date } = this.state;
     const { roomName } = this.props;
@@ -83,9 +96,17 @@ class Timetable extends React.Component {
           <tbody>
             {data.map(timeslot => (
               <tr key={Object.keys(timeslot)}>
-                <td style={ {backgroundColor: timeslot[Object.keys(timeslot)] ? 'green' : 'red'} }>
-                  {Object.keys(timeslot)}
+                <td>
+                    <Button 
+                      onClick={() => this.handleTimeslotOnClick(timeslot[Object.keys(timeslot)])}
+                      style={styles.button}
+                      color={timeslot[Object.keys(timeslot)] ? 'success' : 'danger'}
+                      block
+                    >
+                      {Object.keys(timeslot)}
+                    </Button>
                 </td>
+                
               </tr>
             ))}
           </tbody>
