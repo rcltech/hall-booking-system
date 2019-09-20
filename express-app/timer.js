@@ -18,20 +18,17 @@ const timer = {
 }
 
 const updateRooms = async () => {
-  console.log(moment(dateLastUpdated).format());
   if (!(moment().isAfter(moment(dateLastUpdated).add(1, 'day')))) {
-    console.log('DID NOT RUN');
     return;
   }
 
   let error, foundRooms;
   [error, foundRooms] = await to(Room.find({}));
   if (error) return console.error(error);
+
   foundRooms.forEach((room) => {
     let alterHoursBooked = room.hoursBooked.map(t => moment(t).format());
-    for (var i = 0; i < alterHoursBooked.length; i++) {
-      alterHoursBooked[i] = moment(alterHoursBooked[i]).add(1, 'days');
-    }
+    alterHoursBooked = alterHoursBooked.map(x => moment(x).add(1, 'days'));
     room.hoursBooked = alterHoursBooked.map(t => moment(t).toDate());
   })
 
