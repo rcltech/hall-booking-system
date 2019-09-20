@@ -23,6 +23,10 @@ mongoose
     }
   );
 
+// testing branch - periodic updates to room on mongodb
+const updateRooms = require('./updateRooms');
+updateRooms();
+
 // routes
 const rootRoutes = require('./routes/root');
 const roomRoutes = require('./routes/room');

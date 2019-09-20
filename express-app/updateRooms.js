@@ -1,30 +1,21 @@
 const Room = require('./models/room');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const to = require('await-to-js').default;
 
-let dateLastUpdated = moment();
-let timerId;
-const delay = 1000 * 60 * 60;
-
-const timer = {
-  startTimer: () => {
-    timerId = setInterval(updateRooms, delay);
-    console.log('Timer started');
-  },
-  stopTimer: () => {
-    if (timerId) clearInterval(timerId);
-    console.log('Timer stopped');
-  }
-}
+const timezone = "Asia/Hong_Kong";
 
 const updateRooms = async () => {
-  if (!(moment().isAfter(moment(dateLastUpdated).add(1, 'day')))) {
-    return;
-  }
-
   let error, foundRooms;
   [error, foundRooms] = await to(Room.find({}));
   if (error) return console.error(error);
+
+  const now = moment().tz(timezone).startOf('day');
+  const referenceHour = moment(foundRooms[0].hoursBooked[0]).tz(timezone);
+
+  if (!(moment(now).isAfter(referenceHour))) {
+    console.log("Rooms do not need to be updated");
+    return;
+  }
 
   foundRooms.forEach((room) => {
     let alterHoursBooked = room.hoursBooked.map(t => moment(t).format());
@@ -38,7 +29,7 @@ const updateRooms = async () => {
     if (error) return console.error(error);
   })
 
-  dateLastUpdated = moment();
+  console.log("Rooms have been updated today");
 }
 
-module.exports = timer;
+module.exports = updateRooms;
