@@ -22,6 +22,7 @@
     "lodash.clonedeep": "^4.5.0",
     "mocha": "^6.2.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
     "mongoose": "^5.7.1"
   },
   "devDependencies": {
