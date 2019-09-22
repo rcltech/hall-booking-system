@@ -24,7 +24,7 @@ roomSchema.methods.updateHoursBooked = function(start, end) {
   }
 
   const numberOfHours = moment(end).diff(start, 'hours');
-  for (var i = 0; i < numberOfHours; i++) {
+  for (let i = 0; i < numberOfHours; i++) {
     alterHoursBooked.push(moment(start).add(i, 'hours'));
   }
   alterHoursBooked.sort((a, b) => {
@@ -37,8 +37,7 @@ roomSchema.methods.updateHoursBooked = function(start, end) {
 };
 
 roomSchema.pre('init', function(room) {
-  const update = room.hoursBooked.map(t => moment(t).format());
-  room.hoursBooked = update;
+  room.hoursBooked = room.hoursBooked.map(t => moment(t).format());
   return room;
 });
 
