@@ -22,13 +22,13 @@ const bookingSchema = new Schema({
     type: Date,
     required: [true, 'No end datetime provided']
   }
-})
+});
 
 bookingSchema.pre('init', function(booking) {
   booking.start = moment(booking.start).format();
   booking.end = moment(booking.end).format();
   return booking;
-})
+});
 
 const Booking = mongoose.model('Booking', bookingSchema);
 module.exports = Booking;
