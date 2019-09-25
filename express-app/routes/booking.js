@@ -13,6 +13,10 @@ const Room = require('../models/room');
 // error handler
 const handleError = require('./errorHandler');
 
+// user auth middleware
+const authUser = require('../middleware/authUser.js');
+router.use('/create', authUser);
+
 // create booking
 const createBooking = async (res, booking) => {
   let error, savedBooking;
@@ -46,6 +50,7 @@ const updateRoom = async (res, booking) => {
 
   return savedRoom;
 };
+
 // routes
 router.post('/create', async (req, res, next) => {
   if (req.body.api_key === process.env.API_KEY) {
