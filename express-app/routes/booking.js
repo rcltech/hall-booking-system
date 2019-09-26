@@ -53,20 +53,17 @@ const updateRoom = async (res, booking) => {
 
 // routes
 router.post('/create', async (req, res, next) => {
-  if (req.body.api_key === process.env.API_KEY) {
-    const booking = req.body;
-    booking.api_key = undefined;
-    let newBooking = new Booking(booking);
-    let bookingError = await newBooking.validateSync();
-    if (bookingError)
-      return handleError(res, 'Invalid booking', 'Invalid booking', 400);
-    let savedRoom = await updateRoom(res, booking);
-    if (savedRoom.error) return;
-    let savedBooking = await createBooking(res, booking);
-    res.status(201).json({ savedBooking, savedRoom });
-    return;
-  }
-  handleError(res, 'Unauthorized access', 'Unauthorized access', 401);
+  if (!req.body.room) return;
+  const booking = req.body;
+  let newBooking = new Booking(booking);
+  let bookingError = await newBooking.validateSync();
+  if (bookingError)
+    return handleError(res, 'Invalid booking', 'Invalid booking', 400);
+  let savedRoom = await updateRoom(res, booking);
+  if (savedRoom.error) return;
+  let savedBooking = await createBooking(res, booking);
+  res.status(201).json({ savedBooking, savedRoom });
+  return;
 });
 
 module.exports = router;
