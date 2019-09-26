@@ -28,6 +28,14 @@ const rootRoutes = require('./routes/root');
 const roomRoutes = require('./routes/room');
 const bookingRoutes = require('./routes/booking');
 
+// configure cors policy for local dev
+app.use((req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': 'http://localhost:3000'
+  });
+  next();
+});
+
 app.use('/', rootRoutes);
 app.use('/room', roomRoutes);
 app.use('/booking', bookingRoutes);
