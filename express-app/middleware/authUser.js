@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const handleError = require('../routes/errorHandler');
 const key = process.env.API_KEY;
+const dummyUserId = process.env.DUMMY_USER_ID;
 
 const authUser = (req, res, next) => {
   let token = req.headers['authorization'];
