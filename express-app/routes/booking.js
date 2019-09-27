@@ -53,8 +53,8 @@ const updateRoom = async (res, booking) => {
 
 // routes
 router.post('/create', async (req, res, next) => {
-  if (!req.body.room) return;
-  const booking = req.body;
+  if (!req.body.booking) return;
+  const booking = req.body.booking;
   let newBooking = new Booking(booking);
   let bookingError = await newBooking.validateSync();
   if (bookingError)

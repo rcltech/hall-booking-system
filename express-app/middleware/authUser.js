@@ -15,7 +15,7 @@ const authUser = async (req, res, next) => {
         'Failed to auth user',
         401
       );
-    req.body = payload;
+    req.body.booking = payload;
   });
   next();
 };
