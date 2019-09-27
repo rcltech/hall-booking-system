@@ -64,4 +64,12 @@ router.post('/create', async (req, res, next) => {
   res.status(201).json({ savedBooking, savedRoom });
 });
 
+router.get('/', async (req, res, next) => {
+  const userId = req.params.userId;
+  let error, bookings;
+  [error, bookings] = await to(Booking.find({ userId }));
+  if (error) return handleError(res, error, 'Failed to find bookings');
+  res.status(200).json({ booking });
+});
+
 module.exports = router;
