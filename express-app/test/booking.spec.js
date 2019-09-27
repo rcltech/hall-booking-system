@@ -19,6 +19,7 @@ const createToken = booking => {
 
 describe('Bookings', () => {
   const booking = {
+    userId: process.env.DUMMY_USER_ID,
     room: '305',
     start: new Date(2019, 9, 20, 8),
     end: new Date(2019, 9, 20, 9)
@@ -74,13 +75,28 @@ describe('Bookings', () => {
     itTestsBadBooking(booking, 'end', null);
   });
 
-  describe('/POST create booking with wrong jwt', () => {
-    it('should return an error', done => {
+  describe('/POST create booking with failed user auth', () => {
+    it('should return an error of wrong key', done => {
       const badToken = jwt.sign(booking, 'wrong key');
       chai
         .request(server)
         .post('/booking/create')
         .send({ token: badToken })
+        .end((error, res) => {
+          if (error) return done(error);
+          res.should.have.status(401);
+          res.body.should.be.a('object').that.have.all.keys('error');
+          done();
+        });
+    });
+    it('should return an error of invalid user', done => {
+      const badUserBooking = cloneDeep(booking);
+      badUserBooking.userId = 'bad user';
+      const token = createToken(badUserBooking);
+      chai
+        .request(server)
+        .post('/booking/create')
+        .send({ token })
         .end((error, res) => {
           if (error) return done(error);
           res.should.have.status(401);
