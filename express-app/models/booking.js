@@ -5,9 +5,9 @@ const moment = require('moment');
 const listOfRooms = ['204', '305'];
 
 const bookingSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+  userId: {
+    type: String,
+    required: [true, 'No user provided']
   },
   room: {
     type: String,
