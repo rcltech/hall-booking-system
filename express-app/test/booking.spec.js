@@ -13,13 +13,8 @@ const Room = require('../models/room');
 
 // temporary sign with jwt
 const jwt = require('jsonwebtoken');
-<<<<<<< HEAD
 const createToken = payload => {
   return 'Bearer ' + jwt.sign(payload, process.env.API_KEY);
-=======
-const createToken = booking => {
-  return jwt.sign(booking, process.env.API_KEY);
->>>>>>> ccfc72d... write tests for jwt auth user
 };
 
 describe('Bookings', () => {
@@ -53,19 +48,11 @@ describe('Bookings', () => {
 
   describe('/POST create booking and add to rooms', () => {
     it('should return saved booking and saved room', done => {
-<<<<<<< HEAD
       chai
         .request(server)
         .post('/booking/create')
         .set('authorization', token)
         .send({ booking })
-=======
-      const token = createToken(booking);
-      chai
-        .request(server)
-        .post('/booking/create')
-        .send({ token })
->>>>>>> ccfc72d... write tests for jwt auth user
         .end((error, res) => {
           if (error) return done(error);
           res.should.have.status(201);
@@ -90,13 +77,28 @@ describe('Bookings', () => {
     itTestsBadBooking(booking, 'end', null);
   });
 
-  describe('/POST create booking with wrong jwt', () => {
-    it('should return an error', done => {
+  describe('/POST create booking with failed user auth', () => {
+    it('should return an error of wrong key', done => {
       const badToken = jwt.sign(booking, 'wrong key');
       chai
         .request(server)
         .post('/booking/create')
         .send({ token: badToken })
+        .end((error, res) => {
+          if (error) return done(error);
+          res.should.have.status(401);
+          res.body.should.be.a('object').that.have.all.keys('error');
+          done();
+        });
+    });
+    it('should return an error of invalid user', done => {
+      const badUserBooking = cloneDeep(booking);
+      badUserBooking.userId = 'bad user';
+      const token = createToken(badUserBooking);
+      chai
+        .request(server)
+        .post('/booking/create')
+        .send({ token })
         .end((error, res) => {
           if (error) return done(error);
           res.should.have.status(401);
@@ -141,20 +143,12 @@ describe('Bookings', () => {
 function itTestsBadBooking(booking, key, value, token) {
   let badBooking = cloneDeep(booking);
   badBooking[key] = value;
-<<<<<<< HEAD
-=======
-  const token = createToken(badBooking);
->>>>>>> ccfc72d... write tests for jwt auth user
   it('should return ' + key + ' error', done => {
     chai
       .request(server)
       .post('/booking/create')
-<<<<<<< HEAD
       .set('authorization', token)
       .send({ booking: badBooking })
-=======
-      .send({ token })
->>>>>>> ccfc72d... write tests for jwt auth user
       .end((error, res) => {
         if (error) return done(error);
         res.should.have.status(400);
