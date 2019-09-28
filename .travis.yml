@@ -30,3 +30,15 @@ jobs:
         condition: $TRAVIS_BRANCH =~ ^(master|testing)$
   - stage: heroku tests
     script: curl https://hall-booking-system.herokuapp.com/
+
+  - stage: test-react-app
+    before_install:
+    - cd react-app
+    install:
+    - npm install
+    cache:
+      directories:
+        - "node_modules"
+    script:
+    - echo "Run react-app testing"
+    - npm run build      
