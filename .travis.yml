@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "stable"
 env:
-  - PORT=8000 DATABASE=test DUMMY_USER_ID=dummy
+  - PORT=8000 DATABASE=test
 jobs:
   include:
   - stage: test-express-app

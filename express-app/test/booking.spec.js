@@ -72,33 +72,19 @@ describe('Bookings', () => {
   });
 
   describe('/POST create invalid booking', () => {
-    itTestsBadBooking(booking, 'room', 'invalid room');
-    itTestsBadBooking(booking, 'start', 'not a date object');
-    itTestsBadBooking(booking, 'end', null);
+    itTestsBadBooking(booking, 'room', 'invalid room', token);
+    itTestsBadBooking(booking, 'start', 'not a date object', token);
+    itTestsBadBooking(booking, 'end', null, token);
   });
 
   describe('/POST create booking with failed user auth', () => {
     it('should return an error of wrong key', done => {
-      const badToken = jwt.sign(booking, 'wrong key');
+      const badToken = 'Bearer ' + jwt.sign(user, 'wrong key');
       chai
         .request(server)
         .post('/booking/create')
-        .send({ token: badToken })
-        .end((error, res) => {
-          if (error) return done(error);
-          res.should.have.status(401);
-          res.body.should.be.a('object').that.have.all.keys('error');
-          done();
-        });
-    });
-    it('should return an error of invalid user', done => {
-      const badUserBooking = cloneDeep(booking);
-      badUserBooking.userId = 'bad user';
-      const token = createToken(badUserBooking);
-      chai
-        .request(server)
-        .post('/booking/create')
-        .send({ token })
+        .set('authorization', badToken)
+        .send({ booking })
         .end((error, res) => {
           if (error) return done(error);
           res.should.have.status(401);
