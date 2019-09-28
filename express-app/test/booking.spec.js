@@ -92,6 +92,19 @@ describe('Bookings', () => {
           done();
         });
     });
+
+    it('should return an error of no key provided', done => {
+      chai
+        .request(server)
+        .post('/booking/create')
+        .send({ booking })
+        .end((error, res) => {
+          if (error) return done(error);
+          res.should.have.status(401);
+          res.body.should.be.a('object').that.have.all.keys('error');
+          done();
+        });
+    });
   });
 });
 
