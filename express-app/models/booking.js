@@ -21,6 +21,10 @@ const bookingSchema = new Schema({
   end: {
     type: Date,
     required: [true, 'No end datetime provided']
+  },
+  createdAt: {
+    type: Date,
+    required: true
   }
 });
 
