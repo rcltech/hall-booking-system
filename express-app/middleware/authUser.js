@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken');
-const to = require('await-to-js').default;
 const handleError = require('../routes/errorHandler');
 const key = process.env.API_KEY;
-const dummyUserId = process.env.DUMMY_USER_ID;
 
 const authUser = async (req, res, next) => {
-  // temporary jwt signature to verify payload
-  const token = req.body.token;
+  let token = req.headers['x-access-token'] || req.headers['authorization'];
+  if (token.startsWith('Bearer ')) {
+    token = token.slice(7, token.length);
+  } else {
+    const error = 'No token provided';
+    return handleError(res, error, error, 401);
+  }
+
   jwt.verify(token, key, (error, payload) => {
-    if (error || dummyUserId !== payload.userId)
-      return handleError(
-        res,
-        error ? error : 'Invalid user',
-        'Failed to auth user',
-        401
-      );
-    req.body.booking = payload;
+    if (error) {
+      handleError(res, error, 'Failed to auth user', 401);
+      req.body = null;
+    }
   });
   next();
 };
