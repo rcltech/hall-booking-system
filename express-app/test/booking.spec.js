@@ -155,6 +155,17 @@ describe('Bookings', () => {
         });
       }
     });
+
+    it('should return an empty array', async () => {
+      const res = await chai
+        .request(server)
+        .get('/booking')
+        .set('authorization', token)
+        .send({ userId: 'unfound user' });
+      res.should.have.status(200);
+      res.body.should.be.a('object').that.have.property('bookings');
+      res.body.bookings.should.have.lengthOf(0);
+    });
   });
 });
 
