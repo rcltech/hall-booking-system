@@ -106,6 +106,55 @@ describe('Bookings', () => {
         });
     });
   });
+
+  describe('/GET get the bookings of a particular user', () => {
+    it('should return an array of bookings', async () => {
+      const allRooms = await Room.find({});
+
+      const listOfChanges = [
+        { start: new Date(2019, 9, 20, 7) },
+        { room: '204' },
+        { end: new Date(2019, 9, 20, 10) },
+        { room: '204', start: new Date(2019, 9, 20, 7) },
+        { start: new Date(2019, 10, 4, 10), end: new Date(2019, 10, 4, 12) }
+      ];
+      const listOfBookings = await listOfChanges.map(e => {
+        x = cloneDeep(booking);
+        for (var key in e) x[key] = e[key];
+        return x;
+      });
+      await listOfBookings.forEach(booking => {
+        createBooking(booking, token);
+      });
+
+      const res = await chai
+        .request(server)
+        .get('/booking')
+        .set('authorization', token)
+        .send({ userId: user.userId });
+
+      console.log(res.body);
+
+      await Booking.deleteMany({}, error => {
+        if (error) return error;
+      });
+
+      await allRooms.forEach(async room => {
+        const query = { roomName: room.roomName };
+        await Room.findOneAndUpdate(
+          query,
+          room,
+          {
+            new: true,
+            useFindAndModify: false
+          },
+          (error, newRoom) => {
+            if (error) return error;
+          }
+        );
+      });
+    });
+  });
 });
 
   describe('/POST create booking with failed user auth', () => {
@@ -155,4 +204,15 @@ function itTestsBadBooking(booking, key, value, token) {
         done();
       });
   });
+}
+
+function createBooking(booking, token) {
+  chai
+    .request(server)
+    .post('/booking/create')
+    .set('authorization', token)
+    .send({ booking })
+    .end((error, res) => {
+      if (error) return error;
+    });
 }
