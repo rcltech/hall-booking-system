@@ -8,6 +8,8 @@ const expect = chai.expect;
 const handleError = require('../routes/errorHandler');
 chai.use(chaiHttp);
 
+const moment = require('moment');
+
 const Booking = require('../models/booking');
 const Room = require('../models/room');
 
@@ -139,8 +141,19 @@ describe('Bookings', () => {
         .get('/booking')
         .set('authorization', token)
         .send({ userId: user.userId });
-
-      console.log(res.body);
+      res.should.have.status(200);
+      res.body.should.be.a('object').that.have.property('bookings');
+      res.body.bookings.should.have.lengthOf(5);
+      const bookings = res.body.bookings;
+      for (let i = 0; i < bookings.length; i++) {
+        expect(bookings[i].userId).to.equal(user.userId);
+        expect(bookings[i].room).to.equal(listOfBookings[i].room);
+        ['start', 'end'].forEach(e => {
+          const dbProps = moment(bookings[i][e]).format();
+          const testProps = moment(listOfBookings[i][e]).format();
+          expect(dbProps).to.equal(testProps);
+        });
+      }
     });
   });
 });
