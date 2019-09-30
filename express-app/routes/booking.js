@@ -53,7 +53,6 @@ const updateRoom = async (res, booking) => {
 
 // routes
 router.post('/create', async (req, res, next) => {
-  if (!req.body) return;
   const booking = req.body.booking;
   booking.createdAt = new Date();
   let newBooking = new Booking(booking);

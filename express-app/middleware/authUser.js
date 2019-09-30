@@ -12,12 +12,9 @@ const authUser = (req, res, next) => {
   }
 
   jwt.verify(token, key, (error, payload) => {
-    if (error) {
-      handleError(res, error, 'Failed to auth user', 401);
-      req.body = null;
-    }
+    if (error) return handleError(res, error, 'Failed to auth user', 401);
+    next();
   });
-  next();
 };
 
 module.exports = authUser;
