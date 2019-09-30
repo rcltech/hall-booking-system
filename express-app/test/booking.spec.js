@@ -17,6 +17,8 @@ const createToken = payload => {
   return 'Bearer ' + jwt.sign(payload, process.env.API_KEY);
 };
 
+let allRooms;
+
 describe('Bookings', () => {
   const user = { userId: 'dummyUserId' };
   const token = createToken(user);
@@ -27,20 +29,25 @@ describe('Bookings', () => {
     end: new Date(2019, 9, 20, 9)
   };
 
-  before(done => {
-    Booking.deleteMany({}, error => {
-      if (error) return done();
+  before(async () => {
+    allRooms = await Room.find({});
+  });
+
+  afterEach(async () => {
+    await Booking.deleteMany({}, error => {
+      if (error) console.error(error);
     });
-    Room.findOne({ roomName: booking.room }, (error, foundRoom) => {
-      if (error) return done();
-      const index = foundRoom.hoursBooked.indexOf(booking.start.toString());
-      if (index > -1) foundRoom.hoursBooked.splice(index, 1);
-      Room.findOneAndUpdate(
-        { roomName: booking.room },
-        foundRoom,
-        { useFindAndModify: false },
-        error => {
-          done();
+    await allRooms.forEach(async room => {
+      const query = { roomName: room.roomName };
+      await Room.findOneAndUpdate(
+        query,
+        room,
+        {
+          new: true,
+          useFindAndModify: false
+        },
+        (error, newRoom) => {
+          if (error) console.error(error);
         }
       );
     });
@@ -109,23 +116,23 @@ describe('Bookings', () => {
 
   describe('/GET get the bookings of a particular user', () => {
     it('should return an array of bookings', async () => {
-      const allRooms = await Room.find({});
-
+      const testBooking = cloneDeep(booking);
+      testBooking.start = new Date(2020, 5, 20, 3);
+      testBooking.end = new Date(2020, 5, 20, 4);
+      testBooking.createdAt = new Date();
       const listOfChanges = [
-        { start: new Date(2019, 9, 20, 7) },
+        { start: new Date(2020, 5, 20, 2) },
         { room: '204' },
-        { end: new Date(2019, 9, 20, 10) },
-        { room: '204', start: new Date(2019, 9, 20, 7) },
-        { start: new Date(2019, 10, 4, 10), end: new Date(2019, 10, 4, 12) }
+        { end: new Date(2020, 5, 20, 5) },
+        { room: '204', start: new Date(2020, 5, 20, 2) },
+        { start: new Date(2020, 5, 22, 3), end: new Date(2020, 5, 22, 5) }
       ];
       const listOfBookings = await listOfChanges.map(e => {
-        x = cloneDeep(booking);
+        x = cloneDeep(testBooking);
         for (var key in e) x[key] = e[key];
         return x;
       });
-      await listOfBookings.forEach(booking => {
-        createBooking(booking, token);
-      });
+      await Booking.insertMany(listOfBookings);
 
       const res = await chai
         .request(server)
@@ -134,25 +141,6 @@ describe('Bookings', () => {
         .send({ userId: user.userId });
 
       console.log(res.body);
-
-      await Booking.deleteMany({}, error => {
-        if (error) return error;
-      });
-
-      await allRooms.forEach(async room => {
-        const query = { roomName: room.roomName };
-        await Room.findOneAndUpdate(
-          query,
-          room,
-          {
-            new: true,
-            useFindAndModify: false
-          },
-          (error, newRoom) => {
-            if (error) return error;
-          }
-        );
-      });
     });
   });
 });
@@ -204,15 +192,4 @@ function itTestsBadBooking(booking, key, value, token) {
         done();
       });
   });
-}
-
-function createBooking(booking, token) {
-  chai
-    .request(server)
-    .post('/booking/create')
-    .set('authorization', token)
-    .send({ booking })
-    .end((error, res) => {
-      if (error) return error;
-    });
 }
