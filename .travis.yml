@@ -5,7 +5,7 @@ env:
   - PORT=8000 DATABASE=test
 jobs:
   include:
-  - stage: express-app tests
+  - stage: test-express-app
     before_install:
     - cd express-app
     install:
@@ -16,20 +16,20 @@ jobs:
     script:
     - echo "Run express-app testing"
     - npm run test
-  - stage: deploy to heroku
+  - stage: deploy-to-heroku
     script:
     - cd express-app
     deploy:
       skip_cleanup: true
       provider: heroku
       edge: true
-      app: hall-booking-system
+      app: owl
       api_key: $HEROKU_API_KEY
       on:
         all_branches: true
         condition: $TRAVIS_BRANCH =~ ^(master|testing)$
-  - stage: heroku tests
-    script: curl https://hall-booking-system.herokuapp.com/
+  - stage: test-heroku
+    script: curl https://owl.herokuapp.com/
 
   - stage: test-react-app
     before_install:
@@ -41,4 +41,4 @@ jobs:
         - "node_modules"
     script:
     - echo "Run react-app testing"
-    - npm run build      
+    - npm run build
