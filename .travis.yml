@@ -23,13 +23,13 @@ jobs:
       skip_cleanup: true
       provider: heroku
       edge: true
-      app: owl
+      app: rctech-owl
       api_key: $HEROKU_API_KEY
       on:
         all_branches: true
         condition: $TRAVIS_BRANCH =~ ^(master|testing)$
   - stage: test-heroku
-    script: curl https://owl.herokuapp.com/
+    script: curl https://rctech-owl.herokuapp.com/
 
   - stage: test-react-app
     before_install:
