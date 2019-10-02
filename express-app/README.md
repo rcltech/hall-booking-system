@@ -18,7 +18,7 @@ Push to Heroku for testing. This is **not recommended** because [Travis CI](http
 
 ### API Endpoints
 
-Start with [https://hall-booking-system.herokuapp.com](https://hall-booking-system.herokuapp.com)
+Start with [https://rctech-owl.herokuapp.com/](https://rctech-owl.herokuapp.com/)
 
 1. Query all rooms for corresponding booking info: `/room` (get request)
 1. Create a new booking: `/booking/create` (post request)
