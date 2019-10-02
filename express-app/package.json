@@ -1,7 +1,7 @@
 {
   "name": "express-app",
   "version": "1.0.0",
-  "description": "backend for habos",
+  "description": "backend for owl",
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 10000 --exit",
