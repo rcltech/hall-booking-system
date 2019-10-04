@@ -27,8 +27,8 @@ describe('Bookings', () => {
   const booking = {
     userId: user.userId,
     room: '305',
-    start: new Date(2019, 9, 20, 8),
-    end: new Date(2019, 9, 20, 9)
+    start: new Date(2020, 5, 20, 2),
+    end: new Date(2020, 5, 20, 4)
   };
 
   before(async () => {
@@ -72,6 +72,7 @@ describe('Bookings', () => {
             .a('object')
             .that.include.all.keys('room', 'start', 'end');
           savedRoom.should.be.a('object').that.have.property('hoursBooked');
+          console.log(savedRoom.hoursBooked);
           expect(savedRoom.hoursBooked)
             .to.be.an('array')
             .that.includes(savedBooking.start);
@@ -120,7 +121,7 @@ describe('Bookings', () => {
     it('should return an array of bookings', async () => {
       const testBooking = cloneDeep(booking);
       testBooking.start = new Date(2020, 5, 20, 3);
-      testBooking.end = new Date(2020, 5, 20, 4);
+      testBooking.end = new Date(2020, 5, 20, 5);
       testBooking.createdAt = new Date();
       const listOfChanges = [
         { start: new Date(2020, 5, 20, 2) },
@@ -167,7 +168,6 @@ describe('Bookings', () => {
       res.body.bookings.should.have.lengthOf(0);
     });
   });
-});
 
   describe('/POST create booking with failed user auth', () => {
     it('should return an error of wrong key', done => {
