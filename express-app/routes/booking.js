@@ -56,14 +56,12 @@ router.post('/create', async (req, res, next) => {
   const booking = req.body.booking;
   booking.createdAt = new Date();
   let newBooking = new Booking(booking);
-  let bookingError = await newBooking.validateSync();
-  if (bookingError)
+  if (newBooking.validateSync())
     return handleError(res, 'Invalid booking', 'Invalid booking', 400);
-  let savedRoom = await updateRoom(res, booking);
+  const savedRoom = await updateRoom(res, booking);
   if (savedRoom.error) return;
-  let savedBooking = await createBooking(res, booking);
+  const savedBooking = await createBooking(res, booking);
   res.status(201).json({ savedBooking, savedRoom });
-  return;
 });
 
 module.exports = router;
