@@ -13,6 +13,10 @@ const Room = require('../models/room');
 // error handler
 const handleError = require('./errorHandler');
 
+// user auth middleware
+const authUser = require('../middleware/authUser.js');
+router.use('/create', authUser);
+
 // create booking
 const createBooking = async (res, booking) => {
   let error, savedBooking;
@@ -46,22 +50,18 @@ const updateRoom = async (res, booking) => {
 
   return savedRoom;
 };
+
 // routes
 router.post('/create', async (req, res, next) => {
-  if (req.body.api_key === process.env.API_KEY) {
-    const booking = req.body;
-    booking.api_key = undefined;
-    let newBooking = new Booking(booking);
-    let bookingError = await newBooking.validateSync();
-    if (bookingError)
-      return handleError(res, 'Invalid booking', 'Invalid booking', 400);
-    let savedRoom = await updateRoom(res, booking);
-    if (savedRoom.error) return;
-    let savedBooking = await createBooking(res, booking);
-    res.status(201).json({ savedBooking, savedRoom });
-    return;
-  }
-  handleError(res, 'Unauthorized access', 'Unauthorized access', 401);
+  const booking = req.body.booking;
+  booking.createdAt = new Date();
+  let newBooking = new Booking(booking);
+  if (newBooking.validateSync())
+    return handleError(res, 'Invalid booking', 'Invalid booking', 400);
+  const savedRoom = await updateRoom(res, booking);
+  if (savedRoom.error) return;
+  const savedBooking = await createBooking(res, booking);
+  res.status(201).json({ savedBooking, savedRoom });
 });
 
 module.exports = router;
