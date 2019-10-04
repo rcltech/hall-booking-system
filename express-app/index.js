@@ -34,7 +34,7 @@ app.use('/booking', bookingRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, err => {
-  console.log('Server is running on port ' + PORT);
+  console.log('Owl server is running on port ' + PORT);
 });
 
 module.exports = app;

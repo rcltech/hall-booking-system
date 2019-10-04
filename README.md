@@ -1,4 +1,4 @@
-# Hall Booking System - HaBoS
+# Owl - RC Lee Hall Booking System
 
 ### To open issues for project enhancement
 Open issues according to the project enhancement template.

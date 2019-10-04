@@ -1,6 +1,7 @@
-# Express Back-end for Hall Booking System
+# Owl Express Back-end
 
 ### Development Mode
+
 Make sure that you have installed nodemon, and node modules.
 
 `npm install -g nodemon` and `npm install`
@@ -16,7 +17,8 @@ Push to Heroku for testing. This is **not recommended** because [Travis CI](http
 `npm run push-heroku`
 
 ### API Endpoints
-Start with [https://hall-booking-system.herokuapp.com](https://hall-booking-system.herokuapp.com)
+
+Start with [https://rctech-owl.herokuapp.com/](https://rctech-owl.herokuapp.com/)
 
 1. Query all rooms for corresponding booking info: `/room` (get request)
 1. Create a new booking: `/booking/create` (post request)
