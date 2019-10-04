@@ -55,7 +55,7 @@ const updateRoom = async (res, booking) => {
 router.post('/create', async (req, res, next) => {
   const booking = req.body.booking;
   booking.createdAt = new Date();
-  let newBooking = new Booking(booking);
+  const newBooking = new Booking(booking);
   if (newBooking.validateSync())
     return handleError(res, 'Invalid booking', 'Invalid booking', 400);
   const savedRoom = await updateRoom(res, booking);

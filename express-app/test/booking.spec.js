@@ -72,7 +72,6 @@ describe('Bookings', () => {
             .a('object')
             .that.include.all.keys('room', 'start', 'end');
           savedRoom.should.be.a('object').that.have.property('hoursBooked');
-          console.log(savedRoom.hoursBooked);
           expect(savedRoom.hoursBooked)
             .to.be.an('array')
             .that.includes(savedBooking.start);
