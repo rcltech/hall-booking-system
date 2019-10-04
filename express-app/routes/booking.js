@@ -15,7 +15,7 @@ const handleError = require('./errorHandler');
 
 // user auth middleware
 const authUser = require('../middleware/authUser.js');
-router.use('/create', authUser);
+router.use('/', authUser);
 
 // create booking
 const createBooking = async (res, booking) => {
