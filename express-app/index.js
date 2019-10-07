@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const env = require('dotenv');
+const path = require('path');
 env.config();
 
 // connect to mongoose
@@ -28,9 +29,15 @@ const rootRoutes = require('./routes/root');
 const roomRoutes = require('./routes/room');
 const bookingRoutes = require('./routes/booking');
 
-app.use('/', rootRoutes);
-app.use('/room', roomRoutes);
-app.use('/booking', bookingRoutes);
+app.use('/api/', rootRoutes);
+app.use('/api/room', roomRoutes);
+app.use('/api/booking', bookingRoutes);
+
+// react
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const PORT = process.env.PORT;
 app.listen(PORT, err => {
