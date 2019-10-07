@@ -8,7 +8,8 @@
     "develop": "nodemon index.js",
     "start": "node index.js",
     "push-heroku": "cd .. && git subtree push --prefix express-app/ heroku master && cd express-app",
-    "push-heroku-force": "cd .. && git subtree split --prefix express-app/ -b heroku && git push -f heroku heroku:master && git branch -D heroku && cd express-app"
+    "push-heroku-force": "cd .. && git subtree split --prefix express-app/ -b heroku && git push -f heroku heroku:master && git branch -D heroku && cd express-app",
+    "build": "cd ../react-app && npm run build && cp -r build/ ../express-app/build"
   },
   "author": "",
   "license": "ISC",
