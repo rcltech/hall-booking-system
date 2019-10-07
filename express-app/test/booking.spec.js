@@ -59,7 +59,7 @@ describe('Bookings', () => {
     it('should return saved booking and saved room', done => {
       chai
         .request(server)
-        .post('/booking/create')
+        .post('/api/booking/create')
         .set('authorization', token)
         .send({ booking })
         .end((error, res) => {
@@ -91,7 +91,7 @@ describe('Bookings', () => {
       const badToken = 'Bearer ' + jwt.sign(user, 'wrong key');
       chai
         .request(server)
-        .post('/booking/create')
+        .post('/api/booking/create')
         .set('authorization', badToken)
         .send({ booking })
         .end((error, res) => {
@@ -105,7 +105,7 @@ describe('Bookings', () => {
     it('should return an error of no key provided', done => {
       chai
         .request(server)
-        .post('/booking/create')
+        .post('/api/booking/create')
         .send({ booking })
         .end((error, res) => {
           if (error) return done(error);
@@ -138,7 +138,7 @@ describe('Bookings', () => {
 
       const res = await chai
         .request(server)
-        .get('/booking')
+        .get('/api/booking')
         .set('authorization', token)
         .send({ userId: user.userId });
       res.should.have.status(200);
@@ -159,7 +159,7 @@ describe('Bookings', () => {
     it('should return an empty array', async () => {
       const res = await chai
         .request(server)
-        .get('/booking')
+        .get('/api/booking')
         .set('authorization', token)
         .send({ userId: 'unfound user' });
       res.should.have.status(200);
@@ -173,7 +173,7 @@ describe('Bookings', () => {
       const badToken = 'Bearer ' + jwt.sign(user, 'wrong key');
       chai
         .request(server)
-        .post('/booking/create')
+        .post('/api/booking/create')
         .set('authorization', badToken)
         .send({ booking })
         .end((error, res) => {
@@ -187,7 +187,7 @@ describe('Bookings', () => {
     it('should return an error of no key provided', done => {
       chai
         .request(server)
-        .post('/booking/create')
+        .post('/api/booking/create')
         .send({ booking })
         .end((error, res) => {
           if (error) return done(error);
@@ -205,7 +205,7 @@ function itTestsBadBooking(booking, key, value, token) {
   it('should return ' + key + ' error', done => {
     chai
       .request(server)
-      .post('/booking/create')
+      .post('/api/booking/create')
       .set('authorization', token)
       .send({ booking: badBooking })
       .end((error, res) => {
