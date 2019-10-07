@@ -66,8 +66,7 @@ router.post('/create', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   const userId = req.body.userId;
-  let error, bookings;
-  [error, bookings] = await to(Booking.find({ userId }));
+  const [error, bookings] = await to(Booking.find({ userId }));
   if (error) return handleError(res, error, 'Failed to find bookings');
   res.status(200).json({ bookings });
 });
