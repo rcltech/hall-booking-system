@@ -15,7 +15,7 @@ const handleError = require('./errorHandler');
 
 // user auth middleware
 const authUser = require('../middleware/authUser.js');
-router.use('/create', authUser);
+router.use('/', authUser);
 
 // create booking
 const createBooking = async (res, booking) => {
@@ -55,13 +55,20 @@ const updateRoom = async (res, booking) => {
 router.post('/create', async (req, res, next) => {
   const booking = req.body.booking;
   booking.createdAt = new Date();
-  let newBooking = new Booking(booking);
+  const newBooking = new Booking(booking);
   if (newBooking.validateSync())
     return handleError(res, 'Invalid booking', 'Invalid booking', 400);
   const savedRoom = await updateRoom(res, booking);
   if (savedRoom.error) return;
   const savedBooking = await createBooking(res, booking);
   res.status(201).json({ savedBooking, savedRoom });
+});
+
+router.get('/', async (req, res, next) => {
+  const userId = req.body.userId;
+  const [error, bookings] = await to(Booking.find({ userId }));
+  if (error) return handleError(res, error, 'Failed to find bookings');
+  res.status(200).json({ bookings });
 });
 
 module.exports = router;
