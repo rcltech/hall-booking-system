@@ -1,0 +1,27 @@
+{
+  "name": "owl",
+  "version": "1.0.0",
+  "description": "### To open issues for project enhancement Open issues according to the project enhancement template.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcltech/owl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcltech/owl/issues"
+  },
+  "homepage": "https://github.com/rcltech/owl#readme",
+  "devDependencies": {
+    "husky": "^3.0.8"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo \"build react and copy into express directory\" && cd express-app && npm run build && git add build"
+    }
+  }
+}
