@@ -24,7 +24,7 @@ For subsequent commits on branch: `git push`
 1. Create a pull request to merge feature branch into `master`.
 2. Request for at least 1 review.
 3. Squash and merge into `master` after the pull request has been approved.
-- If this fails, that means your branch is not up to date with master. Run `git rebase -i master`; more info can be found here. After rebasing, forcefully push to remote using `git push -f`.
+  - If this fails, that means your branch is not up to date with master. Run `git rebase -i master`; more info can be found [here]((https://riptutorial.com/git/example/1211/local-branch-rebasing)). After rebasing, forcefully push to remote using `git push -f`.
 
 ### Important Notes
 1. Make sure to `git pull` before working on anything at the start of the day.
