@@ -10,6 +10,7 @@ jobs:
     - cd express-app
     install:
     - npm install
+    - npm run build
     cache:
       directories:
         - "node_modules"
@@ -19,6 +20,7 @@ jobs:
   - stage: deploy-to-heroku
     script:
     - cd express-app
+    - npm run build
     deploy:
       skip_cleanup: true
       provider: heroku
