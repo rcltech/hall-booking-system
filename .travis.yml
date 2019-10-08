@@ -22,11 +22,9 @@ jobs:
     - cd express-app
     install:
     - npm install
-    - npm run build
     cache:
       directories:
         - "node_modules"
-        - "build"
     script:
     - echo "Run express-app testing"
     - npm run test
