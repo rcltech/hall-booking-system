@@ -34,7 +34,9 @@ jobs:
     - npm run build
     - cd express-app
     before_deploy:
-    - grep -vwE "^build$" .gitignore > .gitignore
+    - grep -vwE "^build$" .gitignore > .gitignore.build
+    - mv .gitignore.build .gitignore
+    - rm .gitignore.build
     deploy:
       skip_cleanup: true
       provider: heroku
