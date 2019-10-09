@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"build react and copy into express directory\" && npm run build && git add express-app/build"
+      "pre-commit": "echo husy pre-commit hooks"
     }
   }
 }
