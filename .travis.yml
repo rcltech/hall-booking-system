@@ -36,7 +36,6 @@ jobs:
     before_deploy:
     - grep -vwE "^build$" .gitignore > .gitignore.build
     - mv .gitignore.build .gitignore
-    - rm .gitignore.build
     deploy:
       skip_cleanup: true
       provider: heroku
