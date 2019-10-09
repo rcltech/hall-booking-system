@@ -1,0 +1,25 @@
+{
+  "name": "owl",
+  "version": "1.0.0",
+  "description": "rc lee hall booking system",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd react-app && npm install && npm run build && cp -r build/ ../express-app/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcltech/owl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^3.0.8",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

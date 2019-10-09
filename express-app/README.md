@@ -26,6 +26,10 @@ This creates a temporary branch called `heroku`, pushes that branch's express-ap
 
 Start with [https://rctech-owl.herokuapp.com/](https://rctech-owl.herokuapp.com/)
 
-1. Query all rooms for corresponding booking info: `/room` (get request)
-1. Create a new booking: `/booking/create` (post request)
-1. Read the bookings of a particular user: `/booking/` (get request)
+1. Query all rooms for corresponding booking info: `/api/room` (get request)
+1. Create a new booking: `/api/booking/create` (post request)
+1. Read the bookings of a particular user: `/api/booking/` (get request)
+
+### React App
+
+Using the same url, go to '/'.
