@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from './components/Header';
+import InfoSection from './components/InfoSection';
 
-function App() {
-  return (
-    <h1>Let's Do This, Boys!</h1>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <div>
+        <Header />
+        <InfoSection />
+      </div>
+    );
+  }
 }
-
-export default App;
