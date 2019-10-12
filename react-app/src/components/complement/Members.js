@@ -1,10 +1,10 @@
 import React from 'react';
 import Member from './Member';
 import { map } from 'lodash';
-import sean from '../images/team-members/sean.jpg';
-import sid from '../images/team-members/sid.png';
-import utkarsh from '../images/team-members/utkarsh.png';
-import welvin from '../images/team-members/welvin.png';
+import sean from '../../images/team-members/sean.jpg';
+import sid from '../../images/team-members/sid.png';
+import utkarsh from '../../images/team-members/utkarsh.png';
+import welvin from '../../images/team-members/welvin.png';
 
 const style = {
   container: {

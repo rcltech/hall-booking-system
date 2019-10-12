@@ -1,5 +1,4 @@
 import React from 'react';
-//import 'typeface-roboto';
 import { Collapse, Card, CardBody } from 'reactstrap';
 
 class Help extends React.Component {
