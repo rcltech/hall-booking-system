@@ -8,20 +8,20 @@ import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
 import ChooseDate from './components/main/ChooseDate';
 
-const GET_USER = gql`
-  query user($username: String!) {
-    user(username: $username) {
-      email
+const GET_ME = gql`
+  query me {
+    me {
+      username
       image_url
-      phone
       first_name
+      last_name
       room_no
     }
   }
 `;
 
 const App = () => {
-  const { data, loading, error } = useQuery(GET_USER);
+  const { data, loading, error } = useQuery(GET_ME);
   if (loading || !data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
   return (
