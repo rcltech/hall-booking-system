@@ -23,14 +23,11 @@ const GET_ME = gql`
 `;
 
 const App = () => {
-  localStorage.setItem(
-    'redirectTo',
-    qs.parse(window.location.search).redirectTo || ''
-  );
+  localStorage.setItem('id', qs.parse(window.location.search).id || '');
   const { data, loading, error } = useQuery(GET_ME);
   if (loading || !data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
-  if (!localStorage.getItem('authorization' || !data.me)) {
+  if (!localStorage.getItem('id' || !data.me)) {
     const app_url = 'rctech-owl.herokuapp.com';
     window.location.replace(
       `https://ladybird.rctech.club/?redirectTo=${app_url}`
