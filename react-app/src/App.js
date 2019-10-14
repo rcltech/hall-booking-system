@@ -23,7 +23,7 @@ const GET_ME = gql`
 `;
 
 const App = () => {
-  localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  localStorage.setItem('id', qs.parse(window.location.search)['?id'] || '');
   const { data, loading, error } = useQuery(GET_ME);
   if (loading || !data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
