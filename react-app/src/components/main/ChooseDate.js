@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import Header from '../complement/Header';
 import Calendar from 'react-calendar';
+import NavBar from '../complement/NavBar';
+const moment = require('moment');
 
 const style = {
+  container: {
+    textAlign: 'center'
+  },
   calendarContainer: {
     display: 'flex',
     justifyContent: 'center'
@@ -23,12 +27,22 @@ export default class ChooseDate extends Component {
     };
   }
 
-  onChange = date => this.setState({ date });
+  onChange = date => {
+    const dateChosen = moment(date).format('MM-DD-YYYY');
+    const today = moment(new Date()).format('MM-DD-YYYY');
+    this.setState({
+      date: dateChosen < today ? new Date() : date
+    });
+  };
 
   render() {
+    const {
+      state: { room }
+    } = this.props.location;
     return (
-      <div>
-        <Header />
+      <div style={style.container}>
+        <NavBar backPath="/room" />
+        <p>When are you planning to use room {room}?</p>
         <div style={style.calendarContainer}>
           <Calendar onChange={this.onChange} value={this.state.date} />
         </div>

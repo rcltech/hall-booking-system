@@ -6,11 +6,14 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import Header from '../complement/Header';
+import NavBar from '../complement/NavBar';
 
 const rooms = ['305', '204', '203'];
 
 const style = {
+  container: {
+    textAlign: 'center'
+  },
   dropdownContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -44,21 +47,35 @@ export default class ChooseRoom extends Component {
 
   renderRedirect = () => {
     const { redirect, room } = this.state;
-    return redirect && room ? <Redirect to="/date" /> : <div></div>;
+    return redirect && room ? (
+      <Redirect
+        to={{
+          pathname: '/date',
+          state: {
+            room
+          }
+        }}
+      />
+    ) : (
+      <div></div>
+    );
   };
 
   render() {
     const { isOpen } = this.state;
     return (
-      <div>
+      <div style={style.container}>
         {this.renderRedirect()}
-        <Header />
+        <NavBar backPath="/" />
         <div style={style.dropdownContainer}>
           <Dropdown isOpen={isOpen} toggle={this.toggle} size="lg">
             <DropdownToggle caret>Select room</DropdownToggle>
             <DropdownMenu>
               {rooms.map(room => (
-                <DropdownItem onClick={() => this.handleOnRoomChosen(room)}>
+                <DropdownItem
+                  key={room}
+                  onClick={() => this.handleOnRoomChosen(room)}
+                >
                   {room}
                 </DropdownItem>
               ))}
