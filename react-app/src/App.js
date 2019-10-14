@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
 import ChooseDate from './components/main/ChooseDate';
+import ChooseTime from './components/main/ChooseTime';
 
 const GET_ME = gql`
   query me {
@@ -31,6 +32,7 @@ const App = () => {
           <Route exact path="/" component={Homepage} />
           <Route path="/room" component={ChooseRoom} />
           <Route path="/date" component={ChooseDate} />
+          <Route path="/time" component={ChooseTime} />
         </Switch>
       </div>
     </Router>
