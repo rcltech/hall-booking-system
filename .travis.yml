@@ -3,6 +3,9 @@ node_js:
   - 'stable'
 env:
   - PORT=8000 DATABASE=test
+cache:
+  npm: true
+
 jobs:
   include:
     - stage: test-react-app
