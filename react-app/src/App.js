@@ -27,7 +27,7 @@ const App = () => {
   const { data, loading, error } = useQuery(GET_ME);
   if (loading || !data) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
-  if (!localStorage.getItem('id' || !data.me)) {
+  if (!localStorage.getItem('id') || !data.me) {
     const app_url = 'rctech-owl.herokuapp.com';
     window.location.replace(
       `https://ladybird.rctech.club/?redirectTo=${app_url}`

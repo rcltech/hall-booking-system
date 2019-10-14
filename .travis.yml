@@ -17,20 +17,19 @@ jobs:
         - echo "Run react-app testing"
         - npm run build
 
-    - stage: test-express-app
-      before_install:
-        - cd express-app
-      install:
-        - npm install
-      cache:
-        directories:
-          - 'node_modules'
-      script:
-        - echo "Run express-app testing"
-        - npm run test
+    # - stage: test-express-app
+    #   before_install:
+    #     - cd express-app
+    #   install:
+    #     - npm install
+    #   cache:
+    #     directories:
+    #       - 'node_modules'
+    #   script:
+    #     - echo "Run express-app testing"
+    #     - npm run test
 
     - stage: deploy-to-heroku
-      if: branch != apollo
       script:
         - npm run build
         - cd express-app
