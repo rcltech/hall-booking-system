@@ -11,7 +11,7 @@ import ChooseTime from './components/main/ChooseTime';
 const App = () => {
   localStorage.setItem('id', qs.parse(window.location.search).id || '');
   if (localStorage.getItem('id') === '') {
-    const app_url = window.location.host;
+    const app_url = 'rctech-owl.herokuapp.com';
     window.location.replace(
       `https://ladybird.rctech.club/?redirectTo=${app_url}`
     );
