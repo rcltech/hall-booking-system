@@ -4,6 +4,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
