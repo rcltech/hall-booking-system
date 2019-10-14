@@ -1,35 +1,16 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import qs from 'qs';
+import qs from 'query-string';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
 import ChooseDate from './components/main/ChooseDate';
 import ChooseTime from './components/main/ChooseTime';
 
-const GET_ME = gql`
-  query me {
-    me {
-      username
-      image_url
-      first_name
-      last_name
-      room_no
-    }
-  }
-`;
-
 const App = () => {
-  localStorage.setItem('id', qs.parse(window.location.search)['?id'] || '');
-  const { data, loading, error } = useQuery(GET_ME);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error!</div>;
-
-  if (localStorage.getItem('id') === "" || data === undefined) {
+  localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  if (localStorage.getItem('id') === '') {
     const app_url = window.location.host;
     window.location.replace(
       `https://ladybird.rctech.club/?redirectTo=${app_url}`
