@@ -25,9 +25,9 @@ const GET_ME = gql`
 const App = () => {
   localStorage.setItem('id', qs.parse(window.location.search)['?id'] || '');
   const { data, loading, error } = useQuery(GET_ME);
-  if (loading || !data) return <div>Loading...</div>;
-  if (error) return <div>Error!</div>;
-  if (!localStorage.getItem('id') || !data.me) {
+  if (loading) return <div>Loading...</div>;
+  else if (error) return <div>Error!</div>;
+  else if (!localStorage.getItem('id') || !data.me) {
     const app_url = 'rctech-owl.herokuapp.com';
     window.location.replace(
       `https://ladybird.rctech.club/?redirectTo=${app_url}`
