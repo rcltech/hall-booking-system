@@ -2,37 +2,8 @@ import React, { Component } from 'react';
 import Timetable from 'react-timetable-events';
 import NavBar from '../complement/NavBar.js';
 const moment = require('moment');
+const getRooms = require('../../functions/getRooms');
 
-const sampleEvents = {
-  monday: [
-    {
-      id: 1,
-      name: '502B',
-      type: 'custom',
-      startTime: moment('2018-02-23T11:00:00'),
-      endTime: moment('2018-02-23T13:00:00')
-    }
-  ],
-  tuesday: [
-    {
-      id: 2,
-      name: '902',
-      type: 'custom',
-      startTime: moment('2018-02-22T12:00:00'),
-      endTime: moment('2018-02-22T14:00:00')
-    },
-    {
-      id: 3,
-      name: '1402B',
-      type: 'custom',
-      startTime: moment('2018-02-22T16:00:00'),
-      endTime: moment('2018-02-22T18:00:00')
-    }
-  ],
-  wednesday: [],
-  thursday: [],
-  friday: []
-};
 const style = {
   container: {
     textAlign: 'center'
@@ -41,17 +12,26 @@ const style = {
 
 export default class ChooseTime extends Component {
   constructor(props) {
+    const {
+      state: { room, date }
+    } = props.location;
     super(props);
     this.state = {
-      events: sampleEvents
+      events: undefined,
+      room,
+      date
     };
   }
 
+  componentDidMount = async () => {
+    const { room, date } = this.state;
+    this.setState({
+      events: await getRooms(room, date)
+    });
+  };
+
   render() {
-    let {
-      state: { date, room }
-    } = this.props.location;
-    const { events } = this.state;
+    let { events, room, date } = this.state;
     date = moment(date).format('DD-MM-YYYY');
     return (
       <div style={style.container}>
@@ -60,7 +40,7 @@ export default class ChooseTime extends Component {
           What is the most suitable timeslot for you? <br /> Room : {room}{' '}
           <br /> Date : {date}
         </p>
-        <Timetable events={events} />
+        {events ? <Timetable events={events} /> : <div></div>}
       </div>
     );
   }
