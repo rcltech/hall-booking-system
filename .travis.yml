@@ -13,9 +13,6 @@ jobs:
         - cd react-app
       install:
         - npm install
-      cache:
-        directories:
-          - 'node_modules'
       script:
         - echo "Run react-app testing"
         - npm run build
@@ -32,22 +29,25 @@ jobs:
     #     - echo "Run express-app testing"
     #     - npm run test
 
-    - stage: deploy-to-heroku
+    - stage: deploy-to-gh-pages
+      before_install:
+        - cd react-app
+      install:
+        - npm install
+      cache:
+        directories:
+          - 'build'
       script:
         - npm run build
-        - cd express-app
-      before_deploy:
-        - grep -vwE "^build$" .gitignore > .gitignore.build
-        - mv .gitignore.build .gitignore
       deploy:
         skip_cleanup: true
-        provider: heroku
-        edge: true
-        app: rctech-owl
-        api_key: $HEROKU_API_KEY
+        provider: pages
+        github_token: $GITHUB_TOKEN
+        keep_history: true
+        local_dir: './react-app/build'
         on:
           all_branches: true
           # condition: $TRAVIS_BRANCH =~ ^(master|testing)$
 
-    - stage: test-heroku
-      script: curl https://rctech-owl.herokuapp.com/
+    - stage: test-deploy
+      script: curl https://owl.rctech.club
