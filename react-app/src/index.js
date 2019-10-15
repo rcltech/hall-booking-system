@@ -9,7 +9,7 @@ const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'https://phoenix.rctech.club/graphql',
   headers: {
-    authorization: sessionStorage.getItem('token')
+    authorization: localStorage.getItem('id')
   }
 });
 
@@ -20,7 +20,7 @@ const client = new ApolloClient({
 
 cache.writeData({
   data: {
-    isLoggedIn: !!sessionStorage.getItem('token')
+    isLoggedIn: !!localStorage.getItem('token')
   }
 });
 

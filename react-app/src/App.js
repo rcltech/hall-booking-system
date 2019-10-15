@@ -1,30 +1,22 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import qs from 'query-string';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
 import ChooseDate from './components/main/ChooseDate';
 import ChooseTime from './components/main/ChooseTime';
 
-const GET_ME = gql`
-  query me {
-    me {
-      username
-      image_url
-      first_name
-      last_name
-      room_no
-    }
-  }
-`;
-
 const App = () => {
-  const { data, loading, error } = useQuery(GET_ME);
-  if (loading || !data) return <div>Loading...</div>;
-  if (error) return <div>Error!</div>;
+  localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  if (localStorage.getItem('id') === '') {
+    const app_url = 'rctech-owl.herokuapp.com';
+    window.location.replace(
+      `https://ladybird.rctech.club/?redirectTo=${app_url}`
+    );
+  }
+
   return (
     <Router>
       <div>
