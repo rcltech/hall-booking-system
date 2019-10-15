@@ -8,8 +8,8 @@ class Contact extends React.Component {
       <Collapse isOpen={collapse} style={collapseStyles}>
         <Card>
           <CardBody style={textBodyStyles}>
-            To report any problems with HaBoS, please{' '}
-            <a href="mailto:contact@rctech.club?subject=SLS%20Problem">
+            To report any problems with Owl, please{' '}
+            <a href="mailto:contact@rctech.club?subject=Owl%20Problem">
               contact us by email
             </a>
             .
