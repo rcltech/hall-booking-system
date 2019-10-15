@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import HomeIcon from '@material-ui/icons/Home';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import logo from '../../images/logo.png';
+import Menu from './Menu';
+import sls from '../../images/apps/sls.png';
 
 const style = {
   container: {
@@ -21,18 +21,22 @@ const style = {
   arrowBack: {
     justifySelf: 'start'
   },
-  displayInline: {
-    display: 'inline'
-  },
-  logo: {
-    width: '30px',
-    height: '30px',
-    margin: '5px'
-  },
   homeIcon: {
+    justifySelf: 'center'
+  },
+  menuIcon: {
     justifySelf: 'end'
   }
 };
+
+const apps = [
+  {
+    id: 1,
+    name: 'SLS',
+    url: 'https://sls.rctech.club/',
+    image: sls
+  }
+];
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -62,10 +66,6 @@ export default class NavBar extends Component {
             >
               <ArrowBackIcon />
             </Button>
-            <Typography variant="h6">
-              <img src={logo} alt="app-logo" style={style.logo} />
-              <p style={style.displayInline}>Owl</p>
-            </Typography>
             <Button
               color="inherit"
               style={style.homeIcon}
@@ -73,6 +73,7 @@ export default class NavBar extends Component {
             >
               <HomeIcon />
             </Button>
+            <Menu style={style.menuIcon} apps={apps} />
           </Toolbar>
         </AppBar>
       </div>
