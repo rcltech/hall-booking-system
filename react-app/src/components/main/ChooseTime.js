@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Timetable from 'react-timetable-events';
+import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Timepicker from '../complement/Timepicker';
 const moment = require('moment');
@@ -27,7 +28,8 @@ export default class ChooseTime extends Component {
       room,
       date,
       start,
-      end
+      end,
+      redirect: false
     };
   }
 
@@ -40,12 +42,35 @@ export default class ChooseTime extends Component {
 
   onContinue = async (start, end) => {
     const { events } = this.state;
-    const timeslots = events[Object.keys(events)[0]];
-    if (validateTime(timeslots, start, end) === true) {
-      alert('TODO : Send post request and redirect to confirmation page');
-      //send a post request to store new booking
-      //redirect to booking confirmation page
+    if (!events) {
+      return;
+    } else {
+      const timeslots = events[Object.keys(events)[0]];
+      this.setState({
+        redirect: await validateTime(timeslots, start, end),
+        start,
+        end
+      });
     }
+  };
+
+  renderRedirect = () => {
+    const { room, date, start, end, redirect } = this.state;
+    return redirect ? (
+      <Redirect
+        to={{
+          pathname: '/summary',
+          state: {
+            room,
+            date,
+            start: moment(start).format('HH:00'),
+            end: moment(end).format('HH:00')
+          }
+        }}
+      />
+    ) : (
+      <div></div>
+    );
   };
 
   render() {
@@ -53,6 +78,7 @@ export default class ChooseTime extends Component {
     let dateString = moment(date).format('LL');
     return (
       <div style={style.container}>
+        {this.renderRedirect()}
         <NavBar backPath="/room" />
         <p>
           What is the most suitable timeslot for you? <br /> Room : {room}{' '}
