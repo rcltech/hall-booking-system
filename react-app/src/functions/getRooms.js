@@ -21,7 +21,6 @@ const getRooms = async (room, date) => {
       break;
     }
   }
-  let id = 1;
   if (times) {
     for (let i = 0; i < times.length; ++i) {
       let conditionCheck1 = moment(times[i]).format('ll') in events;
@@ -29,12 +28,11 @@ const getRooms = async (room, date) => {
       let conditionCheck3 = Number(moment(times[i]).format('HH')) <= 23;
       if (conditionCheck1 && conditionCheck2 && conditionCheck3) {
         events[moment(times[i]).format('ll')].push({
-          id,
+          id: moment(times[i]).format('HH'),
           type: 'custom',
           startTime: moment(times[i]),
           endTime: moment(times[i]).add(1, 'hours')
         });
-        id++;
       }
     }
     return events;
