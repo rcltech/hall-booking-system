@@ -6,8 +6,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import success from '../../images/modals/success.png';
+import fail from '../../images/modals/fail.png';
 import { Button } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
+import Modals from '../complement/Modals';
+import postBooking from '../../functions/postBooking';
 const moment = require('moment');
 
 const style = {
@@ -34,19 +39,59 @@ export default class BookingSummary extends Component {
       room,
       date,
       start,
-      end
+      end,
+      modal: {
+        isOpen: undefined,
+        title: undefined,
+        button: undefined,
+        image: undefined
+      },
+      redirect: undefined
     };
   }
 
-  handleOnConfirmPress = () => {
-    //TODO : send a post request using axios
+  handleOnConfirmPress = async () => {
+    const { room, date, start, end } = this.state;
+    const startNum = Number(start.substring(0, 2));
+    const endNum = Number(end.substring(0, 2));
+    const res = await postBooking(room, date, startNum, endNum);
+    this.setState({
+      modal: {
+        isOpen: true,
+        title: res ? 'Your booking is successful!' : 'An error has occured.',
+        button: 'OK',
+        image: res ? success : fail
+      }
+    });
+  };
+
+  onModalClick = () => {
+    this.setState({
+      redirect: true
+    });
+  };
+
+  renderRedirect = () => {
+    const { redirect } = this.state;
+    return redirect ? <Redirect to="/" /> : <div></div>;
   };
 
   render() {
     let { room, date, start, end } = this.state;
     date = moment(date).format('LL');
+    const {
+      modal: { isOpen, title, button, image }
+    } = this.state;
     return (
       <div style={style.container}>
+        {this.renderRedirect()}
+        <Modals
+          isOpen={isOpen}
+          title={title}
+          button={button}
+          image={image}
+          onClick={this.onModalClick}
+        />
         <NavBar backPath="/room" />
         <p>
           You are one step away! Please check your booking details before
