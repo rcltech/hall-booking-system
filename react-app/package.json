@@ -30,7 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d build",
+    "docker:build": "docker build -t rctechclub/owl:dev .",
+    "docker:push": "docker push rctechclub/owl:dev"
   },
   "eslintConfig": {
     "extends": "react-app"

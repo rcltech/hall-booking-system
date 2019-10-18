@@ -1,0 +1,15 @@
+# node modules
+node_modules/
+
+# react builds
+build/
+
+# environment variables
+.env*
+
+# git
+.gitignore
+.git
+
+# documentation
+*.md
