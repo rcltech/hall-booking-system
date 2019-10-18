@@ -31,4 +31,4 @@ const postBooking = async (room, date, startNum, endNum) => {
   return res.statusText === 'Created';
 };
 
-module.exports = postBooking;
+export default postBooking;
