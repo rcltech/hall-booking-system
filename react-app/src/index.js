@@ -5,6 +5,9 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
+
 const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'https://phoenix.rctech.club/graphql',
@@ -24,9 +27,26 @@ cache.writeData({
   }
 });
 
+let theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#CFD8DC',
+      main: '#607D8B',
+      dark: '#455A64'
+    },
+    secondary: {
+      main: '#E1E8F0'
+    }
+  }
+});
+
+theme = responsiveFontSizes(theme);
+
 const Index = () => (
   <ApolloProvider client={client}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </ApolloProvider>
 );
 
