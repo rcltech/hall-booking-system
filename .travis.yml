@@ -49,5 +49,22 @@ jobs:
           all_branches: true
           # condition: $TRAVIS_BRANCH =~ ^(master|testing)$
 
+    - stage: deploy-to-heroku
+      script:
+        - npm run build
+        - cd express-app
+      before_deploy:
+        - grep -vwE "^build$" .gitignore > .gitignore.build
+        - mv .gitignore.build .gitignore
+      deploy:
+        skip_cleanup: true
+        provider: heroku
+        edge: true
+        app: rctech-owl
+        api_key: $HEROKU_API_KEY
+        on:
+          all_branches: true
+          # condition: $TRAVIS_BRANCH =~ ^(master|testing)$
+
     - stage: test-deploy
       script: curl https://owl.rctech.club
