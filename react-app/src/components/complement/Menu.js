@@ -44,8 +44,8 @@ export default class Menu extends Component {
     const { apps } = this.props;
     return (
       <Dropdown isOpen={dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret color="black" style={style.icon}>
-          <MenuIcon />
+        <DropdownToggle caret color="inherit" style={style.icon}>
+          <MenuIcon color="inherit" />
         </DropdownToggle>
         <DropdownMenu>
           {apps.map(app => {
