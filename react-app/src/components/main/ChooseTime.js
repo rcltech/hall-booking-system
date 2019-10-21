@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Timetable from 'react-timetable-events';
 import NavBar from '../complement/NavBar.js';
+import getRooms from '../../functions/getRooms';
 const moment = require('moment');
-const getRooms = require('../../functions/getRooms');
 
 const style = {
   container: {
