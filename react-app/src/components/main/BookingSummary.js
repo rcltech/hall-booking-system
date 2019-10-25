@@ -20,7 +20,7 @@ const style = {
     textAlign: 'center'
   },
   list: {
-    backgroundColor: 'grey'
+    backgroundColor: 'white'
   },
   buttonContainer: {
     display: 'flex',
@@ -93,10 +93,6 @@ export default class BookingSummary extends Component {
           onClick={this.onModalClick}
         />
         <NavBar backPath="/room" />
-        <p>
-          You are one step away! Please check your booking details before
-          confirming.
-        </p>
         <List style={style.list}>
           <ListItem>
             <ListItemIcon>
