@@ -1,68 +1,51 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Frontend
 
-## Available Scripts
+### Running a local development environment
 
-In the project directory, you can run:
+Clone this repository, and navigate to `react-app` directory.
 
-### `npm start`
+`cd react-app`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Install node packages using npm.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+`npm install`
 
-### `npm test`
+Start the development server.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`npm run start`
 
-### `npm run build`
+### Test driving the application
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+##### Using Docker and without cloning our Github repository
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Pull our public repository at Docker hub.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`docker run --name owl --rm -p 3000:3000 rctechclub/owl:dev`
 
-### `npm run eject`
+- `-d` enables terminal detached mode (optional)
+- `--name` sets a short name for the docker container
+- `--rm` removes the docker container if a stop command is executed
+- `-p 3000:3000` plugs the container's port from 3000 to 3000
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Now, you may navigate to `localhost:3000`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Stop the container by either
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- `CTRL + C` if you run without `-d`
+- `docker stop owl` if you run with `-d`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Remove the image if necessary.
 
-## Learn More
+`docker rmi rctechclub/owl:dev`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Note that this does not enable hot reloading**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Docker Build and Push
 
-### Code Splitting
+To build an image.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+`npm run docker:build`
 
-### Analyzing the Bundle Size
+To push to public repository – only for those who are part of the rctechclub organisation on Docker hub.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+`npm run docker:push`

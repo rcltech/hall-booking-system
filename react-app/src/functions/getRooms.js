@@ -11,7 +11,7 @@ const getRooms = async (room, date) => {
         .format('ll')
     ] = [];
   }
-  const url = 'http://rctech-owl-dev.herokuapp.com/api/room';
+  const url = 'https://rctech-owl-dev.herokuapp.com/api/room';
   const response = await axios.get(url);
   const rooms = response.data.rooms;
   let times = undefined;
@@ -39,4 +39,4 @@ const getRooms = async (room, date) => {
   }
 };
 
-module.exports = getRooms;
+export default getRooms;
