@@ -3,9 +3,9 @@ import Timetable from 'react-timetable-events';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Timepicker from '../complement/Timepicker';
-const moment = require('moment');
-const getRooms = require('../../functions/getRooms');
-const validateTime = require('../../functions/validateTime');
+import getRooms from '../../functions/getRooms';
+import moment from 'moment';
+import validateTime from '../../functions/validateTime';
 
 const style = {
   container: {

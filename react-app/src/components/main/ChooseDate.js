@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
-import Calendar from 'react-calendar';
 import NavBar from '../complement/NavBar';
-const moment = require('moment');
+import { makeStyles } from '@material-ui/core';
+import DatePicker from '../complement/DatePicker';
 
-const style = {
+import moment from 'moment';
+
+const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
   },
@@ -18,79 +20,50 @@ const style = {
     justifyContent: 'center',
     margin: '20px 0'
   }
-};
+}));
 
-export default class ChooseDate extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      redirect: false,
-      room: undefined,
-      date: new Date()
-    };
+function ChooseDate({
+  location: {
+    state: { room }
   }
+}) {
+  const classes = useStyles();
+  const [redirect, doRedirect] = useState(false);
+  const [date, setDate] = useState(moment(new Date()));
 
-  componentDidMount = () => {
-    const {
-      state: { room }
-    } = this.props.location;
-    this.setState({
-      room
-    });
-  };
-
-  onChange = date => {
-    const dateChosen = moment(date).format('DD-MM-YYYY');
-    const today = moment(new Date()).format('DD-MM-YYYY');
-    this.setState({
-      date: dateChosen < today ? new Date() : date
-    });
-  };
-
-  handleOnContinuePress = () => {
-    this.setState({
-      redirect: true
-    });
-  };
-
-  renderRedirect = () => {
-    const { redirect, date, room } = this.state;
-    return redirect ? (
+  /**
+   * Note than when we redirect, we use JSON.stringify() for passing the date
+   * This is because the Redirect state object doesnot seem to like the
+   * moment date object.
+   */
+  if (redirect) {
+    return (
       <Redirect
         to={{
           pathname: '/time',
           state: {
-            date,
+            date: JSON.stringify(date),
             room
           }
         }}
       />
-    ) : (
-      <div></div>
-    );
-  };
-
-  render() {
-    const { room } = this.state;
-    return (
-      <div style={style.container}>
-        {this.renderRedirect()}
-        <NavBar backPath="/room" />
-        <p>When are you planning to use room {room}?</p>
-        <div style={style.calendarContainer}>
-          <Calendar onChange={this.onChange} value={this.state.date} />
-        </div>
-        <div>
-          <Button
-            style={style.buttonContainer}
-            color="success"
-            block
-            onClick={this.handleOnContinuePress}
-          >
-            Continue
-          </Button>
-        </div>
-      </div>
     );
   }
+
+  return (
+    <div className={classes.container}>
+      <NavBar backPath="/room" />
+      <DatePicker selectDate={setDate} />
+      <Button
+        className={classes.buttonContainer}
+        color="success"
+        block
+        onClick={() => doRedirect(true)}
+      >
+        Next
+      </Button>
+    </div>
+  );
 }
+
+export default ChooseDate;
