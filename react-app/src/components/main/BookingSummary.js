@@ -37,7 +37,7 @@ export default class BookingSummary extends Component {
     } = this.props.location;
     this.state = {
       room,
-      date,
+      date: JSON.parse(date),
       start,
       end,
       modal: {

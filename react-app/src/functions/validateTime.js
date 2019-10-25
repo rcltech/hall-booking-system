@@ -19,4 +19,4 @@ const validateTime = (timeslots, start, end) => {
   return true;
 };
 
-module.exports = validateTime;
+export default validateTime;

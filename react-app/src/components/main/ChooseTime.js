@@ -1,92 +1,106 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Timetable from 'react-timetable-events';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Timepicker from '../complement/Timepicker';
 import getRooms from '../../functions/getRooms';
 import moment from 'moment';
+import { makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import validateTime from '../../functions/validateTime';
 
-const style = {
+const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
   }
+}));
+
+const makeSelection = async (
+  time_slots,
+  start,
+  end,
+  setStart,
+  setEnd,
+  doRedirect
+) => {
+  if (validateTime(time_slots, start, end)) {
+    setStart(start);
+    setEnd(end);
+    doRedirect(true);
+  }
 };
 
-export default class ChooseTime extends Component {
-  constructor(props) {
-    const {
-      state: { room, date }
-    } = props.location;
-    let start = moment(date);
-    let end = moment(date);
-    start.set({ hour: 12 });
-    end.set({ hour: 13 });
-    super(props);
-    this.state = {
-      events: undefined,
-      room,
-      date,
-      start,
-      end,
-      redirect: false
-    };
-  }
+const doRedirectTask = (room, date, start, end) => {
+  return (
+    <Redirect
+      to={{
+        pathname: '/summary',
+        state: {
+          room,
+          date,
+          start: moment(start).format('HH:00'),
+          end: moment(end).format('HH:00')
+        }
+      }}
+    />
+  );
+};
 
-  componentDidMount = async () => {
-    const { room, date } = this.state;
-    this.setState({
-      events: await getRooms(room, date)
+function ChooseTime({
+  location: {
+    state: { room, date }
+  }
+}) {
+  const classes = useStyles();
+  const [start, setStart] = useState(moment(date));
+  const [end, setEnd] = useState(moment(date));
+  const [redirect, doRedirect] = useState(false);
+  const [events, setEvents] = useState();
+
+  let dateString = moment(JSON.parse(date)).format('LL');
+
+  useEffect(() => {
+    setStart({ hour: 12 });
+    setEnd({ hour: 13 });
+    getRooms(room, JSON.parse(date)).then(events => {
+      setEvents(events);
     });
-  };
+  }, []);
 
-  onContinue = async (start, end) => {
-    const { events } = this.state;
-    if (!events) {
-      return;
-    } else {
-      const timeslots = events[Object.keys(events)[0]];
-      this.setState({
-        redirect: await validateTime(timeslots, start, end),
-        start,
-        end
-      });
-    }
-  };
-
-  renderRedirect = () => {
-    const { room, date, start, end, redirect } = this.state;
-    return redirect ? (
-      <Redirect
-        to={{
-          pathname: '/summary',
-          state: {
-            room,
-            date,
-            start: moment(start).format('HH:00'),
-            end: moment(end).format('HH:00')
-          }
-        }}
-      />
-    ) : (
-      <div></div>
-    );
-  };
-
-  render() {
-    const { events, room, date, start, end } = this.state;
-    let dateString = moment(date).format('LL');
-    return (
-      <div style={style.container}>
-        {this.renderRedirect()}
-        <NavBar backPath="/room" />
-        <p>
-          What is the most suitable timeslot for you? <br /> Room : {room}{' '}
-          <br /> Date : {dateString}
-        </p>
-        <Timepicker start={start} end={end} onContinue={this.onContinue} />
-        {events ? <Timetable events={events} /> : <div></div>}
-      </div>
-    );
+  if (redirect) {
+    return doRedirectTask(room, date, start, end);
   }
+
+  return (
+    <div className={classes.container}>
+      <NavBar backPath="/room" />
+      <p>
+        What is the most suitable timeslot for you? <br /> Room : {room} <br />{' '}
+        Date : {dateString}
+      </p>
+      <Timepicker
+        start={start}
+        end={end}
+        onContinue={(start, end) =>
+          makeSelection(
+            events[Object.keys(events)[0]],
+            start,
+            end,
+            setStart,
+            setEnd,
+            doRedirect
+          )
+        }
+      />
+      {events ? (
+        <Timetable events={events} />
+      ) : (
+        <div>
+          <Typography>No events</Typography>
+        </div>
+      )}
+    </div>
+  );
 }
+
+export default ChooseTime;
