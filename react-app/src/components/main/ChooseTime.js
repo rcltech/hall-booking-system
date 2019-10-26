@@ -65,7 +65,7 @@ function ChooseTime({
     getRooms(room, JSON.parse(date)).then(events => {
       setEvents(events);
     });
-  }, []);
+  }, [room, date]);
 
   if (redirect) {
     return doRedirectTask(room, date, start, end);
