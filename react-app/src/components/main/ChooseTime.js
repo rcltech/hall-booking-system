@@ -8,6 +8,8 @@ import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import validateTime from '../../functions/validateTime';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -59,13 +61,28 @@ function ChooseTime({
 
   let dateString = moment(JSON.parse(date)).format('LL');
 
+  const ROOM_BOOKINGS = gql`
+    query bookings($room: String!) {
+      bookings(data: { room: { name: $room } }) {
+        start
+        end
+      }
+    }
+  `;
+  const { data } = useQuery(ROOM_BOOKINGS, {
+    variables: {
+      room
+    }
+  });
+
   useEffect(() => {
     setStart({ hour: 12 });
     setEnd({ hour: 13 });
-    getRooms(room, JSON.parse(date)).then(events => {
-      setEvents(events);
-    });
-  }, [room, date]);
+    if (data)
+      getRooms(data.bookings, JSON.parse(date)).then(events => {
+        setEvents(events);
+      });
+  }, [room, date, data]);
 
   if (redirect) {
     return doRedirectTask(room, date, start, end);
