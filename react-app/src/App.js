@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import qs from 'query-string';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
@@ -13,12 +15,29 @@ const App = () => {
   if (!window.location.host.includes('localhost')) {
     localStorage.setItem('id', qs.parse(window.location.search).id || '');
     if (localStorage.getItem('id') === '') {
-      const app_url = 'owl.rctech.club';
+      // const app_url = 'owl.rctech.club';
+      const app_url = '4c8fbea5.ngrok.io';
       window.location.replace(
         `https://ladybird.rctech.club/?redirectTo=${app_url}`
       );
     }
   }
+
+  const ME = gql`
+    query me {
+      me {
+        username
+        image_url
+        first_name
+        last_name
+        room_no
+      }
+    }
+  `;
+  const { loading, error, data } = useQuery(ME);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error</p>;
+  console.log(data);
 
   return (
     <Router>
