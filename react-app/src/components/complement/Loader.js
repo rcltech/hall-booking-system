@@ -1,24 +1,22 @@
 import React from 'react';
-import './Loader.css';
+import { makeStyles } from '@material-ui/core';
+
+import doubleRing from '../../images/double-ring.gif';
+
+const useStyles = makeStyles({
+  loadingGif: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: '100px',
+    height: '100px',
+    margin: '-50px 0px 0px -50px'
+  }
+});
 
 const Loader = () => {
-  return (
-    <div className="lds-css ng-scope">
-      <div
-        style={{ width: '100%', height: '100%' }}
-        className="lds-double-ring"
-      >
-        <div></div>
-        <div></div>
-        <div>
-          <div></div>
-        </div>
-        <div>
-          <div></div>
-        </div>
-      </div>
-    </div>
-  );
+  const classes = useStyles();
+  return <img src={doubleRing} alt="loading" className={classes.loadingGif} />;
 };
 
 export default Loader;
