@@ -12,14 +12,14 @@ import ChooseTime from './components/main/ChooseTime';
 import BookingSummary from './components/main/BookingSummary';
 
 const App = () => {
-  if (!window.location.host.includes('localhost')) {
-    localStorage.setItem('id', qs.parse(window.location.search).id || '');
-    if (localStorage.getItem('id') === '') {
-      const app_url = 'owl.rctech.club';
-      window.location.replace(
-        `https://ladybird.rctech.club/?redirectTo=${app_url}`
-      );
+  localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  if (localStorage.getItem('id') === '') {
+    const app_url = 'owl.rctech.club';
+    let url = `https://ladybird.rctech.club/?redirectTo=${app_url}`;
+    if (process.env.NODE_ENV === 'development') {
+      url = `http://localhost:3000/?redirectTo=localhost:3001`;
     }
+    window.location.replace(url);
   }
 
   const ME = gql`
@@ -35,7 +35,10 @@ const App = () => {
   `;
   const { loading, error, data } = useQuery(ME);
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  if (error) {
+    console.error(error);
+    return <p>Error</p>;
+  }
   console.log(data);
 
   return (
