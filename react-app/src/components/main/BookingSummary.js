@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -6,16 +6,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import { makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
 import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Modals from '../complement/Modals';
-import postBooking from '../../functions/postBooking';
+import { useMutation } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 const moment = require('moment');
 
-const style = {
+const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
   },
@@ -27,103 +29,108 @@ const style = {
     justifyContent: 'center',
     margin: '20px 0'
   }
-};
+}));
 
-export default class BookingSummary extends Component {
-  constructor(props) {
-    super(props);
-    let {
-      state: { room, date, start, end }
-    } = this.props.location;
-    this.state = {
-      room,
-      date: JSON.parse(date),
-      start,
-      end,
-      modal: {
-        isOpen: undefined,
-        title: undefined,
-        button: undefined,
-        image: undefined
-      },
-      redirect: undefined
-    };
+const BookingSummary = ({
+  location: {
+    state: { room, date, start, end }
   }
+}) => {
+  const classes = useStyles();
+  const [modal, setModal] = useState({
+    isOpen: undefined,
+    title: undefined,
+    button: undefined,
+    image: undefined
+  });
+  const [redirect, doRedirect] = useState(undefined);
+  date = JSON.parse(date);
 
-  handleOnConfirmPress = async () => {
-    const { room, date, start, end } = this.state;
-    const startNum = Number(start.substring(0, 2));
-    const endNum = Number(end.substring(0, 2));
-    const res = await postBooking(room, date, startNum, endNum);
-    this.setState({
-      modal: {
-        isOpen: true,
-        title: res ? 'Your booking is successful!' : 'An error has occured.',
-        button: 'OK',
-        image: res ? success : fail
+  const CREATE_BOOKING = gql`
+    mutation booking($room_name: String!, $start: String!, $end: String!) {
+      createBooking(room_name: $room_name, start: $start, end: $end) {
+        createdAt
       }
+    }
+  `;
+  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING);
+
+  const handleOnConfirmPress = async () => {
+    date = moment(date).startOf('day');
+    start = moment(date).add(Number(start.substring(0, 2)), 'hour');
+    end = moment(date).add(Number(end.substring(0, 2)), 'hour');
+    const booking = {
+      room_name: room,
+      start: moment(start).toISOString(),
+      end: moment(end).toISOString()
+    };
+    await createBooking({ variables: booking });
+    console.log(data);
+    setModal({
+      isOpen: true,
+      title: !error ? 'Your booking is successful!' : 'An error has occured.',
+      button: 'OK',
+      image: !error ? success : fail
     });
   };
 
-  onModalClick = () => {
-    this.setState({
-      redirect: true
-    });
+  const onModalClick = () => {
+    doRedirect(true);
   };
 
-  renderRedirect = () => {
-    const { redirect } = this.state;
+  const renderRedirect = () => {
     return redirect ? <Redirect to="/" /> : <div></div>;
   };
 
-  render() {
-    let { room, date, start, end } = this.state;
-    date = moment(date).format('LL');
-    const {
-      modal: { isOpen, title, button, image }
-    } = this.state;
-    return (
-      <div style={style.container}>
-        {this.renderRedirect()}
-        <Modals
-          isOpen={isOpen}
-          title={title}
-          button={button}
-          image={image}
-          onClick={this.onModalClick}
-        />
-        <NavBar backPath="/room" />
-        <List style={style.list}>
-          <ListItem>
-            <ListItemIcon>
-              <RoomIcon />
-            </ListItemIcon>
-            <ListItemText>{room}</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <EventAvailableIcon />
-            </ListItemIcon>
-            <ListItemText>{date}</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <AccessTimeIcon />
-            </ListItemIcon>
-            <ListItemText>
-              {start} - {end}
-            </ListItemText>
-          </ListItem>
-        </List>
-        <Button
-          block
-          style={style.buttonContainer}
-          color="success"
-          onClick={this.handleOnConfirmPress}
-        >
-          Confirm
-        </Button>
-      </div>
-    );
-  }
-}
+  const { isOpen, title, button, image } = modal;
+
+  return (
+    <div className={classes.container}>
+      {renderRedirect()}
+      <Modals
+        isOpen={isOpen}
+        title={title}
+        button={button}
+        image={image}
+        onClick={() => {
+          onModalClick();
+        }}
+      />
+      <NavBar backPath="/room" />
+      <List className={classes.list}>
+        <ListItem>
+          <ListItemIcon>
+            <RoomIcon />
+          </ListItemIcon>
+          <ListItemText>{room}</ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <EventAvailableIcon />
+          </ListItemIcon>
+          <ListItemText>{moment(date).format('LL')}</ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <AccessTimeIcon />
+          </ListItemIcon>
+          <ListItemText>
+            {start} - {end}
+          </ListItemText>
+        </ListItem>
+      </List>
+      <Button
+        block
+        className={classes.buttonContainer}
+        color="success"
+        onClick={() => {
+          handleOnConfirmPress();
+        }}
+      >
+        Confirm
+      </Button>
+    </div>
+  );
+};
+
+export default BookingSummary;

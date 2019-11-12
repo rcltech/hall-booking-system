@@ -1,7 +1,6 @@
-const axios = require('axios');
 const moment = require('moment');
 
-const getRooms = async (room, date) => {
+const getRooms = async (bookings, date) => {
   //Initialize events template
   let events = {};
   for (let i = 0; i < 7; ++i) {
@@ -11,16 +10,22 @@ const getRooms = async (room, date) => {
         .format('ll')
     ] = [];
   }
-  const url = 'https://rctech-owl-dev.herokuapp.com/api/room';
-  const response = await axios.get(url);
-  const rooms = response.data.rooms;
-  let times = undefined;
-  for (let i = 0; i < rooms.length; ++i) {
-    if (rooms[i].roomName === room) {
-      times = rooms[i].hoursBooked;
-      break;
+
+  let times = [];
+  bookings.forEach(booking => {
+    const duration = moment.duration(
+      moment(booking.end).diff(moment(booking.start))
+    );
+    const durationHours = duration.as('hours');
+    for (var i = 0; i < durationHours; i++) {
+      times.push(
+        moment(booking.start)
+          .add(i, 'hours')
+          .toDate()
+      );
     }
-  }
+  });
+
   if (times) {
     for (let i = 0; i < times.length; ++i) {
       let conditionCheck1 = moment(times[i]).format('ll') in events;

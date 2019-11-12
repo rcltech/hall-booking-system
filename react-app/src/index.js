@@ -8,11 +8,18 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 
+let authorization = localStorage.getItem('id');
+
+const uri =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:4000/graphql'
+    : 'https://phoenix.rctech.club/graphql';
+
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'https://phoenix.rctech.club/graphql',
+  uri,
   headers: {
-    authorization: localStorage.getItem('id')
+    authorization
   }
 });
 
