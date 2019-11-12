@@ -53,36 +53,24 @@ const BookingSummary = ({
       }
     }
   `;
-  const [createBooking, { data }] = useMutation(CREATE_BOOKING);
+  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING);
 
   const handleOnConfirmPress = async () => {
-    const startNum = Number(start.substring(0, 2));
-    const endNum = Number(end.substring(0, 2));
-    let startObj = moment(date);
-    let endObj = moment(date);
-    startObj.set({
-      hours: startNum,
-      minutes: 0,
-      seconds: 0
-    });
-    endObj.set({
-      hours: endNum,
-      minutes: 0,
-      seconds: 0
-    });
+    date = moment(date).startOf('day');
+    start = moment(date).add(Number(start.substring(0, 2)), 'hour');
+    end = moment(date).add(Number(end.substring(0, 2)), 'hour');
     const booking = {
-      room,
-      start: moment(startObj).toDate(),
-      end: moment(endObj).toDate()
+      room_name: room,
+      start: moment(start).toISOString(),
+      end: moment(end).toISOString()
     };
-    booking.room_name = booking.room;
-    await createBooking({ variables: { booking } });
-    const res = !data;
+    await createBooking({ variables: booking });
+    console.log(data);
     setModal({
       isOpen: true,
-      title: res ? 'Your booking is successful!' : 'An error has occured.',
+      title: !error ? 'Your booking is successful!' : 'An error has occured.',
       button: 'OK',
-      image: res ? success : fail
+      image: !error ? success : fail
     });
   };
 
