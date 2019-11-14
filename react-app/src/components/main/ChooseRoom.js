@@ -11,7 +11,8 @@ import NavBar from '../complement/NavBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
 
-const rooms = ['305', '204', '203'];
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
 const useStyles = makeStyles(theme => ({
   dropdownContainer: {
@@ -34,6 +35,21 @@ function ChooseRoom() {
   const [room, selectRoom] = useState(null);
   const classes = useStyles();
 
+  const GET_ROOMS = gql`
+    query rooms {
+      rooms {
+        number
+        name
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(GET_ROOMS);
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>Error</div>;
+
+  const { rooms } = data;
+
   if (room)
     return (
       <Redirect
@@ -53,7 +69,7 @@ function ChooseRoom() {
         <Dropdown isOpen={isOpen} toggle={() => toggleOpen(!isOpen)} size="lg">
           <DropdownToggle caret>{room ? room : 'Select room'}</DropdownToggle>
           <DropdownMenu>
-            {rooms.map(room => dropdownItems(room, selectRoom))}
+            {rooms.map(room => dropdownItems(room.number, selectRoom))}
           </DropdownMenu>
         </Dropdown>
       </div>
