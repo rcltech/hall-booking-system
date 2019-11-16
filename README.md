@@ -35,9 +35,60 @@ For subsequent commits on branch: `git push`
 1. Make sure to `git pull` before working on anything at the start of the day.
 2. The `master` branch is protected from direct pushes. You have to make feature branches by following the instructions above.
 
-### React Build
+## React Frontend Development Setup
 
-To manually build, either run:
+### Running a local development environment
 
-1. `cd react-app && npm run build`, which builds into a `build` directory within `react-app/`
-2. `npm run build`, which builds and copies into `express-app/`.
+Clone this repository, and install node packages using npm.
+
+`npm install`
+
+Start the development server.
+
+`npm run start`
+
+Go to [phoenix](https://github.com/rcltech/phoenix) and follow the
+instructions there to setup a graphql-prisma-express server.
+
+An authentication key of the form `xxx.xxx.xxx` (much much longer) for
+a test user that you should create using `localhost:4466/prisma/_admin` can
+be obtained by sending a login mutation request in the playground at
+`localhost:4000/graphql`.
+
+Copy and paste the authentication key into `localhost:3000id =authentication_key` where `authentication_key` is your key.
+
+### Test driving the application
+
+##### Using Docker and without cloning our Github repository
+
+Pull our public repository at Docker hub.
+
+`docker run --name owl --rm -p 3000:3000 rctechclub/owl:dev`
+
+- `-d` enables terminal detached mode (optional)
+- `--name` sets a short name for the docker container
+- `--rm` removes the docker container if a stop command is executed
+- `-p 3000:3000` plugs the container's port from 3000 to 3000
+
+Now, you may navigate to `localhost:3000`.
+
+Stop the container by either
+
+- `CTRL + C` if you run without `-d`
+- `docker stop owl` if you run with `-d`
+
+Remove the image if necessary.
+
+`docker rmi rctechclub/owl:dev`
+
+**Note that this does not enable hot reloading**
+
+### Docker Build and Push
+
+To build an image.
+
+`npm run docker:build`
+
+To push to public repository – only for those who are part of the rctechclub organisation on Docker hub.
+
+`npm run docker:push`

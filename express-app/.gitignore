@@ -1,8 +1,0 @@
-# npm packages
-node_modules
-
-# dotenv
-.env
-
-# react build
-build
