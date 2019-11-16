@@ -28,7 +28,7 @@ jobs:
         provider: pages
         github_token: $GITHUB_TOKEN
         keep_history: true
-        local_dir: './react-app/build'
+        local_dir: './build'
         on:
           all_branches: true
     #           condition: $TRAVIS_BRANCH =~ ^(master|testing)$
