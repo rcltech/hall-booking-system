@@ -35,28 +35,27 @@ For subsequent commits on branch: `git push`
 1. Make sure to `git pull` before working on anything at the start of the day.
 2. The `master` branch is protected from direct pushes. You have to make feature branches by following the instructions above.
 
-### React Build
-
-To manually build, either run:
-
-1. `cd react-app && npm run build`, which builds into a `build` directory within `react-app/`
-2. `npm run build`, which builds and copies into `express-app/`.
-
-## React Frontend
+## React Frontend Development Setup
 
 ### Running a local development environment
 
-Clone this repository, and navigate to `react-app` directory.
-
-`cd react-app`
-
-Install node packages using npm.
+Clone this repository, and install node packages using npm.
 
 `npm install`
 
 Start the development server.
 
 `npm run start`
+
+Go to [phoenix](https://github.com/rcltech/phoenix) and follow the
+instructions there to setup a graphql-prisma-express server.
+
+An authentication key of the form `xxx.xxx.xxx` (much much longer) for
+a test user that you should create using `localhost:4466/prisma/_admin` can
+be obtained by sending a login mutation request in the playground at
+`localhost:4000/graphql`.
+
+Copy and paste the authentication key into `localhost:3000id =authentication_key` where `authentication_key` is your key.
 
 ### Test driving the application
 
