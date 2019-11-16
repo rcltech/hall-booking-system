@@ -29,7 +29,7 @@ function ChooseDate({
 }) {
   const classes = useStyles();
   const [redirect, doRedirect] = useState(false);
-  const [date, setDate] = useState(moment(new Date()));
+  const [date, setDate] = useState(moment());
 
   /**
    * Note than when we redirect, we use JSON.stringify() for passing the date

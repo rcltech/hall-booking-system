@@ -5,8 +5,8 @@ import { PropTypes } from 'prop-types';
 
 class DatePicker extends React.Component {
   state = {
-    value: moment(new Date()),
-    selectedValue: moment(new Date())
+    value: moment(),
+    selectedValue: moment()
   };
 
   onSelect = value => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -15,77 +15,65 @@ const style = {
   }
 };
 
-export default class Timepicker extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      start: props.start,
-      end: props.end
-    };
-  }
+const Timepicker = props => {
+  const [start, setStart] = useState(props.start);
+  const [end, setEnd] = useState(props.end);
 
-  handleStartTimeChange = start => {
-    this.setState({
-      start,
-      end: moment(start).add(1, 'hours')
-    });
+  const handleStartTimeChange = start => {
+    setStart(start);
+    setEnd(moment(start).add(1, 'hours'));
   };
 
-  handleEndTimeChange = end => {
-    const { start } = this.state;
-    if (moment(end).format('HH') <= moment(start).format('HH')) {
-      this.setState({
-        start: moment(end).add(-1, 'hours'),
-        end
-      });
-    } else {
-      this.setState({
-        end
-      });
+  const handleEndTimeChange = end => {
+    setEnd(end);
+    if (
+      moment(start)
+        .startOf('hour')
+        .isAfter(moment(end).startOf('hour'))
+    ) {
+      setStart(moment(end).subtract(1, 'hours'));
     }
   };
 
-  handleOnContinuePress = () => {
-    const { start, end } = this.state;
-    const { onContinue } = this.props;
+  const handleOnContinuePress = () => {
+    const { onContinue } = props;
     onContinue(moment(start), moment(end));
   };
 
-  render() {
-    const { start, end } = this.state;
-    return (
-      <div>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardTimePicker
-            margin="normal"
-            label="Start time"
-            value={start}
-            onChange={this.handleStartTimeChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change time'
-            }}
-            format="HH:00"
-          />
-          <KeyboardTimePicker
-            margin="normal"
-            label="End time"
-            value={end}
-            onChange={this.handleEndTimeChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change time'
-            }}
-            format="HH:00"
-          />
-        </MuiPickersUtilsProvider>
-        <Button
-          block
-          style={style.buttonContainer}
-          color="success"
-          onClick={this.handleOnContinuePress}
-        >
-          Continue
-        </Button>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardTimePicker
+          margin="normal"
+          label="Start time"
+          value={start}
+          onChange={handleStartTimeChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change time'
+          }}
+          format="HH:00"
+        />
+        <KeyboardTimePicker
+          margin="normal"
+          label="End time"
+          value={end}
+          onChange={handleEndTimeChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change time'
+          }}
+          format="HH:00"
+        />
+      </MuiPickersUtilsProvider>
+      <Button
+        block
+        style={style.buttonContainer}
+        color="success"
+        onClick={handleOnContinuePress}
+      >
+        Continue
+      </Button>
+    </div>
+  );
+};
+
+export default Timepicker;
