@@ -63,7 +63,7 @@ function ChooseTime({
 
   const ROOM_BOOKINGS = gql`
     query bookings($room: String!) {
-      bookings(data: { room: { name: $room } }) {
+      bookings(data: { room: { number: $room } }) {
         start
         end
       }

@@ -47,8 +47,8 @@ const BookingSummary = ({
   date = JSON.parse(date);
 
   const CREATE_BOOKING = gql`
-    mutation booking($room_name: String!, $start: String!, $end: String!) {
-      createBooking(room_name: $room_name, start: $start, end: $end) {
+    mutation booking($room_number: String!, $start: String!, $end: String!) {
+      createBooking(room_number: $room_number, start: $start, end: $end) {
         createdAt
       }
     }
@@ -60,7 +60,7 @@ const BookingSummary = ({
     start = moment(date).add(Number(start.substring(0, 2)), 'hour');
     end = moment(date).add(Number(end.substring(0, 2)), 'hour');
     const booking = {
-      room_name: room,
+      room_number: room,
       start: moment(start).toISOString(),
       end: moment(end).toISOString()
     };
