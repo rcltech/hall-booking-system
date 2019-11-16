@@ -1,53 +1,57 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
   Dropdown,
-  DropdownToggle,
+  DropdownItem,
   DropdownMenu,
-  DropdownItem
+  DropdownToggle
 } from 'reactstrap';
+
 import NavBar from '../complement/NavBar';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import { Typography } from '@material-ui/core';
 
-const rooms = ['305', '204', '203'];
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
-const style = {
-  container: {
-    textAlign: 'center'
-  },
+const useStyles = makeStyles(theme => ({
   dropdownContainer: {
     display: 'flex',
     justifyContent: 'center',
     padding: '20px 0'
   }
-};
+}));
 
-export default class ChooseRoom extends Component {
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false,
-      redirect: false,
-      room: undefined
-    };
-  }
+function dropdownItems(room, selectRoom) {
+  return (
+    <DropdownItem key={room} onClick={() => selectRoom(room)}>
+      <Typography>{room}</Typography>
+    </DropdownItem>
+  );
+}
 
-  toggle = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen
-    }));
-  };
+function ChooseRoom() {
+  const [isOpen, toggleOpen] = useState(false);
+  const [room, selectRoom] = useState(null);
+  const classes = useStyles();
 
-  handleOnRoomChosen = room => {
-    this.setState({
-      redirect: true,
-      room
-    });
-  };
+  const GET_ROOMS = gql`
+    query rooms {
+      rooms {
+        number
+        name
+      }
+    }
+  `;
 
-  renderRedirect = () => {
-    const { redirect, room } = this.state;
-    return redirect && room ? (
+  const { loading, error, data } = useQuery(GET_ROOMS);
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>Error</div>;
+
+  const { rooms } = data;
+
+  if (room)
+    return (
       <Redirect
         to={{
           pathname: '/date',
@@ -56,33 +60,21 @@ export default class ChooseRoom extends Component {
           }
         }}
       />
-    ) : (
-      <div></div>
     );
-  };
 
-  render() {
-    const { isOpen } = this.state;
-    return (
-      <div style={style.container}>
-        {this.renderRedirect()}
-        <NavBar backPath="/" />
-        <div style={style.dropdownContainer}>
-          <Dropdown isOpen={isOpen} toggle={this.toggle} size="lg">
-            <DropdownToggle caret>Select room</DropdownToggle>
-            <DropdownMenu>
-              {rooms.map(room => (
-                <DropdownItem
-                  key={room}
-                  onClick={() => this.handleOnRoomChosen(room)}
-                >
-                  {room}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+  return (
+    <div>
+      <NavBar backPath="/" />
+      <div className={classes.dropdownContainer}>
+        <Dropdown isOpen={isOpen} toggle={() => toggleOpen(!isOpen)} size="lg">
+          <DropdownToggle caret>{room ? room : 'Select room'}</DropdownToggle>
+          <DropdownMenu>
+            {rooms.map(room => dropdownItems(room.number, selectRoom))}
+          </DropdownMenu>
+        </Dropdown>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default ChooseRoom;

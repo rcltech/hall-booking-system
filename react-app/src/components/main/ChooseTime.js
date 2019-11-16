@@ -1,47 +1,123 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Timetable from 'react-timetable-events';
-import NavBar from '../complement/NavBar.js';
+import { Redirect } from 'react-router-dom';
+import NavBar from '../complement/NavBar';
+import Timepicker from '../complement/Timepicker';
 import getRooms from '../../functions/getRooms';
-const moment = require('moment');
+import moment from 'moment';
+import { makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import validateTime from '../../functions/validateTime';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
-const style = {
+const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
   }
+}));
+
+const makeSelection = async (
+  time_slots,
+  start,
+  end,
+  setStart,
+  setEnd,
+  doRedirect
+) => {
+  if (validateTime(time_slots, start, end)) {
+    setStart(start);
+    setEnd(end);
+    doRedirect(true);
+  }
 };
 
-export default class ChooseTime extends Component {
-  constructor(props) {
-    const {
-      state: { room, date }
-    } = props.location;
-    super(props);
-    this.state = {
-      events: undefined,
-      room,
-      date
-    };
+const doRedirectTask = (room, date, start, end) => {
+  return (
+    <Redirect
+      to={{
+        pathname: '/summary',
+        state: {
+          room,
+          date,
+          start: moment(start).format('HH:00'),
+          end: moment(end).format('HH:00')
+        }
+      }}
+    />
+  );
+};
+
+function ChooseTime({
+  location: {
+    state: { room, date }
+  }
+}) {
+  const classes = useStyles();
+  const [start, setStart] = useState(moment(date));
+  const [end, setEnd] = useState(moment(date));
+  const [redirect, doRedirect] = useState(false);
+  const [events, setEvents] = useState();
+
+  let dateString = moment(JSON.parse(date)).format('LL');
+
+  const ROOM_BOOKINGS = gql`
+    query bookings($room: String!) {
+      bookings(data: { room: { number: $room } }) {
+        start
+        end
+      }
+    }
+  `;
+  const { data } = useQuery(ROOM_BOOKINGS, {
+    variables: {
+      room
+    }
+  });
+
+  useEffect(() => {
+    setStart({ hour: 12 });
+    setEnd({ hour: 13 });
+    if (data)
+      getRooms(data.bookings, JSON.parse(date)).then(events => {
+        setEvents(events);
+      });
+  }, [room, date, data]);
+
+  if (redirect) {
+    return doRedirectTask(room, date, start, end);
   }
 
-  componentDidMount = async () => {
-    const { room, date } = this.state;
-    this.setState({
-      events: await getRooms(room, date)
-    });
-  };
-
-  render() {
-    let { events, room, date } = this.state;
-    date = moment(date).format('DD-MM-YYYY');
-    return (
-      <div style={style.container}>
-        <NavBar backPath="/room" />
-        <p>
-          What is the most suitable timeslot for you? <br /> Room : {room}{' '}
-          <br /> Date : {date}
-        </p>
-        {events ? <Timetable events={events} /> : <div></div>}
-      </div>
-    );
-  }
+  return (
+    <div className={classes.container}>
+      <NavBar backPath="/room" />
+      <p>
+        What is the most suitable timeslot for you? <br /> Room : {room} <br />{' '}
+        Date : {dateString}
+      </p>
+      <Timepicker
+        start={start}
+        end={end}
+        onContinue={(start, end) =>
+          makeSelection(
+            events[Object.keys(events)[0]],
+            start,
+            end,
+            setStart,
+            setEnd,
+            doRedirect
+          )
+        }
+      />
+      {events ? (
+        <Timetable events={events} />
+      ) : (
+        <div>
+          <Typography>No events</Typography>
+        </div>
+      )}
+    </div>
+  );
 }
+
+export default ChooseTime;
