@@ -12,7 +12,11 @@ import ChooseTime from './components/main/ChooseTime';
 import BookingSummary from './components/main/BookingSummary';
 
 const App = () => {
-  localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  // make sure that id gets stored correctly first before running anything else
+  if (localStorage.getItem('id') === '') {
+    localStorage.setItem('id', qs.parse(window.location.search).id || '');
+  }
+
   if (localStorage.getItem('id') === '') {
     const app_url = 'owl.rctech.club';
     let url = `https://ladybird.rctech.club/?redirectTo=${app_url}`;
