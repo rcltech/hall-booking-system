@@ -5,8 +5,6 @@ import NavBar from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
 import DatePicker from '../complement/DatePicker';
 
-import moment from 'moment';
-
 const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
@@ -29,20 +27,15 @@ function ChooseDate({
 }) {
   const classes = useStyles();
   const [redirect, doRedirect] = useState(false);
-  const [date, setDate] = useState(moment());
+  const [date, setDate] = useState(new Date());
 
-  /**
-   * Note than when we redirect, we use JSON.stringify() for passing the date
-   * This is because the Redirect state object doesnot seem to like the
-   * moment date object.
-   */
   if (redirect) {
     return (
       <Redirect
         to={{
           pathname: '/time',
           state: {
-            date: JSON.stringify(date),
+            date,
             room
           }
         }}

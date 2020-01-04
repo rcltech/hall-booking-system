@@ -5,16 +5,16 @@ import { PropTypes } from 'prop-types';
 
 class DatePicker extends React.Component {
   state = {
-    value: moment(),
-    selectedValue: moment()
+    value: new Date(),
+    selectedValue: new Date()
   };
 
   onSelect = value => {
     const { selectDate } = this.props;
     this.setState(
       {
-        value,
-        selectedValue: value
+        value: moment(value).toDate(),
+        selectedValue: moment(value).toDate()
       },
       () => {
         if (selectDate) selectDate(this.state.selectedValue);
@@ -23,7 +23,7 @@ class DatePicker extends React.Component {
   };
 
   onPanelChange = value => {
-    this.setState({ value });
+    this.setState({ value: moment(value).toDate() });
   };
 
   render() {
@@ -32,10 +32,10 @@ class DatePicker extends React.Component {
       <div>
         <Alert
           message={`You selected date: ${selectedValue &&
-            selectedValue.format('YYYY-MM-DD')}`}
+            moment(selectedValue).format('YYYY-MM-DD')}`}
         />
         <Calendar
-          value={value}
+          value={moment(value)}
           onSelect={this.onSelect}
           onPanelChange={this.onPanelChange}
         />

@@ -44,7 +44,6 @@ const BookingSummary = ({
     image: undefined
   });
   const [redirect, doRedirect] = useState(undefined);
-  date = JSON.parse(date);
 
   const CREATE_BOOKING = gql`
     mutation booking($room_number: String!, $start: String!, $end: String!) {

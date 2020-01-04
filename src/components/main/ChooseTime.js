@@ -17,15 +17,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const makeSelection = async (
-  time_slots,
-  start,
-  end,
-  setStart,
-  setEnd,
-  doRedirect
-) => {
-  if (validateTime(time_slots, start, end)) {
+const makeSelection = (timeSlots, start, end, setStart, setEnd, doRedirect) => {
+  if (validateTime(timeSlots, start, end)) {
     setStart(start);
     setEnd(end);
     doRedirect(true);
@@ -54,12 +47,10 @@ function ChooseTime({
   }
 }) {
   const classes = useStyles();
-  const [start, setStart] = useState(moment(date));
-  const [end, setEnd] = useState(moment(date));
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
   const [redirect, doRedirect] = useState(false);
   const [events, setEvents] = useState();
-
-  let dateString = moment(JSON.parse(date)).format('LL');
 
   const ROOM_BOOKINGS = gql`
     query bookings($room: String!) {
@@ -76,10 +67,8 @@ function ChooseTime({
   });
 
   useEffect(() => {
-    setStart({ hour: 12 });
-    setEnd({ hour: 13 });
     if (data)
-      getRooms(data.bookings, JSON.parse(date)).then(events => {
+      getRooms(data.bookings, date).then(events => {
         setEvents(events);
       });
   }, [room, date, data]);
@@ -93,7 +82,7 @@ function ChooseTime({
       <NavBar backPath="/room" />
       <p>
         What is the most suitable timeslot for you? <br /> Room : {room} <br />{' '}
-        Date : {dateString}
+        Date : {moment(date).format('LL')}
       </p>
       <Timepicker
         start={start}

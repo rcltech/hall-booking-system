@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import MomentUtils from '@date-io/moment';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import { Button } from '@material-ui/core';
 import moment from 'moment';
 
@@ -36,32 +33,30 @@ const Timepicker = props => {
 
   const handleOnContinuePress = () => {
     const { onContinue } = props;
-    onContinue(moment(start), moment(end));
+    onContinue(start, end);
   };
 
   return (
     <div>
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <KeyboardTimePicker
-          margin="normal"
-          label="Start time"
-          value={start}
-          onChange={handleStartTimeChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time'
-          }}
-          format="HH:00"
-        />
-        <KeyboardTimePicker
-          margin="normal"
-          label="End time"
-          value={end}
-          onChange={handleEndTimeChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time'
-          }}
-          format="HH:00"
-        />
+        <div>
+          <TimePicker
+            showTodayButton
+            todayLabel="now"
+            label="Start time"
+            value={start}
+            minutesStep={15}
+            onChange={handleStartTimeChange}
+          />
+        </div>
+        <div>
+          <TimePicker
+            label="End time"
+            value={end}
+            minutesStep={15}
+            onChange={handleEndTimeChange}
+          />
+        </div>
       </MuiPickersUtilsProvider>
       <div>
         <Button
