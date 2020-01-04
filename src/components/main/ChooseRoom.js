@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
+import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle
-} from 'reactstrap';
-
 import NavBar from '../complement/NavBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Typography } from '@material-ui/core';
-
+import Paper from '@material-ui/core/Paper';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 const useStyles = makeStyles(theme => ({
-  dropdownContainer: {
+  container: {
+    width: '100vw',
+    padding: '2%'
+  },
+  roomCard: {
+    width: '100%',
+    height: 'content',
+    padding: '1%',
+    marginBottom: '10px',
+    display: 'grid',
+    gridTemplateColumns: '10% 45% 45%',
+    ['@media (max-width:600px)']: {
+      gridTemplateColumns: '1fr 3fr 3fr'
+    }
+  },
+  buttonContainer: {
     display: 'flex',
     justifyContent: 'center',
-    padding: '20px 0'
+    margin: '20px 0'
   }
 }));
 
-function dropdownItems(room, selectRoom) {
-  return (
-    <DropdownItem key={room} onClick={() => selectRoom(room)}>
-      <Typography>{room}</Typography>
-    </DropdownItem>
-  );
-}
-
 function ChooseRoom() {
-  const [isOpen, toggleOpen] = useState(false);
-  const [room, selectRoom] = useState(null);
+  const [redirect, doRedirect] = useState(false);
+  const [selectedRoom, selectRoom] = useState(null);
   const classes = useStyles();
 
   const GET_ROOMS = gql`
@@ -50,13 +50,13 @@ function ChooseRoom() {
 
   const { rooms } = data;
 
-  if (room)
+  if (redirect)
     return (
       <Redirect
         to={{
           pathname: '/date',
           state: {
-            room
+            selectedRoom
           }
         }}
       />
@@ -65,13 +65,32 @@ function ChooseRoom() {
   return (
     <div>
       <NavBar backPath="/" />
-      <div className={classes.dropdownContainer}>
-        <Dropdown isOpen={isOpen} toggle={() => toggleOpen(!isOpen)} size="lg">
-          <DropdownToggle caret>{room ? room : 'Select room'}</DropdownToggle>
-          <DropdownMenu>
-            {rooms.map(room => dropdownItems(room.number, selectRoom))}
-          </DropdownMenu>
-        </Dropdown>
+      <div className={classes.container}>
+        {rooms.map(room => {
+          return (
+            <Paper
+              key={room.name}
+              className={classes.roomCard}
+              elevation={
+                selectedRoom && room.name === selectedRoom.name ? 15 : 1
+              }
+              onClick={() => selectRoom(room)}
+            >
+              <div>{room.number}</div>
+              <div>{room.name}</div>
+            </Paper>
+          );
+        })}
+        <Button
+          className={classes.buttonContainer}
+          color="success"
+          block
+          onClick={() =>
+            selectedRoom ? doRedirect(true) : alert('Please select a room.')
+          }
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
