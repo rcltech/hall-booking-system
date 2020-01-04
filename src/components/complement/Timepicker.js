@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import DateFnsUtils from '@date-io/date-fns';
+import MomentUtils from '@date-io/moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker
 } from '@material-ui/pickers';
-import { Button } from 'reactstrap';
-const moment = require('moment');
+import { Button } from '@material-ui/core';
+import moment from 'moment';
 
 const style = {
   buttonContainer: {
-    display: 'flex',
     justifyContent: 'center',
     margin: '20px 0'
   }
@@ -42,7 +41,7 @@ const Timepicker = props => {
 
   return (
     <div>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
         <KeyboardTimePicker
           margin="normal"
           label="Start time"
@@ -64,14 +63,16 @@ const Timepicker = props => {
           format="HH:00"
         />
       </MuiPickersUtilsProvider>
-      <Button
-        block
-        style={style.buttonContainer}
-        color="success"
-        onClick={handleOnContinuePress}
-      >
-        Continue
-      </Button>
+      <div>
+        <Button
+          variant="contained"
+          style={style.buttonContainer}
+          color="primary"
+          onClick={handleOnContinuePress}
+        >
+          Continue
+        </Button>
+      </div>
     </div>
   );
 };

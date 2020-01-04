@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../complement/Header';
-import InfoSection from '../complement/InfoSection';
 import { Calendar } from 'antd';
 import 'antd/dist/antd.css';
 
@@ -9,7 +8,6 @@ function Homepage() {
     <div>
       <Header />
       <Calendar />
-      <InfoSection />
     </div>
   );
 }
