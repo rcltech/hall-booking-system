@@ -1,27 +1,16 @@
 import React, { useState } from 'react';
-import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Paper from '@material-ui/core/Paper';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { RoomList } from '../ChooseRoom/RoomList';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   container: {
     width: '100vw',
     padding: '2%'
-  },
-  roomCard: {
-    width: '100%',
-    height: 'content',
-    padding: '1%',
-    marginBottom: '10px',
-    display: 'grid',
-    gridTemplateColumns: '10% 45% 45%',
-    ['@media (max-width:600px)']: {
-      gridTemplateColumns: '1fr 3fr 3fr'
-    }
   },
   buttonContainer: {
     display: 'flex',
@@ -29,6 +18,8 @@ const useStyles = makeStyles(theme => ({
     margin: '20px 0'
   }
 }));
+
+export const RoomListContext = React.createContext(null);
 
 function ChooseRoom() {
   const [redirect, doRedirect] = useState(false);
@@ -45,6 +36,7 @@ function ChooseRoom() {
   `;
 
   const { loading, error, data } = useQuery(GET_ROOMS);
+
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
 
@@ -66,21 +58,9 @@ function ChooseRoom() {
     <div>
       <NavBar backPath="/" />
       <div className={classes.container}>
-        {rooms.map(room => {
-          return (
-            <Paper
-              key={room.name}
-              className={classes.roomCard}
-              elevation={
-                selectedRoom && room.name === selectedRoom.name ? 15 : 1
-              }
-              onClick={() => selectRoom(room)}
-            >
-              <div>{room.number}</div>
-              <div>{room.name}</div>
-            </Paper>
-          );
-        })}
+        <RoomListContext.Provider value={selectedRoom}>
+          <RoomList rooms={rooms} selectRoom={selectRoom} />
+        </RoomListContext.Provider>
         <Button
           className={classes.buttonContainer}
           color="success"
