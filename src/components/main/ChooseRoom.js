@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { RoomList } from '../ChooseRoom/RoomList';
 import Button from '@material-ui/core/Button';
+import { number } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,7 +49,7 @@ function ChooseRoom() {
         to={{
           pathname: '/date',
           state: {
-            selectedRoom
+            room: selectedRoom.number
           }
         }}
       />

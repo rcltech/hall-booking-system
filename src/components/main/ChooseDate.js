@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
 import { DatePicker } from '../complement/DatePicker';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -35,7 +36,7 @@ function ChooseDate({
         to={{
           pathname: '/time',
           state: {
-            date,
+            date: moment(date).toDate(),
             room
           }
         }}

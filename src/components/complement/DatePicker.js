@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, Alert } from 'antd';
 import moment from 'moment';
 
-export const DatePicker = () => {
+export const DatePicker = ({ selectDate }) => {
   const [panelValue, setPanelValue] = useState(moment());
 
   return (
@@ -15,6 +15,7 @@ export const DatePicker = () => {
         value={panelValue}
         onSelect={value => {
           setPanelValue(value);
+          selectDate(value);
         }}
         onPanelChange={value => {
           if (value.isSameOrAfter(moment(), 'day')) {
