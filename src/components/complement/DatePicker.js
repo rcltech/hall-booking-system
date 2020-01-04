@@ -3,24 +3,25 @@ import { Calendar, Alert } from 'antd';
 import moment from 'moment';
 
 export const DatePicker = () => {
-  const [value, selectValue] = useState(moment());
   const [panelValue, setPanelValue] = useState(moment());
 
   return (
     <>
       <Alert
-        message={`You selected date: ${value &&
-          moment(value).format('YYYY-MM-DD')}`}
+        message={`You selected date: ${panelValue &&
+          moment(panelValue).format('YYYY-MM-DD')}`}
       />
       <Calendar
-        value={moment(panelValue)}
+        value={panelValue}
         onSelect={value => {
-          selectValue(value);
+          setPanelValue(value);
         }}
         onPanelChange={value => {
-          setPanelValue(moment(value));
+          if (value.isSameOrAfter(moment(), 'day')) {
+            setPanelValue(value);
+          }
         }}
-        disabledDate={date => moment(date).isBefore(moment())}
+        disabledDate={date => moment(date).isBefore(moment(), 'day')}
       />
     </>
   );
