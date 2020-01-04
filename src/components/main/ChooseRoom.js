@@ -63,8 +63,8 @@ function ChooseRoom() {
         </RoomListContext.Provider>
         <Button
           className={classes.buttonContainer}
-          color="success"
-          block
+          color="primary"
+          variant="contained"
           onClick={() =>
             selectedRoom ? doRedirect(true) : alert('Please select a room.')
           }

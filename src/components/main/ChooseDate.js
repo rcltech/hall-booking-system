@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import { DatePicker } from '../complement/DatePicker';
 import moment from 'moment';
 
@@ -50,8 +49,8 @@ function ChooseDate({
       <DatePicker selectDate={setDate} />
       <Button
         className={classes.buttonContainer}
-        color="success"
-        block
+        color="primary"
+        variant="contained"
         onClick={() => doRedirect(true)}
       >
         Next

@@ -6,10 +6,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
-import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Modals from '../complement/Modals';
@@ -39,7 +38,7 @@ const BookingSummary = ({
 }) => {
   const classes = useStyles();
   const [modal, setModal] = useState({
-    isOpen: undefined,
+    isOpen: false,
     title: undefined,
     button: undefined,
     image: undefined
@@ -77,16 +76,11 @@ const BookingSummary = ({
     return redirect ? <Redirect to="/" /> : <div></div>;
   };
 
-  const { isOpen, title, button, image } = modal;
-
   return (
     <div className={classes.container}>
       {renderRedirect()}
       <Modals
-        isOpen={isOpen}
-        title={title}
-        button={button}
-        image={image}
+        modal={modal}
         onClick={() => {
           onModalClick();
         }}
@@ -115,12 +109,10 @@ const BookingSummary = ({
         </ListItem>
       </List>
       <Button
-        block
         className={classes.buttonContainer}
-        color="success"
-        onClick={() => {
-          handleOnConfirmPress();
-        }}
+        color="primary"
+        variant="contained"
+        onClick={handleOnConfirmPress}
       >
         Confirm
       </Button>
