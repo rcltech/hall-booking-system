@@ -18,14 +18,15 @@ const useStyles = makeStyles(theme => ({
     border: '2px solid',
     borderColor: theme.palette.primary.dark,
     borderRadius: '8px',
-    padding: theme.spacing(1)
-  },
-  imageContainer: {
+    padding: theme.spacing(1),
     textAlign: 'center'
   },
+  imageContainer: {
+    margin: theme.spacing(3)
+  },
   image: {
-    width: '200px',
-    height: '200px'
+    width: '20vw',
+    height: '20vw'
   }
 }));
 
@@ -37,13 +38,15 @@ function Modals(props) {
   return (
     <Modal open={isOpen} onClose={onClick} className={classes.root}>
       <div className={classes.modal}>
-        <Typography variant={'h4'}>{title}</Typography>
+        <Typography variant={'h5'}>{title}</Typography>
         <div className={classes.imageContainer}>
           <img src={image} alt="desc" className={classes.image} />
         </div>
-        <Button variant="contained" color="primary" onClick={onClick}>
-          {button}
-        </Button>
+        <div>
+          <Button variant="contained" color="primary" onClick={onClick}>
+            {button}
+          </Button>
+        </div>
       </div>
     </Modal>
   );
