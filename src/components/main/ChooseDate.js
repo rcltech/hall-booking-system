@@ -3,7 +3,7 @@ import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
-import DatePicker from '../complement/DatePicker';
+import { DatePicker } from '../complement/DatePicker';
 
 const useStyles = makeStyles(theme => ({
   container: {
