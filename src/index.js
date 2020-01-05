@@ -29,11 +29,15 @@ let theme = createMuiTheme({
     },
     h2: {
       fontFamily: 'Poppins, sans-serif',
-      fontWeight: 900
+      fontWeight: 800
     },
     h3: {
       fontFamily: 'Poppins, sans-serif',
-      fontWeight: 900
+      fontWeight: 700
+    },
+    h4: {
+      fontFamily: 'Poppins, sans-serif',
+      fontWeight: 200
     },
     h5: {
       fontFamily: 'Poppins, sans-serif',

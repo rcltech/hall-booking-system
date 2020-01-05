@@ -10,10 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import validateTime from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
+import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
 
 const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
+  },
+  root: {
+    margin: '0'
   }
 }));
 
@@ -71,34 +75,33 @@ function ChooseTime({
   }
 
   return (
-    <div className={classes.container}>
+    <>
       <NavBar backPath="/room" />
-      <p>
-        What is the most suitable timeslot for you? <br /> Room : {room} <br />{' '}
-        Date : {moment(date).format('LL')}
-      </p>
-      <Timepicker
-        start={start}
-        end={end}
-        onContinue={(start, end) =>
-          makeSelection(
-            events[Object.keys(events)[0]],
-            start,
-            end,
-            setStart,
-            setEnd,
-            doRedirect
-          )
-        }
-      />
-      {events ? (
-        <Timetable events={events} />
-      ) : (
-        <div>
-          <Typography>No events</Typography>
-        </div>
-      )}
-    </div>
+      <div className={classes.root}>
+        <TimeChooserPanel room={room} date={moment(date).format('LL')} />
+        <Timepicker
+          start={start}
+          end={end}
+          onContinue={(start, end) =>
+            makeSelection(
+              events[Object.keys(events)[0]],
+              start,
+              end,
+              setStart,
+              setEnd,
+              doRedirect
+            )
+          }
+        />
+        {events ? (
+          <Timetable events={events} />
+        ) : (
+          <div>
+            <Typography>No events</Typography>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

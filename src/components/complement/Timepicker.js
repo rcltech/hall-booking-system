@@ -1,19 +1,51 @@
 import React, { useState } from 'react';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
-import { Button } from '@material-ui/core';
 import moment from 'moment';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Fab from '@material-ui/core/Fab';
 
-const style = {
+const useStyles = makeStyles(theme => ({
   buttonContainer: {
     justifyContent: 'center',
     margin: '20px 0'
+  },
+  timePickerContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    justifyItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: 'auto'
+    }
+  },
+  timePickerRow: {
+    display: 'grid',
+    width: '100%',
+    gridTemplateColumns: '80% auto',
+    alignItems: 'center',
+    padding: '10px',
+    justifyItems: 'start',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
+  },
+  timePickerLabel: {
+    color: theme.palette.primary.contrastText
+  },
+  nextStepButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20,
+    zIndex: 100
   }
-};
+}));
 
 const Timepicker = props => {
   const [start, setStart] = useState(props.start);
   const [end, setEnd] = useState(props.end);
+
+  const classes = useStyles();
 
   const handleStartTimeChange = start => {
     setStart(start);
@@ -37,37 +69,41 @@ const Timepicker = props => {
   };
 
   return (
-    <div>
+    <div className={classes.timePickerContainer}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <div>
+        <div className={classes.timePickerRow}>
+          <Typography variant="h6" color="inherit">
+            From
+          </Typography>
           <TimePicker
             showTodayButton
             todayLabel="now"
-            label="Start time"
             value={start}
             minutesStep={15}
             onChange={handleStartTimeChange}
+            InputProps={{ className: classes.timePickerLabel }}
           />
         </div>
-        <div>
+        <div className={classes.timePickerRow}>
+          <Typography variant="h6" color="inherit">
+            To
+          </Typography>
           <TimePicker
-            label="End time"
             value={end}
             minutesStep={15}
             onChange={handleEndTimeChange}
+            InputProps={{ className: classes.timePickerLabel }}
           />
         </div>
       </MuiPickersUtilsProvider>
-      <div>
-        <Button
-          variant="contained"
-          style={style.buttonContainer}
-          color="primary"
-          onClick={handleOnContinuePress}
-        >
-          Continue
-        </Button>
-      </div>
+      <Fab
+        color="primary"
+        aria-label="next"
+        className={classes.nextStepButton}
+        onClick={handleOnContinuePress}
+      >
+        <ArrowForwardIcon />
+      </Fab>
     </div>
   );
 };
