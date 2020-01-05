@@ -46,6 +46,9 @@ const Homepage = () => {
     return <></>;
   }
 
+  if (meError) console.log(meError);
+  if (bookingsError) console.log(bookingsError);
+
   return (
     <div>
       <Header />
