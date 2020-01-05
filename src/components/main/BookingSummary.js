@@ -16,6 +16,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
 
 const moment = require('moment');
 
@@ -58,7 +59,10 @@ const BookingSummary = ({
   const [redirect, doRedirect] = useState(undefined);
 
   const [createBooking, { data, error }] = useMutation(CREATE_BOOKING, {
-    refetchQueries: [{ query: ROOM_BOOKINGS, variables: { room } }]
+    refetchQueries: [
+      { query: GET_ALL_BOOKINGS },
+      { query: ROOM_BOOKINGS, variables: { room } }
+    ]
   });
 
   const handleOnConfirmPress = async () => {
