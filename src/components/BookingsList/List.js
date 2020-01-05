@@ -19,7 +19,6 @@ import Popup from './Popup';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 'calc(650px + 5vw)',
     margin: 'auto',
     overflow: 'auto',
     maxHeight: 'calc(100vh - 70px)'
@@ -40,7 +39,9 @@ const useStyles = makeStyles(theme => ({
     gridTemplateRows: '1fr 1.5fr'
   },
   listItem: {
-    marginTop: theme.spacing(2)
+    margin: 'auto',
+    marginTop: theme.spacing(2),
+    maxWidth: 'calc(650px + 5vw)'
   },
   date: {
     color: theme.palette.secondary.contrastText,
