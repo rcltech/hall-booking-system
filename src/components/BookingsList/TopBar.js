@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     float: 'right'
   },
   button: {
-    margin: 'auto 4px'
+    margin: 'auto'
   }
 }));
 
@@ -33,7 +33,6 @@ const TopBar = props => {
         {icons.map(icon => (
           <Button
             key={icon.id}
-            variant="contained"
             color="primary"
             className={classes.button}
             onClick={icon.onClick}

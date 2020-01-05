@@ -34,7 +34,6 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     margin: 'auto',
     background: 'white',
-    border: '2px solid',
     borderColor: theme.palette.primary.dark,
     borderRadius: '8px',
     padding: theme.spacing(1)
