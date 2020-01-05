@@ -13,6 +13,7 @@ import {
   separateBookingsByDate,
   separateBookingsByMonthAndDate
 } from './functions';
+import Popup from './Popup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 const List = props => {
   const classes = useStyles();
   const { me, bookings } = props;
-  const [focusedEvent, setFocusedEvent] = useState({});
+  const [focusedBooking, setFocusedBooking] = useState({});
   const [openPopup, setOpenPopup] = useState(false);
 
   const bookingsByDate = separateBookingsByDate(bookings);
@@ -117,12 +118,12 @@ const List = props => {
                         booking.user.username
                       )}
                       onClick={() => {
-                        setFocusedEvent(booking);
+                        setFocusedBooking(booking);
                         setOpenPopup(true);
                       }}
                     >
                       <Typography variant={'body1'}>
-                        <EventBlock booking={booking} />
+                        <BookingBlock booking={booking} />
                       </Typography>
                     </Paper>
                   </Grid>
@@ -132,6 +133,12 @@ const List = props => {
           ))}
         </div>
       ))}
+      <Popup
+        open={openPopup}
+        setOpen={setOpenPopup}
+        me={me}
+        booking={focusedBooking}
+      />
     </MuiList>
   );
 };
@@ -147,7 +154,7 @@ const MonthBlock = props => {
   );
 };
 
-const EventBlock = props => {
+const BookingBlock = props => {
   const { booking } = props;
 
   return <span>{booking.room.number}</span>;

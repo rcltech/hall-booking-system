@@ -46,7 +46,7 @@ const DeleteModal = props => {
             <Warning />
           </Icon>
           <Typography variant={'h6'}>
-            Are you sure you want to delete this?
+            Are you sure you want to delete this booking?
           </Typography>
         </Container>
         <Container className={classes.container}>

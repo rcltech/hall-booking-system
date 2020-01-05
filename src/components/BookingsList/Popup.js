@@ -8,18 +8,17 @@ import {
   ListItemText
 } from '@material-ui/core';
 import {
-  Bookmark,
-  Description,
+  Business,
   CalendarToday,
-  PersonPin,
-  People,
-  Create,
-  DeleteForever
+  DeleteForever,
+  Person,
+  Room
 } from '@material-ui/icons';
 import { useMutation } from '@apollo/react-hooks';
-import { DELETE_EVENT, GET_EVENTS } from './graphql';
+import { DELETE_BOOKING, GET_ALL_BOOKINGS } from './graphql';
 import moment from 'moment';
-import { displayUsers } from './functions';
+import DeleteModal from './DeleteModal';
+import TopBar from './TopBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,91 +41,68 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     clear: 'both'
-  },
-  Class: {
-    color: theme.palette.class.main
-  },
-  Info: {
-    color: theme.palette.info.main
-  },
-  Complaint: {
-    color: theme.palette.complaint.main
-  },
-  Others: {
-    color: theme.palette.others.main
   }
 }));
 
 const Popup = props => {
   const classes = useStyles();
-  const { open, setOpen, event } = props;
-  const [onUpdate, setOnUpdate] = useState(false);
+  const { open, setOpen, me, booking } = props;
   const [onDelete, setOnDelete] = useState(false);
 
-  const [doDelete, { data }] = useMutation(DELETE_EVENT, {
-    refetchQueries: [{ query: GET_EVENTS }]
+  const [doDelete, { data }] = useMutation(DELETE_BOOKING, {
+    refetchQueries: [{ query: GET_ALL_BOOKINGS }]
   });
-  if (data) alert(`${data.deleteEvent ? 'successful' : 'failed'} delete`);
+  if (data) alert(`${data.deleteBooking.id ? 'successful' : 'failed'} delete`);
 
   let fields = [];
-  if (Object.entries(event).length !== 0 && event.constructor === Object) {
-    if (event.name)
-      fields.push({
-        id: 'name',
-        value: event.name,
-        icon: <Bookmark />
-      });
+  if (Object.entries(booking).length !== 0 && booking.constructor === Object) {
     fields = fields.concat([
       {
-        id: 'type',
-        value: event.type,
-        icon: <Description className={classes[event.type]} />
+        id: 'number',
+        value: booking.room.number,
+        icon: <Room />
       },
       {
-        id: 'dateTime',
-        value: moment(event.dateTime).format('MMMM Do h:mm a'),
+        id: 'name',
+        value: booking.room.name,
+        icon: <Business />
+      },
+      {
+        id: 'startEnd',
+        value: `${moment(booking.start).format('MMMM Do h:mm a')} to ${moment(
+          booking.end
+        ).format('h:mm a')}`,
         icon: <CalendarToday />
       },
       {
-        id: 'creator',
-        value: `${event.creator.firstName} ${event.creator.lastName}`,
-        icon: <PersonPin />
-      },
-      {
-        id: 'participants',
-        value: event.participants ? displayUsers(event.participants) : '',
-        icon: <People />
+        id: 'user',
+        value: `${booking.user.first_name} ${booking.user.last_name}`,
+        icon: <Person />
       }
     ]);
   }
 
+  const deletePermission =
+    me && booking.user && me.username === booking.user.username;
+
   const goBack = () => {
-    setOnUpdate(false);
     setOpen(false);
   };
 
   const submitDelete = async () => {
-    await doDelete({ variables: { id: event.id } });
+    await doDelete({ variables: { id: booking.id } });
   };
 
   return (
     <Modal open={open} onClose={goBack} className={classes.root}>
       <div className={classes.modal}>
-        {!onUpdate ? (
-          <EventDetails
-            classes={classes}
-            goBack={goBack}
-            setOnUpdate={setOnUpdate}
-            setOnDelete={setOnDelete}
-            fields={fields}
-          />
-        ) : (
-          <UpdateEventForm
-            setOnUpdate={setOnUpdate}
-            confirm={goBack}
-            event={event}
-          />
-        )}
+        <EventDetails
+          classes={classes}
+          goBack={goBack}
+          setOnDelete={setOnDelete}
+          fields={fields}
+          deletePermission={deletePermission}
+        />
         <DeleteModal
           open={onDelete}
           setOpen={setOnDelete}
@@ -139,23 +115,22 @@ const Popup = props => {
 };
 
 const EventDetails = props => {
-  const { classes, goBack, setOnUpdate, setOnDelete, fields } = props;
+  const { classes, goBack, setOnDelete, fields, deletePermission } = props;
   return (
     <div>
       <TopBar
         goBack={goBack}
-        icons={[
-          {
-            id: 'update',
-            component: <Create />,
-            onClick: () => setOnUpdate(true)
-          },
-          {
-            id: 'delete',
-            component: <DeleteForever />,
-            onClick: () => setOnDelete(true)
-          }
-        ]}
+        icons={
+          deletePermission
+            ? [
+                {
+                  id: 'delete',
+                  component: <DeleteForever />,
+                  onClick: () => setOnDelete(true)
+                }
+              ]
+            : []
+        }
       />
       <MuiList className={classes.content} dense>
         {fields.map(field => (
