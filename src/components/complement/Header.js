@@ -9,7 +9,8 @@ import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    padding: '20px 0'
   }
 }));
 
@@ -20,13 +21,13 @@ function Header() {
   if (booking) return <Redirect to="/room" />;
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className="root">
       <Toolbar>
         <Typography variant="h5" color={'inherit'} className={classes.title}>
           Booking system
         </Typography>
-        <Button color="inherit" onClick={() => doBooking(true)}>
-          Book
+        <Button variant="contained" onClick={() => doBooking(true)}>
+          <Typography variant="button">Book</Typography>
         </Button>
       </Toolbar>
     </AppBar>
