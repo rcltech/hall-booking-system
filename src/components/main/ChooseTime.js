@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import validateTime from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { ROOM_BOOKINGS } from '../../gql/bookings';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -52,15 +52,6 @@ function ChooseTime({
   const [redirect, doRedirect] = useState(false);
   const [events, setEvents] = useState();
 
-  const ROOM_BOOKINGS = gql`
-    query bookings($room: String!) {
-      bookings(data: { room: { number: $room } }) {
-        start
-        end
-      }
-    }
-  `;
-
   const { data } = useQuery(ROOM_BOOKINGS, {
     variables: {
       room
@@ -68,10 +59,11 @@ function ChooseTime({
   });
 
   useEffect(() => {
-    if (data)
+    if (data) {
       getRooms(data.bookings, date).then(events => {
         setEvents(events);
       });
+    }
   }, [room, date, data]);
 
   if (redirect) {

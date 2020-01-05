@@ -17,7 +17,7 @@ const getRooms = async (bookings, date) => {
       moment(booking.end).diff(moment(booking.start))
     );
     const durationHours = duration.as('hours');
-    for (var i = 0; i < durationHours; i++) {
+    for (let i = 0; i < durationHours; i++) {
       times.push(
         moment(booking.start)
           .add(i, 'hours')
