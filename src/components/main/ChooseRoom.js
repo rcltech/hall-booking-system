@@ -68,7 +68,7 @@ function ChooseRoom() {
           <RoomList rooms={rooms} selectRoom={selectRoom} />
         </RoomListContext.Provider>
       </div>
-      <Fade in={selectedRoom}>
+      <Fade in={selectedRoom !== null}>
         <Fab
           color="primary"
           aria-label="next"
