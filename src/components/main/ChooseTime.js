@@ -59,7 +59,11 @@ function ChooseTime({
   }
 }) {
   const classes = useStyles();
-  const [start, setStart] = useState(new Date());
+  const [start, setStart] = useState(
+    moment()
+      .startOf('hour')
+      .toDate()
+  );
   const [end, setEnd] = useState(
     moment()
       .startOf('hour')
