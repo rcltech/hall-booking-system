@@ -14,7 +14,6 @@ import {
   separateEventsByDate,
   separateEventsByMonthAndDate
 } from './functions';
-import Popup from './Popup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -144,7 +143,6 @@ const List = props => {
           ))}
         </div>
       ))}
-      <Popup open={openPopup} setOpen={setOpenPopup} event={focusedEvent} />
     </MuiList>
   );
 };
