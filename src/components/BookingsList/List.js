@@ -21,11 +21,14 @@ const useStyles = makeStyles(theme => ({
   root: {
     margin: 'auto',
     overflow: 'auto',
-    maxHeight: 'calc(100vh - 70px)'
+    maxHeight: 'calc(100vh - 70px)',
+    padding: 0
+  },
+  groupedBookings: {
+    marginBottom: theme.spacing(5)
   },
   month: {
-    background: theme.palette.primary.main,
-    marginTop: theme.spacing(2),
+    background: theme.palette.primary.dark,
     padding: theme.spacing(1)
   },
   monthText: {
@@ -88,53 +91,57 @@ const List = props => {
             classes={classes}
             dateTime={groupedBookings[0][0].start}
           />
-          {groupedBookings.map(bookings => (
-            <ListItem
-              className={classes.listItem}
-              alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
-              key={bookings[0].id}
-            >
-              <ListItemIcon>
-                <div className={classes.icon}>
-                  <Typography variant={'button'} display="block">
-                    {moment(bookings[0].start).format('ddd')}
-                  </Typography>
-                  <Typography
-                    variant={'h6'}
-                    display="block"
-                    className={`${classes.date} ${
-                      isToday(bookings[0].start) ? classes.highlighted : null
-                    }`}
-                  >
-                    {moment(bookings[0].start).format('DD')}
-                  </Typography>
-                </div>
-              </ListItemIcon>
-              <Grid container spacing={1}>
-                {bookings.map(booking => {
-                  const {
-                    user: { username }
-                  } = booking;
-                  return (
-                    <Grid item xs={12} key={booking.id}>
-                      <Paper
-                        elevation={isUserBooking(me.username, username) ? 3 : 0}
-                        className={generateBookingClassNames(
-                          booking.user.username
-                        )}
-                        onClick={() => {
-                          setFocusedBooking(booking);
-                          setOpenPopup(true);
-                        }}
-                      >
-                        <BookingBlock booking={booking} />
-                      </Paper>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </ListItem>
-          ))}
+          <div className={classes.groupedBookings}>
+            {groupedBookings.map(bookings => (
+              <ListItem
+                className={classes.listItem}
+                alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
+                key={bookings[0].id}
+              >
+                <ListItemIcon>
+                  <div className={classes.icon}>
+                    <Typography variant={'button'} display="block">
+                      {moment(bookings[0].start).format('ddd')}
+                    </Typography>
+                    <Typography
+                      variant={'h6'}
+                      display="block"
+                      className={`${classes.date} ${
+                        isToday(bookings[0].start) ? classes.highlighted : null
+                      }`}
+                    >
+                      {moment(bookings[0].start).format('DD')}
+                    </Typography>
+                  </div>
+                </ListItemIcon>
+                <Grid container spacing={1}>
+                  {bookings.map(booking => {
+                    const {
+                      user: { username }
+                    } = booking;
+                    return (
+                      <Grid item xs={12} key={booking.id}>
+                        <Paper
+                          elevation={
+                            isUserBooking(me.username, username) ? 3 : 0
+                          }
+                          className={generateBookingClassNames(
+                            booking.user.username
+                          )}
+                          onClick={() => {
+                            setFocusedBooking(booking);
+                            setOpenPopup(true);
+                          }}
+                        >
+                          <BookingBlock booking={booking} />
+                        </Paper>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </ListItem>
+            ))}
+          </div>
         </div>
       ))}
       <Popup
