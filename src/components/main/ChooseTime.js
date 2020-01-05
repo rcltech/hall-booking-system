@@ -21,8 +21,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const makeSelection = (timeSlots, start, end, setStart, setEnd, doRedirect) => {
-  if (validateTime(timeSlots, start, end)) {
+const makeSelection = (
+  timeSlots,
+  date,
+  start,
+  end,
+  setStart,
+  setEnd,
+  doRedirect
+) => {
+  if (validateTime(timeSlots, date, start, end)) {
     setStart(start);
     setEnd(end);
     doRedirect(true);
@@ -90,6 +98,7 @@ function ChooseTime({
           onContinue={(start, end) =>
             makeSelection(
               events[Object.keys(events)[0]],
+              date,
               start,
               end,
               setStart,
