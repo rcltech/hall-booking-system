@@ -52,7 +52,7 @@ const Popup = props => {
   const [doDelete, { data }] = useMutation(DELETE_BOOKING, {
     refetchQueries: [{ query: GET_ALL_BOOKINGS }]
   });
-  if (data) alert(`${data.deleteBooking.id ? 'successful' : 'failed'} delete`);
+  if (data) console.log(`${data.deleteBooking.id} deleted`);
 
   let fields = [];
   if (Object.entries(booking).length !== 0 && booking.constructor === Object) {

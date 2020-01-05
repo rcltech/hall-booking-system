@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-export const DELETE_BOOKING = gql`
+const DELETE_BOOKING = gql`
   mutation deleteBooking($id: ID!) {
     deleteBooking(id: $id) {
       id
@@ -8,9 +8,10 @@ export const DELETE_BOOKING = gql`
   }
 `;
 
-export const GET_ALL_BOOKINGS = gql`
+const GET_ALL_BOOKINGS = gql`
   query bookings {
     bookings {
+      id
       start
       end
       room {
@@ -25,4 +26,4 @@ export const GET_ALL_BOOKINGS = gql`
   }
 `;
 
-export default { DELETE_BOOKING, GET_ALL_BOOKINGS };
+export { DELETE_BOOKING, GET_ALL_BOOKINGS };
