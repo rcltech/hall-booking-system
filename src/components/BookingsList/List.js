@@ -127,9 +127,7 @@ const List = props => {
                           setOpenPopup(true);
                         }}
                       >
-                        <Typography variant={'body1'}>
-                          <BookingBlock booking={booking} />
-                        </Typography>
+                        <BookingBlock booking={booking} />
                       </Paper>
                     </Grid>
                   );
@@ -162,8 +160,22 @@ const MonthBlock = props => {
 
 const BookingBlock = props => {
   const { booking } = props;
+  const { start, end } = booking;
 
-  return <span>{booking.room.number}</span>;
+  return (
+    <>
+      <Typography
+        variant="subtitle1"
+        style={{ float: 'left', fontWeight: '900' }}
+      >
+        {booking.room.number}
+      </Typography>
+      <Typography variant="subtitle1" style={{ float: 'right' }}>{`${moment(
+        start
+      ).format('h:mm')} - ${moment(end).format('h:mm a')}`}</Typography>
+      <div style={{ clear: 'both' }} />
+    </>
+  );
 };
 
 export default List;

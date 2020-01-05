@@ -69,7 +69,7 @@ const Popup = props => {
       },
       {
         id: 'startEnd',
-        value: `${moment(booking.start).format('MMMM Do h:mm a')} to ${moment(
+        value: `${moment(booking.start).format('MMMM Do h:mm')} - ${moment(
           booking.end
         ).format('h:mm a')}`,
         icon: <CalendarToday />
