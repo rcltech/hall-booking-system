@@ -33,16 +33,23 @@ const GET_ALL_BOOKINGS = gql`
 `;
 
 const Homepage = () => {
-  const { data: meData } = useQuery(GET_ME);
-  const { data: allBookingsData, loading } = useQuery(GET_ALL_BOOKINGS);
+  const { loading: meLoading, error: meError, data: userData } = useQuery(
+    GET_ME
+  );
+  const {
+    loading: bookingsLoading,
+    error: bookingsError,
+    data: bookingsData
+  } = useQuery(GET_ALL_BOOKINGS);
+
+  if (meLoading || bookingsLoading) {
+    return <></>;
+  }
+
   return (
     <div>
       <Header />
-      {!loading ? (
-        <List me={meData.me} bookings={allBookingsData.bookings} />
-      ) : (
-        <>Loading</>
-      )}
+      <List me={userData.me} bookings={bookingsData.bookings} />
     </div>
   );
 };
