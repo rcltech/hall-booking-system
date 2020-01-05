@@ -14,8 +14,13 @@ const validateTime = (timeSlots, date, start, end) => {
     alert('Maximum hours of booking per person is 2 hours.');
     return false;
   } else if (
+    startTime.isSameOrBefore(dateChosen.hour(Number(moment().format('HH'))))
+  ) {
+    alert('Selected timeslot is not available');
+    return false;
+  } else if (
     !(
-      startTime.isSameOrAfter(dateChosen.hour(7)) &&
+      startTime.isAfter(dateChosen.hour(7)) &&
       startTime.isSameOrBefore(dateChosen.hour(22))
     )
   ) {
