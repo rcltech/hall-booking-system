@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
-import DatePicker from '../complement/DatePicker';
-
+import { DatePicker } from '../complement/DatePicker';
 import moment from 'moment';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Fab from '@material-ui/core/Fab';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -19,6 +20,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     margin: '20px 0'
+  },
+  nextStepButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20
   }
 }));
 
@@ -29,20 +35,15 @@ function ChooseDate({
 }) {
   const classes = useStyles();
   const [redirect, doRedirect] = useState(false);
-  const [date, setDate] = useState(moment());
+  const [date, setDate] = useState(new Date());
 
-  /**
-   * Note than when we redirect, we use JSON.stringify() for passing the date
-   * This is because the Redirect state object doesnot seem to like the
-   * moment date object.
-   */
   if (redirect) {
     return (
       <Redirect
         to={{
           pathname: '/time',
           state: {
-            date: JSON.stringify(date),
+            date: moment(date).toDate(),
             room
           }
         }}
@@ -54,14 +55,16 @@ function ChooseDate({
     <div className={classes.container}>
       <NavBar backPath="/room" />
       <DatePicker selectDate={setDate} />
-      <Button
-        className={classes.buttonContainer}
-        color="success"
-        block
-        onClick={() => doRedirect(true)}
-      >
-        Next
-      </Button>
+      <Fade in={true}>
+        <Fab
+          color="primary"
+          aria-label="next"
+          className={classes.nextStepButton}
+          onClick={() => doRedirect(true)}
+        >
+          <ArrowForwardIcon />
+        </Fab>
+      </Fade>
     </div>
   );
 }

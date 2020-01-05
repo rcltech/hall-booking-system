@@ -9,23 +9,20 @@ import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import validateTime from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { ROOM_BOOKINGS } from '../../gql/bookings';
+import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
 
 const useStyles = makeStyles(theme => ({
   container: {
     textAlign: 'center'
+  },
+  root: {
+    margin: '0'
   }
 }));
 
-const makeSelection = async (
-  time_slots,
-  start,
-  end,
-  setStart,
-  setEnd,
-  doRedirect
-) => {
-  if (validateTime(time_slots, start, end)) {
+const makeSelection = (timeSlots, start, end, setStart, setEnd, doRedirect) => {
+  if (validateTime(timeSlots, start, end)) {
     setStart(start);
     setEnd(end);
     doRedirect(true);
@@ -54,21 +51,11 @@ function ChooseTime({
   }
 }) {
   const classes = useStyles();
-  const [start, setStart] = useState(moment(date));
-  const [end, setEnd] = useState(moment(date));
+  const [start, setStart] = useState(moment());
+  const [end, setEnd] = useState(moment());
   const [redirect, doRedirect] = useState(false);
   const [events, setEvents] = useState();
 
-  let dateString = moment(JSON.parse(date)).format('LL');
-
-  const ROOM_BOOKINGS = gql`
-    query bookings($room: String!) {
-      bookings(data: { room: { number: $room } }) {
-        start
-        end
-      }
-    }
-  `;
   const { data } = useQuery(ROOM_BOOKINGS, {
     variables: {
       room
@@ -76,12 +63,11 @@ function ChooseTime({
   });
 
   useEffect(() => {
-    setStart({ hour: 12 });
-    setEnd({ hour: 13 });
-    if (data)
-      getRooms(data.bookings, JSON.parse(date)).then(events => {
+    if (data) {
+      getRooms(data.bookings, date).then(events => {
         setEvents(events);
       });
+    }
   }, [room, date, data]);
 
   if (redirect) {
@@ -89,34 +75,33 @@ function ChooseTime({
   }
 
   return (
-    <div className={classes.container}>
+    <>
       <NavBar backPath="/room" />
-      <p>
-        What is the most suitable timeslot for you? <br /> Room : {room} <br />{' '}
-        Date : {dateString}
-      </p>
-      <Timepicker
-        start={start}
-        end={end}
-        onContinue={(start, end) =>
-          makeSelection(
-            events[Object.keys(events)[0]],
-            start,
-            end,
-            setStart,
-            setEnd,
-            doRedirect
-          )
-        }
-      />
-      {events ? (
-        <Timetable events={events} />
-      ) : (
-        <div>
-          <Typography>No events</Typography>
-        </div>
-      )}
-    </div>
+      <div className={classes.root}>
+        <TimeChooserPanel room={room} date={moment(date).format('LL')} />
+        <Timepicker
+          start={start}
+          end={end}
+          onContinue={(start, end) =>
+            makeSelection(
+              events[Object.keys(events)[0]],
+              start,
+              end,
+              setStart,
+              setEnd,
+              doRedirect
+            )
+          }
+        />
+        {events ? (
+          <Timetable events={events} />
+        ) : (
+          <div>
+            <Typography>No events</Typography>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -6,15 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
-import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Modals from '../complement/Modals';
 import { useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
+
 const moment = require('moment');
 
 const useStyles = makeStyles(theme => ({
@@ -38,22 +38,16 @@ const BookingSummary = ({
 }) => {
   const classes = useStyles();
   const [modal, setModal] = useState({
-    isOpen: undefined,
+    isOpen: false,
     title: undefined,
     button: undefined,
     image: undefined
   });
   const [redirect, doRedirect] = useState(undefined);
-  date = JSON.parse(date);
 
-  const CREATE_BOOKING = gql`
-    mutation booking($room_number: String!, $start: String!, $end: String!) {
-      createBooking(room_number: $room_number, start: $start, end: $end) {
-        createdAt
-      }
-    }
-  `;
-  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING);
+  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING, {
+    refetchQueries: [{ query: ROOM_BOOKINGS, variables: { room } }]
+  });
 
   const handleOnConfirmPress = async () => {
     date = moment(date).startOf('day');
@@ -82,16 +76,11 @@ const BookingSummary = ({
     return redirect ? <Redirect to="/" /> : <div></div>;
   };
 
-  const { isOpen, title, button, image } = modal;
-
   return (
     <div className={classes.container}>
       {renderRedirect()}
       <Modals
-        isOpen={isOpen}
-        title={title}
-        button={button}
-        image={image}
+        modal={modal}
         onClick={() => {
           onModalClick();
         }}
@@ -120,12 +109,10 @@ const BookingSummary = ({
         </ListItem>
       </List>
       <Button
-        block
         className={classes.buttonContainer}
-        color="success"
-        onClick={() => {
-          handleOnConfirmPress();
-        }}
+        color="primary"
+        variant="contained"
+        onClick={handleOnConfirmPress}
       >
         Confirm
       </Button>

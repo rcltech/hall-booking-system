@@ -1,51 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar, Alert } from 'antd';
 import moment from 'moment';
-import { PropTypes } from 'prop-types';
 
-class DatePicker extends React.Component {
-  state = {
-    value: moment(),
-    selectedValue: moment()
-  };
+export const DatePicker = ({ selectDate }) => {
+  const [panelValue, setPanelValue] = useState(moment());
 
-  onSelect = value => {
-    const { selectDate } = this.props;
-    this.setState(
-      {
-        value,
-        selectedValue: value
-      },
-      () => {
-        if (selectDate) selectDate(this.state.selectedValue);
-      }
-    );
-  };
-
-  onPanelChange = value => {
-    this.setState({ value });
-  };
-
-  render() {
-    const { value, selectedValue } = this.state;
-    return (
-      <div>
-        <Alert
-          message={`You selected date: ${selectedValue &&
-            selectedValue.format('YYYY-MM-DD')}`}
-        />
-        <Calendar
-          value={value}
-          onSelect={this.onSelect}
-          onPanelChange={this.onPanelChange}
-        />
-      </div>
-    );
-  }
-}
-
-DatePicker.propTypes = {
-  selectDate: PropTypes.func
+  return (
+    <>
+      <Alert
+        message={`You selected date: ${panelValue &&
+          moment(panelValue).format('YYYY-MM-DD')}`}
+      />
+      <Calendar
+        value={panelValue}
+        onSelect={value => {
+          setPanelValue(value);
+          selectDate(value);
+        }}
+        onPanelChange={value => {
+          if (value.isSameOrAfter(moment(), 'day')) {
+            setPanelValue(value);
+          }
+        }}
+        disabledDate={date => moment(date).isBefore(moment(), 'day')}
+      />
+    </>
+  );
 };
-
-export default DatePicker;

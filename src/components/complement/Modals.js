@@ -1,33 +1,53 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { Modal, Typography, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  imageContainer: {
+  root: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  modal: {
+    position: 'relative',
+    bottom: '8vh',
+    width: '90vw',
+    maxHeight: '72vh',
+    overflow: 'auto',
+    margin: 'auto',
+    background: 'white',
+    border: '2px solid',
+    borderColor: theme.palette.primary.dark,
+    borderRadius: '8px',
+    padding: theme.spacing(1),
     textAlign: 'center'
   },
+  imageContainer: {
+    margin: theme.spacing(3)
+  },
   image: {
-    width: '200px',
-    height: '200px'
+    width: '20vw',
+    height: '20vw'
   }
 }));
 
 function Modals(props) {
+  const { modal, onClick } = props;
+  const { isOpen, title, button, image } = modal;
   const classes = useStyles();
-  const { isOpen, title, button, image, onClick } = props;
+
   return (
-    <Modal isOpen={isOpen}>
-      <ModalHeader>{title}</ModalHeader>
-      <ModalBody>
+    <Modal open={isOpen} onClose={onClick} className={classes.root}>
+      <div className={classes.modal}>
+        <Typography variant={'h5'}>{title}</Typography>
         <div className={classes.imageContainer}>
           <img src={image} alt="desc" className={classes.image} />
         </div>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="success" onClick={onClick}>
-          {button}
-        </Button>
-      </ModalFooter>
+        <div>
+          <Button variant="contained" color="primary" onClick={onClick}>
+            {button}
+          </Button>
+        </div>
+      </div>
     </Modal>
   );
 }

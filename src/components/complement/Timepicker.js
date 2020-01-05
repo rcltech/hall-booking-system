@@ -1,23 +1,51 @@
 import React, { useState } from 'react';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker
-} from '@material-ui/pickers';
-import { Button } from 'reactstrap';
-const moment = require('moment');
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import moment from 'moment';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Fab from '@material-ui/core/Fab';
 
-const style = {
+const useStyles = makeStyles(theme => ({
   buttonContainer: {
-    display: 'flex',
     justifyContent: 'center',
     margin: '20px 0'
+  },
+  timePickerContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    justifyItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: 'auto'
+    }
+  },
+  timePickerRow: {
+    display: 'grid',
+    width: '100%',
+    gridTemplateColumns: '80% auto',
+    alignItems: 'center',
+    padding: '10px',
+    justifyItems: 'start',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
+  },
+  timePickerLabel: {
+    color: theme.palette.primary.contrastText
+  },
+  nextStepButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20,
+    zIndex: 100
   }
-};
+}));
 
 const Timepicker = props => {
   const [start, setStart] = useState(props.start);
   const [end, setEnd] = useState(props.end);
+
+  const classes = useStyles();
 
   const handleStartTimeChange = start => {
     setStart(start);
@@ -37,41 +65,45 @@ const Timepicker = props => {
 
   const handleOnContinuePress = () => {
     const { onContinue } = props;
-    onContinue(moment(start), moment(end));
+    onContinue(start, end);
   };
 
   return (
-    <div>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardTimePicker
-          margin="normal"
-          label="Start time"
-          value={start}
-          onChange={handleStartTimeChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time'
-          }}
-          format="HH:00"
-        />
-        <KeyboardTimePicker
-          margin="normal"
-          label="End time"
-          value={end}
-          onChange={handleEndTimeChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time'
-          }}
-          format="HH:00"
-        />
+    <div className={classes.timePickerContainer}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <div className={classes.timePickerRow}>
+          <Typography variant="h6" color="inherit">
+            From
+          </Typography>
+          <TimePicker
+            showTodayButton
+            todayLabel="now"
+            value={start}
+            minutesStep={15}
+            onChange={handleStartTimeChange}
+            InputProps={{ className: classes.timePickerLabel }}
+          />
+        </div>
+        <div className={classes.timePickerRow}>
+          <Typography variant="h6" color="inherit">
+            To
+          </Typography>
+          <TimePicker
+            value={end}
+            minutesStep={15}
+            onChange={handleEndTimeChange}
+            InputProps={{ className: classes.timePickerLabel }}
+          />
+        </div>
       </MuiPickersUtilsProvider>
-      <Button
-        block
-        style={style.buttonContainer}
-        color="success"
+      <Fab
+        color="primary"
+        aria-label="next"
+        className={classes.nextStepButton}
         onClick={handleOnContinuePress}
       >
-        Continue
-      </Button>
+        <ArrowForwardIcon />
+      </Fab>
     </div>
   );
 };

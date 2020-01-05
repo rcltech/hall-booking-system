@@ -1,38 +1,35 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle
-} from 'reactstrap';
-
 import NavBar from '../complement/NavBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Typography } from '@material-ui/core';
-
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { RoomList } from '../ChooseRoom/RoomList';
+import Fab from '@material-ui/core/Fab';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
-  dropdownContainer: {
+  container: {
+    width: '100vw',
+    padding: '2%'
+  },
+  buttonContainer: {
     display: 'flex',
-    justifyContent: 'center',
-    padding: '20px 0'
+    justifyContent: 'center'
+  },
+  nextStepButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20
   }
 }));
 
-function dropdownItems(room, selectRoom) {
-  return (
-    <DropdownItem key={room} onClick={() => selectRoom(room)}>
-      <Typography>{room}</Typography>
-    </DropdownItem>
-  );
-}
+export const RoomListContext = React.createContext(null);
 
 function ChooseRoom() {
-  const [isOpen, toggleOpen] = useState(false);
-  const [room, selectRoom] = useState(null);
+  const [redirect, doRedirect] = useState(false);
+  const [selectedRoom, selectRoom] = useState(null);
   const classes = useStyles();
 
   const GET_ROOMS = gql`
@@ -45,35 +42,45 @@ function ChooseRoom() {
   `;
 
   const { loading, error, data } = useQuery(GET_ROOMS);
+
   if (loading) return <div>Loading</div>;
   if (error) return <div>Error</div>;
 
   const { rooms } = data;
 
-  if (room)
+  if (redirect)
     return (
       <Redirect
         to={{
           pathname: '/date',
           state: {
-            room
+            room: selectedRoom.number
           }
         }}
       />
     );
 
   return (
-    <div>
+    <>
       <NavBar backPath="/" />
-      <div className={classes.dropdownContainer}>
-        <Dropdown isOpen={isOpen} toggle={() => toggleOpen(!isOpen)} size="lg">
-          <DropdownToggle caret>{room ? room : 'Select room'}</DropdownToggle>
-          <DropdownMenu>
-            {rooms.map(room => dropdownItems(room.number, selectRoom))}
-          </DropdownMenu>
-        </Dropdown>
+      <div className={classes.container}>
+        <RoomListContext.Provider value={selectedRoom}>
+          <RoomList rooms={rooms} selectRoom={selectRoom} />
+        </RoomListContext.Provider>
       </div>
-    </div>
+      <Fade in={selectedRoom}>
+        <Fab
+          color="primary"
+          aria-label="next"
+          className={classes.nextStepButton}
+          onClick={() =>
+            selectedRoom ? doRedirect(true) : alert('Please select a room.')
+          }
+        >
+          <ArrowForwardIcon />
+        </Fab>
+      </Fade>
+    </>
   );
 }
 
