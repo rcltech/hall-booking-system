@@ -42,7 +42,12 @@ const separateBookingsByMonthAndDate = bookingsByDate => {
   return bookingsByMonthAndDate;
 };
 
+const isUserBooking = (username, bookingUsername) => {
+  return username === bookingUsername;
+};
+
 module.exports = {
   separateBookingsByDate,
-  separateBookingsByMonthAndDate
+  separateBookingsByMonthAndDate,
+  isUserBooking
 };

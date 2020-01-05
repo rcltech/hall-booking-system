@@ -11,7 +11,8 @@ import {
 import moment from 'moment';
 import {
   separateBookingsByDate,
-  separateBookingsByMonthAndDate
+  separateBookingsByMonthAndDate,
+  isUserBooking
 } from './functions';
 import Popup from './Popup';
 
@@ -29,23 +30,19 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1)
   },
   icon: {
-    textAlign: 'center'
+    textAlign: 'center',
+    width: '30px'
   },
   listItem: {
     marginTop: theme.spacing(2)
   },
   date: {
-    padding: theme.spacing(1),
-    width: theme.spacing(3),
-    height: theme.spacing(3),
+    background: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
     borderRadius: '50%'
   },
-  highlightedDate: {
-    background: theme.palette.secondary.main,
-    color: theme.palette.secondary.contrastText
-  },
   booking: {
-    borderRadius: '8px',
+    borderRadius: '4px',
     padding: theme.spacing(1)
   },
   user: {
@@ -67,15 +64,16 @@ const List = props => {
 
   const generateBookingClassNames = username => {
     let classNames = `${classes.booking} `;
-    classNames +=
-      username === me.username ? `${classes.user}` : `${classes.others}`;
+    classNames += isUserBooking(me.username, username)
+      ? `${classes.user}`
+      : `${classes.others}`;
     return classNames;
   };
 
   return (
     <MuiList className={classes.root} dense={true}>
       {bookingsByMonthAndDate.map(groupedBookings => (
-        <div key={groupedBookings[0][0].start}>
+        <div key={groupedBookings[0][0].id}>
           <MonthBlock
             classes={classes}
             dateTime={groupedBookings[0][0].start}
@@ -84,7 +82,7 @@ const List = props => {
             <ListItem
               className={classes.listItem}
               alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
-              key={bookings[0].dateTime}
+              key={bookings[0].id}
             >
               <ListItemIcon>
                 <div className={classes.icon}>
@@ -94,40 +92,36 @@ const List = props => {
                   <Typography
                     variant={'h6'}
                     display="block"
-                    className={`${classes.date} ${
-                      moment(bookings[0].start)
-                        .startOf('date')
-                        .format() ===
-                      moment()
-                        .startOf('date')
-                        .format()
-                        ? classes.highlightedDate
-                        : ''
-                    }`}
+                    className={`${classes.date}`}
                   >
                     {moment(bookings[0].start).format('DD')}
                   </Typography>
                 </div>
               </ListItemIcon>
               <Grid container spacing={1}>
-                {bookings.map(booking => (
-                  <Grid item xs={12} sm={5} key={booking.id}>
-                    <Paper
-                      elevation={2}
-                      className={generateBookingClassNames(
-                        booking.user.username
-                      )}
-                      onClick={() => {
-                        setFocusedBooking(booking);
-                        setOpenPopup(true);
-                      }}
-                    >
-                      <Typography variant={'body1'}>
-                        <BookingBlock booking={booking} />
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                ))}
+                {bookings.map(booking => {
+                  const {
+                    user: { username }
+                  } = booking;
+                  return (
+                    <Grid item xs={12} sm={5} key={booking.id}>
+                      <Paper
+                        elevation={isUserBooking(me.username, username) ? 3 : 0}
+                        className={generateBookingClassNames(
+                          booking.user.username
+                        )}
+                        onClick={() => {
+                          setFocusedBooking(booking);
+                          setOpenPopup(true);
+                        }}
+                      >
+                        <Typography variant={'body1'}>
+                          <BookingBlock booking={booking} />
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                  );
+                })}
               </Grid>
             </ListItem>
           ))}

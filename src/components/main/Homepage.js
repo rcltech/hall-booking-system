@@ -16,6 +16,7 @@ const GET_ME = gql`
 const GET_ALL_BOOKINGS = gql`
   query bookings {
     bookings {
+      id
       start
       end
       room {
@@ -34,7 +35,6 @@ const GET_ALL_BOOKINGS = gql`
 const Homepage = () => {
   const { data: meData } = useQuery(GET_ME);
   const { data: allBookingsData, loading } = useQuery(GET_ALL_BOOKINGS);
-
   return (
     <div>
       <Header />
