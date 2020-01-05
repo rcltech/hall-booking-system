@@ -46,8 +46,13 @@ const isUserBooking = (username, bookingUsername) => {
   return username === bookingUsername;
 };
 
+const isToday = date => {
+  return moment(date).isSame(moment(), 'day');
+};
+
 module.exports = {
   separateBookingsByDate,
   separateBookingsByMonthAndDate,
-  isUserBooking
+  isUserBooking,
+  isToday
 };

@@ -12,7 +12,8 @@ import moment from 'moment';
 import {
   separateBookingsByDate,
   separateBookingsByMonthAndDate,
-  isUserBooking
+  isUserBooking,
+  isToday
 } from './functions';
 import Popup from './Popup';
 
@@ -33,15 +34,21 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     textAlign: 'center',
-    width: '30px'
+    width: '35px',
+    height: 'content',
+    display: 'grid',
+    gridTemplateRows: '1fr 1.5fr'
   },
   listItem: {
     marginTop: theme.spacing(2)
   },
   date: {
-    background: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
-    borderRadius: '50%'
+    borderRadius: '50%',
+    paddingTop: '20%'
+  },
+  highlighted: {
+    backgroundColor: theme.palette.secondary.main
   },
   booking: {
     borderRadius: '4px',
@@ -94,7 +101,9 @@ const List = props => {
                   <Typography
                     variant={'h6'}
                     display="block"
-                    className={`${classes.date}`}
+                    className={`${classes.date} ${
+                      isToday(bookings[0].start) ? classes.highlighted : null
+                    }`}
                   >
                     {moment(bookings[0].start).format('DD')}
                   </Typography>
@@ -106,7 +115,7 @@ const List = props => {
                     user: { username }
                   } = booking;
                   return (
-                    <Grid item xs={12} sm={5} key={booking.id}>
+                    <Grid item xs={12} key={booking.id}>
                       <Paper
                         elevation={isUserBooking(me.username, username) ? 3 : 0}
                         className={generateBookingClassNames(
