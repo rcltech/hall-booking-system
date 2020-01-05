@@ -51,8 +51,13 @@ function ChooseTime({
   }
 }) {
   const classes = useStyles();
-  const [start, setStart] = useState(moment());
-  const [end, setEnd] = useState(moment());
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(
+    moment()
+      .startOf('hour')
+      .add(1, 'hour')
+      .toDate()
+  );
   const [redirect, doRedirect] = useState(false);
   const [events, setEvents] = useState();
 

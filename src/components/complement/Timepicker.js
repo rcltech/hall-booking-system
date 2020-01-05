@@ -48,18 +48,32 @@ const Timepicker = props => {
   const classes = useStyles();
 
   const handleStartTimeChange = start => {
-    setStart(start);
-    setEnd(moment(start).add(1, 'hours'));
+    setStart(
+      moment(start)
+        .startOf('hour')
+        .toDate()
+    );
+    setEnd(
+      moment(start)
+        .startOf('hour')
+        .add(1, 'hours')
+        .toDate()
+    );
   };
 
   const handleEndTimeChange = end => {
-    setEnd(end);
+    setEnd(end.toDate());
     if (
       moment(start)
         .startOf('hour')
         .isAfter(moment(end).startOf('hour'))
     ) {
-      setStart(moment(end).subtract(1, 'hours'));
+      setStart(
+        moment(end)
+          .startOf('hour')
+          .subtract(1, 'hours')
+          .toDate()
+      );
     }
   };
 
@@ -79,7 +93,7 @@ const Timepicker = props => {
             showTodayButton
             todayLabel="now"
             value={start}
-            minutesStep={15}
+            minutesStep={60}
             onChange={handleStartTimeChange}
             InputProps={{ className: classes.timePickerLabel }}
           />
@@ -90,7 +104,7 @@ const Timepicker = props => {
           </Typography>
           <TimePicker
             value={end}
-            minutesStep={15}
+            minutesStep={60}
             onChange={handleEndTimeChange}
             InputProps={{ className: classes.timePickerLabel }}
           />
