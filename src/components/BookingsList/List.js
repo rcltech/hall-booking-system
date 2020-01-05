@@ -25,9 +25,11 @@ const useStyles = makeStyles(theme => ({
   },
   month: {
     background: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
     marginTop: theme.spacing(2),
     padding: theme.spacing(1)
+  },
+  monthText: {
+    color: theme.palette.primary.contrastText
   },
   icon: {
     textAlign: 'center',
@@ -46,10 +48,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1)
   },
   user: {
-    backgroundColor: 'red'
+    backgroundColor: theme.palette.user.main
   },
   others: {
-    backgroundColor: 'blue'
+    backgroundColor: theme.palette.others.main
   }
 }));
 
@@ -141,7 +143,7 @@ const MonthBlock = props => {
   const { classes, dateTime } = props;
   return (
     <div className={classes.month}>
-      <Typography variant={'h4'}>
+      <Typography variant={'h4'} className={classes.monthText}>
         {moment(dateTime).format('MMMM YYYY')}
       </Typography>
     </div>

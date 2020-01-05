@@ -20,6 +20,12 @@ let theme = createMuiTheme({
     },
     background: {
       default: '#fff'
+    },
+    user: {
+      main: '#ce93d8'
+    },
+    others: {
+      main: '#9fa8da'
     }
   },
   typography: {
