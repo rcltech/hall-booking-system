@@ -1,58 +1,48 @@
 const moment = require('moment');
 
-const separateEventsByDate = events => {
-  const eventsByDate = [];
-  events.forEach(event => {
+const separateBookingsByDate = bookings => {
+  const bookingsByDate = [];
+  bookings.forEach(booking => {
     if (
-      eventsByDate.length === 0 ||
-      moment(event.dateTime)
+      bookingsByDate.length === 0 ||
+      moment(booking.start)
         .startOf('date')
         .format() !==
-        moment(eventsByDate[eventsByDate.length - 1][0].dateTime)
+        moment(bookingsByDate[bookingsByDate.length - 1][0].start)
           .startOf('date')
           .format()
     )
-      eventsByDate.push([event]);
-    else eventsByDate[eventsByDate.length - 1].push(event);
+      bookingsByDate.push([booking]);
+    else bookingsByDate[bookingsByDate.length - 1].push(booking);
   });
-  return eventsByDate;
+  return bookingsByDate;
 };
 
-const separateEventsByMonthAndDate = eventsByDate => {
-  const eventsByMonthAndDate = [];
-  eventsByDate.forEach(events => {
+const separateBookingsByMonthAndDate = bookingsByDate => {
+  const bookingsByMonthAndDate = [];
+  bookingsByDate.forEach(bookings => {
     if (
-      eventsByMonthAndDate.length === 0 ||
-      moment(events[0].dateTime)
+      bookingsByMonthAndDate.length === 0 ||
+      moment(bookings[0].start)
         .startOf('month')
         .format() !==
         moment(
-          eventsByMonthAndDate[eventsByMonthAndDate.length - 1][0][0].dateTime
+          bookingsByMonthAndDate[bookingsByMonthAndDate.length - 1][0][0].start
         )
           .startOf('month')
           .format()
     )
-      eventsByMonthAndDate.push([events]);
+      bookingsByMonthAndDate.push([bookings]);
     else {
-      const groupedEvents =
-        eventsByMonthAndDate[eventsByMonthAndDate.length - 1];
-      groupedEvents.push(events);
+      const groupedbookings =
+        bookingsByMonthAndDate[bookingsByMonthAndDate.length - 1];
+      groupedbookings.push(bookings);
     }
   });
-  return eventsByMonthAndDate;
-};
-
-const displayUsers = users => {
-  let value = '';
-  users.forEach(user => {
-    value += `${user.firstName} ${user.lastName}, `;
-  });
-  value = value.substring(0, value.length - 2);
-  return value;
+  return bookingsByMonthAndDate;
 };
 
 module.exports = {
-  separateEventsByDate,
-  separateEventsByMonthAndDate,
-  displayUsers
+  separateBookingsByDate,
+  separateBookingsByMonthAndDate
 };

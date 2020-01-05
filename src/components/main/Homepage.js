@@ -18,34 +18,31 @@ const GET_ALL_BOOKINGS = gql`
     bookings {
       start
       end
+      room {
+        number
+        name
+      }
       user {
         username
+        first_name
+        last_name
       }
-    }
-  }
-`;
-
-const GET_USER_BOOKINGS = gql`
-  query userBookings($username: String!) {
-    bookings(data: { user: { username: $username } }) {
-      start
-      end
     }
   }
 `;
 
 const Homepage = () => {
   const { data: meData } = useQuery(GET_ME);
-  const { data: allBookingsData } = useQuery(GET_ALL_BOOKINGS);
-  const { data: userBookingsData } = useQuery(GET_USER_BOOKINGS, {
-    skip: !meData || !meData.me || !meData.me.username,
-    variables: { username: meData && meData.me ? meData.me.username : null }
-  });
+  const { data: allBookingsData, loading } = useQuery(GET_ALL_BOOKINGS);
 
   return (
     <div>
       <Header />
-      {/*<List bookings={data} />*/}
+      {!loading ? (
+        <List me={meData.me} bookings={allBookingsData.bookings} />
+      ) : (
+        <>Loading</>
+      )}
     </div>
   );
 };

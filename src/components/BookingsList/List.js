@@ -10,9 +10,8 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import {
-  displayUsers,
-  separateEventsByDate,
-  separateEventsByMonthAndDate
+  separateBookingsByDate,
+  separateBookingsByMonthAndDate
 } from './functions';
 
 const useStyles = makeStyles(theme => ({
@@ -44,70 +43,58 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText
   },
-  event: {
+  booking: {
     borderRadius: '8px',
     padding: theme.spacing(1)
   },
-  classEvent: {
-    background: theme.palette.class.main,
-    color: theme.palette.class.contrastText
+  user: {
+    backgroundColor: 'red'
   },
-  infoEvent: {
-    background: theme.palette.info.main,
-    color: theme.palette.info.contrastText
-  },
-  complaintEvent: {
-    background: theme.palette.complaint.main,
-    color: theme.palette.complaint.contrastText
-  },
-  othersEvent: {
-    background: theme.palette.others.main,
-    color: theme.palette.others.contrastText
+  others: {
+    backgroundColor: 'blue'
   }
 }));
 
 const List = props => {
   const classes = useStyles();
-  const { events } = props;
+  const { me, bookings } = props;
   const [focusedEvent, setFocusedEvent] = useState({});
   const [openPopup, setOpenPopup] = useState(false);
 
-  const eventsByDate = separateEventsByDate(events);
-  const eventsByMonthAndDate = separateEventsByMonthAndDate(eventsByDate);
+  const bookingsByDate = separateBookingsByDate(bookings);
+  const bookingsByMonthAndDate = separateBookingsByMonthAndDate(bookingsByDate);
 
-  const generateEventClassNames = type => {
-    let classNames = `${classes.event} `;
-    if (type === 'Class') classNames += classes.classEvent;
-    else if (type === 'Info') classNames += classes.infoEvent;
-    else if (type === 'Complaint') classNames += classes.complaintEvent;
-    else classNames += classes.othersEvent;
+  const generateBookingClassNames = username => {
+    let classNames = `${classes.booking} `;
+    classNames +=
+      username === me.username ? `${classes.user}` : `${classes.others}`;
     return classNames;
   };
 
   return (
     <MuiList className={classes.root} dense={true}>
-      {eventsByMonthAndDate.map(groupedEvents => (
-        <div key={groupedEvents[0][0].dateTime}>
+      {bookingsByMonthAndDate.map(groupedBookings => (
+        <div key={groupedBookings[0][0].start}>
           <MonthBlock
             classes={classes}
-            dateTime={groupedEvents[0][0].dateTime}
+            dateTime={groupedBookings[0][0].start}
           />
-          {groupedEvents.map(events => (
+          {groupedBookings.map(bookings => (
             <ListItem
               className={classes.listItem}
-              alignItems={events.length > 2 ? 'flex-start' : 'center'}
-              key={events[0].dateTime}
+              alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
+              key={bookings[0].dateTime}
             >
               <ListItemIcon>
                 <div className={classes.icon}>
                   <Typography variant={'button'} display="block">
-                    {moment(events[0].dateTime).format('ddd')}
+                    {moment(bookings[0].start).format('ddd')}
                   </Typography>
                   <Typography
                     variant={'h6'}
                     display="block"
                     className={`${classes.date} ${
-                      moment(events[0].dateTime)
+                      moment(bookings[0].start)
                         .startOf('date')
                         .format() ===
                       moment()
@@ -117,23 +104,25 @@ const List = props => {
                         : ''
                     }`}
                   >
-                    {moment(events[0].dateTime).format('DD')}
+                    {moment(bookings[0].start).format('DD')}
                   </Typography>
                 </div>
               </ListItemIcon>
               <Grid container spacing={1}>
-                {events.map(event => (
-                  <Grid item xs={12} sm={5} key={event.id}>
+                {bookings.map(booking => (
+                  <Grid item xs={12} sm={5} key={booking.id}>
                     <Paper
                       elevation={2}
-                      className={generateEventClassNames(event.type)}
+                      className={generateBookingClassNames(
+                        booking.user.username
+                      )}
                       onClick={() => {
-                        setFocusedEvent(event);
+                        setFocusedEvent(booking);
                         setOpenPopup(true);
                       }}
                     >
                       <Typography variant={'body1'}>
-                        <EventBlock event={event} />
+                        <EventBlock booking={booking} />
                       </Typography>
                     </Paper>
                   </Grid>
@@ -159,10 +148,9 @@ const MonthBlock = props => {
 };
 
 const EventBlock = props => {
-  const { event } = props;
-  const participants = displayUsers(event.participants);
+  const { booking } = props;
 
-  return <span>{event.name ? event.name : participants}</span>;
+  return <span>{booking.room.number}</span>;
 };
 
 export default List;
