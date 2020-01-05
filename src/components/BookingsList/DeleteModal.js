@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     width: '75vw',
     margin: 'auto',
     background: 'white',
-    border: '2px solid',
     borderColor: theme.palette.secondary.dark,
     borderRadius: '8px',
     padding: theme.spacing(1),
@@ -31,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   icon: {
     margin: theme.spacing(2),
     padding: theme.spacing(2),
-    color: theme.palette.secondary.main
+    color: theme.palette.error.main
   }
 }));
 
