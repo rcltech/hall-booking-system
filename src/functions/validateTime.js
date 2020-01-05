@@ -1,19 +1,30 @@
 import moment from 'moment';
 
-const validateTime = (timeSlots, start, end) => {
-  const startNum = Number(moment(start).format('HH'));
-  const endNum = Number(moment(end).format('HH'));
-  if (startNum < 7 || startNum > 22 || endNum < 8 || endNum > 23) {
-    alert('Time slot out of range');
+const validateTime = (timeSlots, date, start, end) => {
+  const startTime = moment(date)
+    .hours(Number(moment(start).format('HH')))
+    .startOf('hour');
+  const endTime = moment(date)
+    .hours(Number(moment(end).format('HH')))
+    .startOf('hour');
+  const duration = moment.duration(endTime.diff(startTime));
+  const hours = duration.asHours();
+  const dateChosen = moment(date).startOf('date');
+  if (hours > 2) {
+    alert('Maximum hours of booking per person is 2 hours.');
     return false;
-  } else if (endNum - startNum > 2) {
-    alert('Maximum hours of booking per person is 2 hours');
+  } else if (
+    !(
+      startTime.isSameOrAfter(dateChosen.hour(7)) &&
+      startTime.isSameOrBefore(dateChosen.hour(22))
+    )
+  ) {
+    alert('Selected timeslot is out of range.');
     return false;
   } else {
-    timeSlots = timeSlots.map(timeslot => Number(timeslot.id));
-    for (let i = startNum; i < endNum; ++i) {
-      if (timeSlots.includes(i)) {
-        alert('Time slot has been occupied');
+    for (let i = 0; i < timeSlots.length; ++i) {
+      if (timeSlots[i].startTime.isSame(startTime, 'hour')) {
+        alert('Timeslot has been booked by someone else.');
         return false;
       }
     }

@@ -21,8 +21,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const makeSelection = (timeSlots, start, end, setStart, setEnd, doRedirect) => {
-  if (validateTime(timeSlots, start, end)) {
+const makeSelection = (
+  timeSlots,
+  date,
+  start,
+  end,
+  setStart,
+  setEnd,
+  doRedirect
+) => {
+  if (validateTime(timeSlots, date, start, end)) {
     setStart(start);
     setEnd(end);
     doRedirect(true);
@@ -51,8 +59,17 @@ function ChooseTime({
   }
 }) {
   const classes = useStyles();
-  const [start, setStart] = useState(moment());
-  const [end, setEnd] = useState(moment());
+  const [start, setStart] = useState(
+    moment()
+      .startOf('hour')
+      .toDate()
+  );
+  const [end, setEnd] = useState(
+    moment()
+      .startOf('hour')
+      .add(1, 'hour')
+      .toDate()
+  );
   const [redirect, doRedirect] = useState(false);
   const [events, setEvents] = useState();
 
@@ -85,6 +102,7 @@ function ChooseTime({
           onContinue={(start, end) =>
             makeSelection(
               events[Object.keys(events)[0]],
+              date,
               start,
               end,
               setStart,
