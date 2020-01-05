@@ -5,7 +5,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { RoomList } from '../ChooseRoom/RoomList';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -16,6 +18,18 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     margin: '20px 0'
+  },
+  nextStepButtonHidden: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    opacity: 0
+  },
+  nextStepButton: {
+    opacity: 1,
+    transition: theme.transitions.create(['opacity'], {
+      duration: theme.transitions.duration.complex
+    })
   }
 }));
 
@@ -55,24 +69,26 @@ function ChooseRoom() {
     );
 
   return (
-    <div>
+    <>
       <NavBar backPath="/" />
       <div className={classes.container}>
         <RoomListContext.Provider value={selectedRoom}>
           <RoomList rooms={rooms} selectRoom={selectRoom} />
         </RoomListContext.Provider>
-        <Button
-          className={classes.buttonContainer}
-          color="primary"
-          variant="contained"
-          onClick={() =>
-            selectedRoom ? doRedirect(true) : alert('Please select a room.')
-          }
-        >
-          Next
-        </Button>
       </div>
-    </div>
+      <Fab
+        color="primary"
+        aria-label="next"
+        className={clsx(classes.nextStepButtonHidden, {
+          [classes.nextStepButton]: selectedRoom
+        })}
+        onClick={() =>
+          selectedRoom ? doRedirect(true) : alert('Please select a room.')
+        }
+      >
+        <ArrowForwardIcon />
+      </Fab>
+    </>
   );
 }
 
