@@ -16,3 +16,22 @@ export const CREATE_BOOKING = gql`
     }
   }
 `;
+
+export const GET_ALL_BOOKINGS = gql`
+  query bookings {
+    bookings {
+      id
+      start
+      end
+      room {
+        number
+        name
+      }
+      user {
+        username
+        first_name
+        last_name
+      }
+    }
+  }
+`;

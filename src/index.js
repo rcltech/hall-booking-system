@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { ApolloClient, InMemoryCache, HttpLink } from 'apollo-boost';
+import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import qs from 'query-string';
 
 let theme = createMuiTheme({
   palette: {
@@ -66,40 +67,60 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
-let authorization = localStorage.getItem('id');
+const Index = () => {
+  const isIdEmpty = () => {
+    const id = localStorage.getItem('id');
+    return id === '' || id === null || id === undefined;
+  };
 
-const uri =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:4000/graphql'
-    : 'https://phoenix.rctech.club/graphql';
-
-const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri,
-  headers: {
-    authorization
+  // make sure that id gets stored correctly first before running anything else
+  if (isIdEmpty()) {
+    if (qs.parse(window.location.search).id) {
+      localStorage.setItem(
+        'id',
+        qs.parse(window.location.search).id.toString()
+      );
+    }
   }
-});
 
-const client = new ApolloClient({
-  cache,
-  link
-});
-
-cache.writeData({
-  data: {
-    isLoggedIn: !!localStorage.getItem('token')
+  if (isIdEmpty()) {
+    const app_url = 'owl.rctech.club';
+    const AUTH_URL =
+      process.env.NODE_ENV === 'development'
+        ? `http://localhost:3001/?redirectTo=localhost:3000`
+        : `https://ladybird.rctech.club/?redirectTo=${app_url}`;
+    window.location.replace(AUTH_URL);
   }
-});
 
-const Index = () => (
-  <ApolloProvider client={client}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-  </ApolloProvider>
-);
+  let authorization = localStorage.getItem('id');
+
+  const uri =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:4000/graphql'
+      : 'https://phoenix.rctech.club/graphql';
+
+  const cache = new InMemoryCache();
+  const link = new HttpLink({
+    uri,
+    headers: {
+      authorization
+    }
+  });
+
+  const client = new ApolloClient({
+    cache,
+    link
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </ApolloProvider>
+  );
+};
 
 ReactDOM.render(<Index />, document.getElementById('root'));
 

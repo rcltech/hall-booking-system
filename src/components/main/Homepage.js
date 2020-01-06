@@ -1,36 +1,10 @@
 import React from 'react';
-import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import Header from '../complement/Header';
 import List from '../BookingsList/List';
 import 'antd/dist/antd.css';
-
-const GET_ME = gql`
-  query me {
-    me {
-      username
-    }
-  }
-`;
-
-const GET_ALL_BOOKINGS = gql`
-  query bookings {
-    bookings {
-      id
-      start
-      end
-      room {
-        number
-        name
-      }
-      user {
-        username
-        first_name
-        last_name
-      }
-    }
-  }
-`;
+import { GET_ME } from '../../gql/users';
+import { GET_ALL_BOOKINGS } from '../../gql/bookings';
 
 const Homepage = () => {
   const { loading: meLoading, error: meError, data: userData } = useQuery(
