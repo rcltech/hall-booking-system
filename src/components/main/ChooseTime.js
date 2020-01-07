@@ -7,7 +7,7 @@ import getRooms from '../../functions/getRooms';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import validateTime from '../../functions/validateTime';
+import { validateTime } from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
 import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';

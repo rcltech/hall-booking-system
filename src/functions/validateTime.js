@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const validateTime = (timeSlots, date, start, end) => {
+export const validateTime = (timeSlots, date, start, end) => {
   const startTime = moment(date)
     .hours(Number(moment(start).format('HH')))
     .startOf('hour');
@@ -14,9 +14,10 @@ const validateTime = (timeSlots, date, start, end) => {
     alert('Maximum hours of booking per person is 2 hours.');
     return false;
   } else if (
-    startTime.isSameOrBefore(dateChosen.hour(Number(moment().format('HH'))))
+    startTime.isSameOrBefore(dateChosen.hour(Number(moment().format('HH')))) &&
+    startTime.isSame(moment(), 'day')
   ) {
-    alert('Selected timeslot is not available');
+    alert('Selected timeslot is not available.');
     return false;
   } else if (
     !(
@@ -28,7 +29,10 @@ const validateTime = (timeSlots, date, start, end) => {
     return false;
   } else {
     for (let i = 0; i < timeSlots.length; ++i) {
-      if (timeSlots[i].startTime.isSame(startTime, 'hour')) {
+      if (
+        timeSlots[i].startTime.isSame(startTime, 'hour') ||
+        timeSlots[i].endTime.isSame(endTime, 'hour')
+      ) {
         alert('Timeslot has been booked by someone else.');
         return false;
       }
@@ -36,5 +40,3 @@ const validateTime = (timeSlots, date, start, end) => {
   }
   return true;
 };
-
-export default validateTime;
