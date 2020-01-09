@@ -31,7 +31,7 @@ jobs:
         local_dir: './build'
         on:
           all_branches: true
-    #           condition: $TRAVIS_BRANCH =~ ^(master|testing)$
+          condition: $TRAVIS_BRANCH =~ ^(master)$
 
     - stage: test-deploy
       script: curl https://owl.rctech.club

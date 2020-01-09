@@ -5,6 +5,7 @@ import List from '../BookingsList/List';
 import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
+import { redirectToLogin } from '../../functions/redirectToLogin';
 
 const Homepage = () => {
   const { loading: meLoading, error: meError, data: userData } = useQuery(
@@ -22,6 +23,8 @@ const Homepage = () => {
 
   if (meError) console.log(meError);
   if (bookingsError) console.log(bookingsError);
+
+  if (!userData || !userData.me) return redirectToLogin();
 
   return (
     <div>

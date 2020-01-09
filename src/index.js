@@ -8,6 +8,7 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import qs from 'query-string';
+import { redirectToLogin } from './functions/redirectToLogin';
 
 let theme = createMuiTheme({
   palette: {
@@ -74,22 +75,13 @@ const Index = () => {
   };
 
   // make sure that id gets stored correctly first before running anything else
-  if (isIdEmpty()) {
-    if (qs.parse(window.location.search).id) {
-      localStorage.setItem(
-        'id',
-        qs.parse(window.location.search).id.toString()
-      );
-    }
+  const returnedId = qs.parse(window.location.search).id;
+  if (isIdEmpty() || returnedId !== '') {
+    localStorage.setItem('id', returnedId || '');
   }
 
   if (isIdEmpty()) {
-    const app_url = 'owl.rctech.club';
-    const AUTH_URL =
-      process.env.NODE_ENV === 'development'
-        ? `http://localhost:3001/?redirectTo=localhost:3000`
-        : `https://ladybird.rctech.club/?redirectTo=${app_url}`;
-    window.location.replace(AUTH_URL);
+    return redirectToLogin();
   }
 
   let authorization = localStorage.getItem('id');
