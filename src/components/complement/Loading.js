@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Loading = () => {
+export const Loading = () => {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -27,5 +27,3 @@ const Loading = () => {
     />
   );
 };
-
-export default Loading;

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Timepicker = ({ start, end, setStart, setEnd }) => {
+export const Timepicker = ({ start, end, setStart, setEnd }) => {
   const classes = useStyles();
 
   const handleStartTimeChange = start => {
@@ -97,5 +97,3 @@ const Timepicker = ({ start, end, setStart, setEnd }) => {
     </div>
   );
 };
-
-export default Timepicker;

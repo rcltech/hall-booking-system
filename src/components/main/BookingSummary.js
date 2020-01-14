@@ -10,15 +10,15 @@ import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
 import { useHistory } from 'react-router-dom';
-import NavBar from '../complement/NavBar';
-import Modals from '../BookingSummary/Modals';
+import { NavBar } from '../complement/NavBar';
+import { Modals } from '../BookingSummary/Modals';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
-import Loading from '../complement/Loading';
+import { Loading } from '../complement/Loading';
 
 const moment = require('moment');
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BookingSummary = () => {
+export const BookingSummary = () => {
   const { data: roomData } = useQuery(GET_ROOM_NUMBER);
   const { data: bookingData } = useQuery(GET_BOOKING_DATE);
 
@@ -147,5 +147,3 @@ const BookingSummary = () => {
     </div>
   );
 };
-
-export default BookingSummary;

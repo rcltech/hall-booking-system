@@ -34,9 +34,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DeleteModal = props => {
+export const DeleteModal = ({ open, setOpen, confirm, onClick }) => {
   const classes = useStyles();
-  const { open, setOpen, confirm, onClick } = props;
   return (
     <Modal open={open} onClose={() => setOpen(false)} className={classes.root}>
       <div className={classes.modal}>
@@ -67,5 +66,3 @@ const DeleteModal = props => {
     </Modal>
   );
 };
-
-export default DeleteModal;

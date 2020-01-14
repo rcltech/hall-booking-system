@@ -18,9 +18,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TopBar = props => {
+export const TopBar = ({ goBack, icons }) => {
   const classes = useStyles();
-  const { goBack, icons } = props;
 
   return (
     <div className={classes.topBar}>
@@ -44,5 +43,3 @@ const TopBar = props => {
     </div>
   );
 };
-
-export default TopBar;

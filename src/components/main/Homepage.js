@@ -1,14 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Header from '../Homepage/Header';
-import List from '../BookingsList/List';
+import { Header } from '../Homepage/Header';
+import { List } from '../BookingsList/List';
 import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
 import { redirectToLogin } from '../../functions/redirectToLogin';
-import Loading from '../complement/Loading';
+import { Loading } from '../complement/Loading';
 
-const Homepage = () => {
+export const Homepage = () => {
   const { loading: meLoading, error: meError, data: userData } = useQuery(
     GET_ME
   );
@@ -35,5 +35,3 @@ const Homepage = () => {
     </div>
   );
 };
-
-export default Homepage;

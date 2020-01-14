@@ -15,7 +15,7 @@ import {
   isUserBooking,
   isToday
 } from './functions';
-import Popup from './Popup';
+import { Popup } from './Popup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,9 +66,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const List = props => {
+export const List = ({ me, bookings }) => {
   const classes = useStyles();
-  const { me, bookings } = props;
   const [focusedBooking, setFocusedBooking] = useState({});
   const [openPopup, setOpenPopup] = useState(false);
 
@@ -184,5 +183,3 @@ const BookingBlock = props => {
     </>
   );
 };
-
-export default List;

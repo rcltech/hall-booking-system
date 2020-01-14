@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import NavBar from '../complement/NavBar';
-import Timepicker from '../ChooseTime/Timepicker';
+import { NavBar } from '../complement/NavBar';
+import { Timepicker } from '../ChooseTime/Timepicker';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
 import { shortlistBookings } from '../../functions/shortlistBookings';
@@ -12,7 +12,7 @@ import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';
-import List from '../ChooseTime/List';
+import { List } from '../ChooseTime/List';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ChooseTime() {
+export const ChooseTime = () => {
   const classes = useStyles();
 
   const [start, setStart] = useState(
@@ -99,6 +99,4 @@ function ChooseTime() {
       </Fab>
     </>
   );
-}
-
-export default ChooseTime;
+};

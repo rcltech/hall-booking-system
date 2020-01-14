@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import NavBar from '../complement/NavBar';
+import { NavBar } from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
 import { DatePicker } from '../ChooseDate/DatePicker';
 import moment from 'moment';
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ChooseDate() {
+export const ChooseDate = () => {
   const classes = useStyles();
   const [date, setDate] = useState(new Date());
   const client = useApolloClient();
@@ -60,6 +60,4 @@ function ChooseDate() {
       </Fade>
     </div>
   );
-}
-
-export default ChooseDate;
+};

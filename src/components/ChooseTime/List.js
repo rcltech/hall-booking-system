@@ -48,9 +48,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const List = props => {
+export const List = ({ bookings }) => {
   const classes = useStyles();
-  const { bookings } = props;
 
   const groupedBookings = separateBookingsByDate(bookings);
 
@@ -107,5 +106,3 @@ const BookingBlock = props => {
     )} - ${moment(end).format('h:mm a')}`}</Typography>
   );
 };
-
-export default List;
