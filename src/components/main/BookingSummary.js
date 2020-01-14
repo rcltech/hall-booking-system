@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BookingSummary = () => {
-  const { data: roomData, client } = useQuery(GET_ROOM_NUMBER);
+  const { data: roomData } = useQuery(GET_ROOM_NUMBER);
   const { data: bookingData } = useQuery(GET_BOOKING_DATE);
 
   const history = useHistory();
@@ -64,7 +64,7 @@ const BookingSummary = () => {
     image: undefined
   });
 
-  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING, {
+  const [createBooking, { error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
       { query: GET_ALL_BOOKINGS },
       { query: ROOM_BOOKINGS, variables: { room } }

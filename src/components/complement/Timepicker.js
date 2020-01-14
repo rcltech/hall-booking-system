@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles(theme => ({
   buttonContainer: {
