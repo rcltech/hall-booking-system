@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
 import { redirectToLogin } from '../../functions/redirectToLogin';
+import Loading from '../complement/Loading';
 
 const Homepage = () => {
   const { loading: meLoading, error: meError, data: userData } = useQuery(
@@ -19,7 +20,7 @@ const Homepage = () => {
   } = useQuery(GET_ALL_BOOKINGS);
 
   if (meLoading || bookingsLoading) {
-    return <></>;
+    return <Loading />;
   }
 
   if (meError) console.log(meError);

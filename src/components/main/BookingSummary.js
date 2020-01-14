@@ -18,6 +18,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
+import Loading from '../complement/Loading';
 
 const moment = require('moment');
 
@@ -64,12 +65,14 @@ const BookingSummary = () => {
     image: undefined
   });
 
-  const [createBooking, { error }] = useMutation(CREATE_BOOKING, {
+  const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
       { query: GET_ALL_BOOKINGS },
       { query: ROOM_BOOKINGS, variables: { room } }
     ]
   });
+
+  if (loading) return <Loading />;
 
   const handleOnConfirmPress = async () => {
     const startTime = moment(date)

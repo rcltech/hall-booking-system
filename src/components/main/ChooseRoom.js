@@ -8,6 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fade from '@material-ui/core/Fade';
 import { GET_ROOMS } from '../../gql/rooms';
+import Loading from '../complement/Loading';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -35,7 +36,7 @@ function ChooseRoom() {
 
   const classes = useStyles();
 
-  if (loading) return <div>Loading</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error</div>;
 
   const { rooms } = data;
