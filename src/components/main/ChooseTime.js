@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Timetable from 'react-timetable-events';
 import NavBar from '../complement/NavBar';
 import Timepicker from '../complement/Timepicker';
-import getRooms from '../../functions/getRooms';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
+import { shortlistBookings } from '../../functions/shortlistBookings';
 import { validateTime } from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
@@ -43,7 +42,7 @@ function ChooseTime() {
       .add(1, 'hour')
       .toDate()
   );
-  const [events, setEvents] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   const { data: roomData, client } = useQuery(GET_ROOM_NUMBER);
   const { data: bookingData } = useQuery(GET_BOOKING_DATE);
@@ -59,14 +58,13 @@ function ChooseTime() {
 
   useEffect(() => {
     if (data) {
-      getRooms(data.bookings, date).then(events => {
-        setEvents(events);
-      });
+      const filteredBookings = shortlistBookings(data.bookings, date);
+      setBookings(filteredBookings);
     }
   }, [data, date]);
 
   const handleNextButtonClick = () => {
-    if (validateTime(events, date, start, end)) {
+    if (validateTime(bookings, date, start, end)) {
       client.writeData({
         data: {
           start: moment(start).toISOString(),
@@ -88,7 +86,6 @@ function ChooseTime() {
           setStart={setStart}
           setEnd={setEnd}
         />
-        <Timetable events={events} />
       </div>
       <Fab
         color="primary"
