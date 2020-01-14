@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
-import Timepicker from '../complement/Timepicker';
+import Timepicker from '../ChooseTime/Timepicker';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
 import { shortlistBookings } from '../../functions/shortlistBookings';

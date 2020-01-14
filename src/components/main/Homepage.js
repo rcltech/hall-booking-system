@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Header from '../complement/Header';
+import Header from '../Homepage/Header';
 import List from '../BookingsList/List';
 import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';

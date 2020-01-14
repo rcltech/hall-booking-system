@@ -11,7 +11,7 @@ import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
 import { useHistory } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
-import Modals from '../complement/Modals';
+import Modals from '../BookingSummary/Modals';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
