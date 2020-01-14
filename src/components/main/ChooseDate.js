@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import { makeStyles } from '@material-ui/core';
 import { DatePicker } from '../complement/DatePicker';
@@ -7,6 +7,7 @@ import moment from 'moment';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';
 import Fade from '@material-ui/core/Fade';
+import { useApolloClient } from '@apollo/react-hooks';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -28,28 +29,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ChooseDate({
-  location: {
-    state: { room }
-  }
-}) {
+function ChooseDate() {
   const classes = useStyles();
-  const [redirect, doRedirect] = useState(false);
   const [date, setDate] = useState(new Date());
+  const client = useApolloClient();
+  const history = useHistory();
 
-  if (redirect) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/time',
-          state: {
-            date: moment(date).toDate(),
-            room
-          }
-        }}
-      />
-    );
-  }
+  const handleNextButtonClick = () => {
+    client.writeData({
+      data: {
+        bookingDate: moment(date)
+          .toDate()
+          .toDateString()
+      }
+    });
+    history.push('/time');
+  };
 
   return (
     <div className={classes.container}>
@@ -60,7 +55,7 @@ function ChooseDate({
           color="primary"
           aria-label="next"
           className={classes.nextStepButton}
-          onClick={() => doRedirect(true)}
+          onClick={handleNextButtonClick}
         >
           <ArrowForwardIcon />
         </Fab>

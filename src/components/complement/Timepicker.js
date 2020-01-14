@@ -32,19 +32,10 @@ const useStyles = makeStyles(theme => ({
   },
   timePickerLabel: {
     color: theme.palette.primary.contrastText
-  },
-  nextStepButton: {
-    position: 'fixed',
-    bottom: 20,
-    right: 20,
-    zIndex: 100
   }
 }));
 
-const Timepicker = props => {
-  const [start, setStart] = useState(props.start);
-  const [end, setEnd] = useState(props.end);
-
+const Timepicker = ({ start, end, setStart, setEnd }) => {
   const classes = useStyles();
 
   const handleStartTimeChange = start => {
@@ -77,11 +68,6 @@ const Timepicker = props => {
     }
   };
 
-  const handleOnContinuePress = () => {
-    const { onContinue } = props;
-    onContinue(start, end);
-  };
-
   return (
     <div className={classes.timePickerContainer}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -110,14 +96,6 @@ const Timepicker = props => {
           />
         </div>
       </MuiPickersUtilsProvider>
-      <Fab
-        color="primary"
-        aria-label="next"
-        className={classes.nextStepButton}
-        onClick={handleOnContinuePress}
-      >
-        <ArrowForwardIcon />
-      </Fab>
     </div>
   );
 };

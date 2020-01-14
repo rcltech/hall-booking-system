@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Homepage from './components/main/Homepage';
 import ChooseRoom from './components/main/ChooseRoom';
 import ChooseDate from './components/main/ChooseDate';
@@ -10,15 +10,13 @@ import BookingSummary from './components/main/BookingSummary';
 const App = () => {
   return (
     <Router>
-      <div>
-        <Switch>
-          <Route exact path="/" component={Homepage} />
-          <Route path="/room" component={ChooseRoom} />
-          <Route path="/date" component={ChooseDate} />
-          <Route path="/time" component={ChooseTime} />
-          <Route path="/summary" component={BookingSummary} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route path="/room" component={ChooseRoom} />
+        <Route path="/date" component={ChooseDate} />
+        <Route path="/time" component={ChooseTime} />
+        <Route path="/summary" component={BookingSummary} />
+      </Switch>
     </Router>
   );
 };

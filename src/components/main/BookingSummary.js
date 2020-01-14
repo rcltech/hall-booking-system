@@ -9,14 +9,15 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import NavBar from '../complement/NavBar';
 import Modals from '../complement/Modals';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
+import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 
 const moment = require('moment');
 
@@ -44,11 +45,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BookingSummary = ({
-  location: {
-    state: { room, date, start, end }
-  }
-}) => {
+const BookingSummary = () => {
+  const { data: roomData, client } = useQuery(GET_ROOM_NUMBER);
+  const { data: bookingData } = useQuery(GET_BOOKING_DATE);
+
+  const history = useHistory();
+
+  const room = roomData.roomNumber;
+  const date = bookingData.bookingDate;
+  const start = bookingData.start;
+  const end = bookingData.end;
+
   const classes = useStyles();
   const [modal, setModal] = useState({
     isOpen: false,
@@ -56,7 +63,6 @@ const BookingSummary = ({
     button: undefined,
     image: undefined
   });
-  const [redirect, doRedirect] = useState(undefined);
 
   const [createBooking, { data, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
@@ -66,16 +72,21 @@ const BookingSummary = ({
   });
 
   const handleOnConfirmPress = async () => {
-    date = moment(date).startOf('day');
-    start = moment(date).add(Number(start.substring(0, 2)), 'hour');
-    end = moment(date).add(Number(end.substring(0, 2)), 'hour');
+    const startOfDayDate = moment(date).startOf('day');
+    const startHour = moment(startOfDayDate).add(
+      Number(start.substring(0, 2)),
+      'hour'
+    );
+    const endHour = moment(startOfDayDate).add(
+      Number(end.substring(0, 2)),
+      'hour'
+    );
     const booking = {
       room_number: room,
-      start: moment(start).toISOString(),
-      end: moment(end).toISOString()
+      start: moment(startHour).toISOString(),
+      end: moment(endHour).toISOString()
     };
     await createBooking({ variables: booking });
-    console.log(data);
     setModal({
       isOpen: true,
       title: !error ? 'Your booking is successful!' : 'An error has occured.',
@@ -85,16 +96,11 @@ const BookingSummary = ({
   };
 
   const onModalClick = () => {
-    doRedirect(true);
-  };
-
-  const renderRedirect = () => {
-    return redirect ? <Redirect to="/" /> : <></>;
+    history.push('/');
   };
 
   return (
     <div className={classes.container}>
-      {renderRedirect()}
       <Modals
         modal={modal}
         onClick={() => {

@@ -11,6 +11,7 @@ const Homepage = () => {
   const { loading: meLoading, error: meError, data: userData } = useQuery(
     GET_ME
   );
+
   const {
     loading: bookingsLoading,
     error: bookingsError,
