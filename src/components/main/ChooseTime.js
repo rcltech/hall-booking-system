@@ -12,6 +12,7 @@ import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';
+import List from '../ChooseTime/List';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -86,6 +87,7 @@ function ChooseTime() {
           setStart={setStart}
           setEnd={setEnd}
         />
+        <List bookings={bookings} />
       </div>
       <Fab
         color="primary"
