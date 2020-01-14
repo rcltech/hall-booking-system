@@ -66,11 +66,11 @@ function ChooseTime() {
   }, [data, date]);
 
   const handleNextButtonClick = () => {
-    if (validateTime(events[Object.keys(events)[0]], date, start, end)) {
+    if (validateTime(events, date, start, end)) {
       client.writeData({
         data: {
-          start: moment(start).format('HH:00'),
-          end: moment(end).format('HH:00')
+          start: moment(start).toISOString(),
+          end: moment(end).toISOString()
         }
       });
       history.push('/summary');

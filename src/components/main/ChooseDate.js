@@ -38,9 +38,7 @@ function ChooseDate() {
   const handleNextButtonClick = () => {
     client.writeData({
       data: {
-        bookingDate: moment(date)
-          .toDate()
-          .toDateString()
+        bookingDate: moment(date).toISOString()
       }
     });
     history.push('/time');

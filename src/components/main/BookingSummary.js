@@ -72,19 +72,16 @@ const BookingSummary = () => {
   });
 
   const handleOnConfirmPress = async () => {
-    const startOfDayDate = moment(date).startOf('day');
-    const startHour = moment(startOfDayDate).add(
-      Number(start.substring(0, 2)),
-      'hour'
-    );
-    const endHour = moment(startOfDayDate).add(
-      Number(end.substring(0, 2)),
-      'hour'
-    );
+    const startTime = moment(date)
+      .hours(Number(moment(start).format('HH')))
+      .startOf('hour');
+    const endTime = moment(date)
+      .hours(Number(moment(end).format('HH')))
+      .startOf('hour');
     const booking = {
       room_number: room,
-      start: moment(startHour).toISOString(),
-      end: moment(endHour).toISOString()
+      start: moment(startTime).toISOString(),
+      end: moment(endTime).toISOString()
     };
     await createBooking({ variables: booking });
     setModal({
@@ -128,7 +125,8 @@ const BookingSummary = () => {
                 <AccessTimeIcon color={'primary'} />
               </ListItemIcon>
               <ListItemText>
-                {start} - {end}
+                {moment(start).format('hh:mm')} -{' '}
+                {moment(end).format('hh:mm a')}
               </ListItemText>
             </ListItem>
           </List>
