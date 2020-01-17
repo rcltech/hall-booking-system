@@ -30,8 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Modals(props) {
-  const { modal, onClick } = props;
+export const Modals = ({ modal, onClick }) => {
   const { isOpen, title, button, image } = modal;
   const classes = useStyles();
 
@@ -50,6 +49,4 @@ function Modals(props) {
       </div>
     </Modal>
   );
-}
-
-export default Modals;
+};

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const validateTime = (timeSlots, date, start, end) => {
+export const validateTime = (bookings, date, start, end) => {
   const startTime = moment(date)
     .hours(Number(moment(start).format('HH')))
     .startOf('hour');
@@ -13,11 +13,8 @@ export const validateTime = (timeSlots, date, start, end) => {
   if (hours > 2) {
     alert('Maximum hours of booking per person is 2 hours.');
     return false;
-  } else if (
-    startTime.isSameOrBefore(dateChosen.hour(Number(moment().format('HH')))) &&
-    startTime.isSame(moment(), 'day')
-  ) {
-    alert('Selected timeslot is not available.');
+  } else if (startTime.isSameOrBefore(moment())) {
+    alert('Selected timeslot is in the past.');
     return false;
   } else if (
     !(
@@ -25,13 +22,15 @@ export const validateTime = (timeSlots, date, start, end) => {
       startTime.isSameOrBefore(dateChosen.hour(22))
     )
   ) {
-    alert('Selected timeslot is out of range.');
+    alert(
+      'Selected timeslot is out of range. You can only book between 7am and 11pm.'
+    );
     return false;
   } else {
-    for (let i = 0; i < timeSlots.length; ++i) {
+    for (let i = 0; i < bookings.length; ++i) {
       if (
-        timeSlots[i].startTime.isSame(startTime, 'hour') ||
-        timeSlots[i].endTime.isSame(endTime, 'hour')
+        moment(bookings[i].start).isSame(startTime, 'hour') ||
+        moment(bookings[i].end).isSame(endTime, 'hour')
       ) {
         alert('Timeslot has been booked by someone else.');
         return false;

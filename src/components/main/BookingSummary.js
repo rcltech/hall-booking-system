@@ -9,14 +9,16 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
-import { Redirect } from 'react-router-dom';
-import NavBar from '../complement/NavBar';
-import Modals from '../complement/Modals';
-import { useMutation } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-dom';
+import { NavBar } from '../complement/NavBar';
+import { Modals } from '../BookingSummary/Modals';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
+import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
+import { Loading } from '../complement/Loading';
 
 const moment = require('moment');
 
@@ -44,11 +46,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BookingSummary = ({
-  location: {
-    state: { room, date, start, end }
-  }
-}) => {
+export const BookingSummary = () => {
+  const { data: roomData } = useQuery(GET_ROOM_NUMBER);
+  const { data: bookingData } = useQuery(GET_BOOKING_DATE);
+
+  const history = useHistory();
+
+  const room = roomData.roomNumber;
+  const date = bookingData.bookingDate;
+  const start = bookingData.start;
+  const end = bookingData.end;
+
   const classes = useStyles();
   const [modal, setModal] = useState({
     isOpen: false,
@@ -56,26 +64,29 @@ const BookingSummary = ({
     button: undefined,
     image: undefined
   });
-  const [redirect, doRedirect] = useState(undefined);
 
-  const [createBooking, { data, error }] = useMutation(CREATE_BOOKING, {
+  const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
       { query: GET_ALL_BOOKINGS },
       { query: ROOM_BOOKINGS, variables: { room } }
     ]
   });
 
+  if (loading) return <Loading />;
+
   const handleOnConfirmPress = async () => {
-    date = moment(date).startOf('day');
-    start = moment(date).add(Number(start.substring(0, 2)), 'hour');
-    end = moment(date).add(Number(end.substring(0, 2)), 'hour');
+    const startTime = moment(date)
+      .hours(Number(moment(start).format('HH')))
+      .startOf('hour');
+    const endTime = moment(date)
+      .hours(Number(moment(end).format('HH')))
+      .startOf('hour');
     const booking = {
       room_number: room,
-      start: moment(start).toISOString(),
-      end: moment(end).toISOString()
+      start: moment(startTime).toISOString(),
+      end: moment(endTime).toISOString()
     };
     await createBooking({ variables: booking });
-    console.log(data);
     setModal({
       isOpen: true,
       title: !error ? 'Your booking is successful!' : 'An error has occured.',
@@ -85,16 +96,11 @@ const BookingSummary = ({
   };
 
   const onModalClick = () => {
-    doRedirect(true);
-  };
-
-  const renderRedirect = () => {
-    return redirect ? <Redirect to="/" /> : <></>;
+    history.push('/');
   };
 
   return (
     <div className={classes.container}>
-      {renderRedirect()}
       <Modals
         modal={modal}
         onClick={() => {
@@ -122,7 +128,8 @@ const BookingSummary = ({
                 <AccessTimeIcon color={'primary'} />
               </ListItemIcon>
               <ListItemText>
-                {start} - {end}
+                {moment(start).format('hh:mm')} -{' '}
+                {moment(end).format('hh:mm a')}
               </ListItemText>
             </ListItem>
           </List>
@@ -140,5 +147,3 @@ const BookingSummary = ({
     </div>
   );
 };
-
-export default BookingSummary;

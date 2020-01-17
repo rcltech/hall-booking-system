@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Header() {
+export const Header = () => {
   const classes = useStyles();
   const [booking, doBooking] = useState(false);
 
@@ -32,6 +32,4 @@ function Header() {
       </Toolbar>
     </AppBar>
   );
-}
-
-export default Header;
+};

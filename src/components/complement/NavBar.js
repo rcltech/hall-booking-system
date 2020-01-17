@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NavBar({ backPath: path }) {
+export const NavBar = ({ backPath: path }) => {
   const [home, gotoHome] = useState(false);
   const [back, goBack] = useState(false);
   const classes = useStyles();
@@ -38,6 +38,4 @@ function NavBar({ backPath: path }) {
       </Toolbar>
     </AppBar>
   );
-}
-
-export default NavBar;
+};

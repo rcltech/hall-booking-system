@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Timetable from 'react-timetable-events';
-import { Redirect } from 'react-router-dom';
-import NavBar from '../complement/NavBar';
-import Timepicker from '../complement/Timepicker';
-import getRooms from '../../functions/getRooms';
+import { useHistory } from 'react-router-dom';
+import { NavBar } from '../complement/NavBar';
+import { Timepicker } from '../ChooseTime/Timepicker';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { shortlistBookings } from '../../functions/shortlistBookings';
 import { validateTime } from '../../functions/validateTime';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
 import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
+import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Fab from '@material-ui/core/Fab';
+import { List } from '../ChooseTime/List';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -18,47 +20,18 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     margin: '0'
+  },
+  nextStepButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20,
+    zIndex: 100
   }
 }));
 
-const makeSelection = (
-  timeSlots,
-  date,
-  start,
-  end,
-  setStart,
-  setEnd,
-  doRedirect
-) => {
-  if (validateTime(timeSlots, date, start, end)) {
-    setStart(start);
-    setEnd(end);
-    doRedirect(true);
-  }
-};
-
-const doRedirectTask = (room, date, start, end) => {
-  return (
-    <Redirect
-      to={{
-        pathname: '/summary',
-        state: {
-          room,
-          date,
-          start: moment(start).format('HH:00'),
-          end: moment(end).format('HH:00')
-        }
-      }}
-    />
-  );
-};
-
-function ChooseTime({
-  location: {
-    state: { room, date }
-  }
-}) {
+export const ChooseTime = () => {
   const classes = useStyles();
+
   const [start, setStart] = useState(
     moment()
       .startOf('hour')
@@ -70,26 +43,38 @@ function ChooseTime({
       .add(1, 'hour')
       .toDate()
   );
-  const [redirect, doRedirect] = useState(false);
-  const [events, setEvents] = useState();
+  const [bookings, setBookings] = useState([]);
 
+  const { data: roomData, client } = useQuery(GET_ROOM_NUMBER);
+  const { data: bookingData } = useQuery(GET_BOOKING_DATE);
+  const room = roomData.roomNumber;
+  const date = bookingData.bookingDate;
   const { data } = useQuery(ROOM_BOOKINGS, {
     variables: {
       room
     }
   });
 
+  const history = useHistory();
+
   useEffect(() => {
     if (data) {
-      getRooms(data.bookings, date).then(events => {
-        setEvents(events);
-      });
+      const filteredBookings = shortlistBookings(data.bookings, date);
+      setBookings(filteredBookings);
     }
-  }, [room, date, data]);
+  }, [data, date]);
 
-  if (redirect) {
-    return doRedirectTask(room, date, start, end);
-  }
+  const handleNextButtonClick = () => {
+    if (validateTime(bookings, date, start, end)) {
+      client.writeData({
+        data: {
+          start: moment(start).toISOString(),
+          end: moment(end).toISOString()
+        }
+      });
+      history.push('/summary');
+    }
+  };
 
   return (
     <>
@@ -99,28 +84,19 @@ function ChooseTime({
         <Timepicker
           start={start}
           end={end}
-          onContinue={(start, end) =>
-            makeSelection(
-              events[Object.keys(events)[0]],
-              date,
-              start,
-              end,
-              setStart,
-              setEnd,
-              doRedirect
-            )
-          }
+          setStart={setStart}
+          setEnd={setEnd}
         />
-        {events ? (
-          <Timetable events={events} />
-        ) : (
-          <div>
-            <Typography>No events</Typography>
-          </div>
-        )}
+        <List bookings={bookings} />
       </div>
+      <Fab
+        color="primary"
+        aria-label="next"
+        className={classes.nextStepButton}
+        onClick={handleNextButtonClick}
+      >
+        <ArrowForwardIcon />
+      </Fab>
     </>
   );
-}
-
-export default ChooseTime;
+};

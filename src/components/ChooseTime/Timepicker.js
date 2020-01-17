@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles(theme => ({
   buttonContainer: {
@@ -32,19 +30,10 @@ const useStyles = makeStyles(theme => ({
   },
   timePickerLabel: {
     color: theme.palette.primary.contrastText
-  },
-  nextStepButton: {
-    position: 'fixed',
-    bottom: 20,
-    right: 20,
-    zIndex: 100
   }
 }));
 
-const Timepicker = props => {
-  const [start, setStart] = useState(props.start);
-  const [end, setEnd] = useState(props.end);
-
+export const Timepicker = ({ start, end, setStart, setEnd }) => {
   const classes = useStyles();
 
   const handleStartTimeChange = start => {
@@ -77,11 +66,6 @@ const Timepicker = props => {
     }
   };
 
-  const handleOnContinuePress = () => {
-    const { onContinue } = props;
-    onContinue(start, end);
-  };
-
   return (
     <div className={classes.timePickerContainer}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -110,16 +94,6 @@ const Timepicker = props => {
           />
         </div>
       </MuiPickersUtilsProvider>
-      <Fab
-        color="primary"
-        aria-label="next"
-        className={classes.nextStepButton}
-        onClick={handleOnContinuePress}
-      >
-        <ArrowForwardIcon />
-      </Fab>
     </div>
   );
 };
-
-export default Timepicker;

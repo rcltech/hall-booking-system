@@ -17,8 +17,8 @@ import {
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_BOOKING, GET_ALL_BOOKINGS } from './graphql';
 import moment from 'moment';
-import DeleteModal from './DeleteModal';
-import TopBar from './TopBar';
+import { DeleteModal } from './DeleteModal';
+import { TopBar } from './TopBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,9 +43,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Popup = props => {
+export const Popup = ({ open, setOpen, me, booking }) => {
   const classes = useStyles();
-  const { open, setOpen, me, booking } = props;
   const [onDelete, setOnDelete] = useState(false);
 
   const [doDelete, { data }] = useMutation(DELETE_BOOKING, {
@@ -142,5 +141,3 @@ const EventDetails = props => {
     </div>
   );
 };
-
-export default Popup;
