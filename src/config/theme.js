@@ -50,6 +50,14 @@ export const theme = responsiveFontSizes(
         fontWeight: 800,
         fontSize: '1em'
       },
+      subtitle1: {
+        fontFamily: 'Roboto, sans-serif',
+        fontWeight: 600
+      },
+      subtitle2: {
+        fontFamily: 'Roboto, sans-serif',
+        fontWeight: 200
+      },
       button: {
         fontFamily: 'Poppins, sans-serif',
         fontWeight: 300
