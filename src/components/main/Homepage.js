@@ -26,7 +26,9 @@ export const Homepage = () => {
   if (meError) console.log(meError);
   if (bookingsError) console.log(bookingsError);
 
-  if (!userData || !userData.me) return redirectToLogin();
+  if (!userData || !userData.me) {
+    return redirectToLogin();
+  }
 
   return (
     <div>
