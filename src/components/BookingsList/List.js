@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1)
   },
   monthText: {
+    padding: '5px 0px 5px 5px',
     color: theme.palette.primary.contrastText
   },
   icon: {
@@ -157,7 +158,7 @@ const MonthBlock = props => {
   const { classes, dateTime } = props;
   return (
     <div className={classes.month}>
-      <Typography variant={'h4'} className={classes.monthText}>
+      <Typography variant={'h5'} className={classes.monthText}>
         {moment(dateTime).format('MMMM YYYY')}
       </Typography>
     </div>
@@ -170,16 +171,11 @@ const BookingBlock = props => {
 
   return (
     <>
-      <Typography
-        variant="subtitle1"
-        style={{ float: 'left', fontWeight: '900' }}
-      >
-        {booking.room.number}
-      </Typography>
-      <Typography variant="subtitle1" style={{ float: 'right' }}>{`${moment(
-        start
-      ).format('h:mm')} - ${moment(end).format('h:mm a')}`}</Typography>
-      <div style={{ clear: 'both' }} />
+      <Typography variant="subtitle1">{booking.room.name}</Typography>
+      <Typography variant="subtitle2">{`${moment(start).format(
+        'h:mm'
+      )} - ${moment(end).format('h:mm a')}`}</Typography>
+      {/*<div style={{ clear: 'both' }} />*/}
     </>
   );
 };
