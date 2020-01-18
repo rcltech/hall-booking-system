@@ -16,10 +16,10 @@ const Index = () => {
     return id === '' || id === null || id === undefined;
   };
 
-  // make sure that id gets stored correctly first before running anything else
-  const returnedId = qs.parse(window.location.search).id;
-  if (isIdEmpty() || returnedId !== '') {
-    localStorage.setItem('id', returnedId || '');
+  const returnedId = qs.parse(window.location.search)['id'];
+  if (returnedId && returnedId.length > 0) {
+    localStorage.setItem('id', returnedId);
+    window.location.replace('/');
   }
 
   if (isIdEmpty()) {
