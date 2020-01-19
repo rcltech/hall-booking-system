@@ -5,7 +5,6 @@ import { theme } from './config/theme';
 import * as serviceWorker from './serviceWorker';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { persistCache } from 'apollo-cache-persist';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import qs from 'query-string';
@@ -35,11 +34,6 @@ const Index = () => {
       : 'https://phoenix.rctech.club/graphql';
 
   const cache = new InMemoryCache();
-
-  persistCache({
-    cache,
-    storage: window.sessionStorage
-  }).then();
 
   cache.writeData({
     data: {

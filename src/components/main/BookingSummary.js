@@ -52,10 +52,16 @@ export const BookingSummary = () => {
 
   const history = useHistory();
 
-  const room = roomData.roomNumber;
-  const date = bookingData.bookingDate;
-  const start = bookingData.start;
-  const end = bookingData.end;
+  const room = roomData.roomNumber
+    ? roomData.roomNumber
+    : sessionStorage.getItem('roomNumber');
+  const date = bookingData.bookingDate
+    ? bookingData.bookingDate
+    : sessionStorage.getItem('bookingDate');
+  const start = bookingData.start
+    ? bookingData.start
+    : sessionStorage.getItem('start');
+  const end = bookingData.end ? bookingData.end : sessionStorage.getItem('end');
 
   const classes = useStyles();
   const [modal, setModal] = useState({

@@ -36,6 +36,7 @@ export const ChooseDate = () => {
   const history = useHistory();
 
   const handleNextButtonClick = () => {
+    sessionStorage.setItem('bookingDate', moment(date).toISOString());
     client.writeData({
       data: {
         bookingDate: moment(date).toISOString()

@@ -43,6 +43,7 @@ export const ChooseRoom = () => {
 
   const handleNextButtonClick = () => {
     if (selectedRoom) {
+      sessionStorage.setItem('roomNumber', selectedRoom.number);
       client.writeData({ data: { roomNumber: selectedRoom.number } });
       history.push('/date');
     } else {

@@ -47,8 +47,12 @@ export const ChooseTime = () => {
 
   const { data: roomData, client } = useQuery(GET_ROOM_NUMBER);
   const { data: bookingData } = useQuery(GET_BOOKING_DATE);
-  const room = roomData.roomNumber;
-  const date = bookingData.bookingDate;
+  const room = roomData.roomNumber
+    ? roomData.roomNumber
+    : sessionStorage.getItem('roomNumber');
+  const date = bookingData.bookingDate
+    ? bookingData.bookingDate
+    : sessionStorage.getItem('bookingDate');
   const { data } = useQuery(ROOM_BOOKINGS, {
     variables: {
       room
@@ -66,6 +70,8 @@ export const ChooseTime = () => {
 
   const handleNextButtonClick = () => {
     if (validateTime(bookings, date, start, end)) {
+      sessionStorage.setItem('start', moment(start).toISOString());
+      sessionStorage.setItem('end', moment(end).toISOString());
       client.writeData({
         data: {
           start: moment(start).toISOString(),
