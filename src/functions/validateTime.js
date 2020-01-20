@@ -26,6 +26,9 @@ export const validateTime = (bookings, date, start, end) => {
       'Selected timeslot is out of range. You can only book between 7am and 11pm.'
     );
     return false;
+  } else if (startTime.isAfter(moment().add(60, 'days'), 'day')) {
+    alert("You can't book more than 60 days in advance.");
+    return false;
   } else {
     for (let i = 0; i < bookings.length; ++i) {
       if (
