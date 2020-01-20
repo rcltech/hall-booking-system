@@ -31,6 +31,7 @@ export const GET_ALL_BOOKINGS = gql`
         username
         first_name
         last_name
+        room_no
       }
     }
   }
