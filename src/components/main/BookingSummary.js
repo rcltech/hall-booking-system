@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import CommentIcon from '@material-ui/icons/Comment';
 import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
@@ -16,6 +17,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
 import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import { Loading } from '../complement/Loading';
@@ -65,6 +67,8 @@ export const BookingSummary = () => {
     image: undefined
   });
 
+  const [remark, setRemark] = useState('');
+
   const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
       { query: GET_ALL_BOOKINGS },
@@ -73,6 +77,10 @@ export const BookingSummary = () => {
   });
 
   if (loading) return <Loading />;
+
+  const handleRemarkChange = event => {
+    setRemark(event.target.value);
+  };
 
   const handleOnConfirmPress = async () => {
     const startTime = moment(date)
@@ -84,7 +92,8 @@ export const BookingSummary = () => {
     const booking = {
       room_number: room,
       start: moment(startTime).toISOString(),
-      end: moment(endTime).toISOString()
+      end: moment(endTime).toISOString(),
+      remark
     };
     await createBooking({ variables: booking });
     setModal({
@@ -130,6 +139,22 @@ export const BookingSummary = () => {
               <ListItemText>
                 {moment(start).format('hh:mm')} -{' '}
                 {moment(end).format('hh:mm a')}
+              </ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <CommentIcon color={'primary'} />
+              </ListItemIcon>
+              <ListItemText>
+                <form noValidate autoComplete="off">
+                  <TextField
+                    id="remark"
+                    label="Remark"
+                    value={remark}
+                    helperText="This is optional."
+                    onChange={handleRemarkChange}
+                  />
+                </form>
               </ListItemText>
             </ListItem>
           </List>
