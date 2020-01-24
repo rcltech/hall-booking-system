@@ -74,7 +74,7 @@ export const Popup = ({ open, setOpen, me, booking }) => {
       },
       {
         id: 'user',
-        value: `${booking.user.first_name} ${booking.user.last_name}`,
+        value: `${booking.user.first_name} ${booking.user.last_name} (${booking.user.room_no})`,
         icon: <Person />
       }
     ]);
