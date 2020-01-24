@@ -20,6 +20,7 @@ export const DatePicker = ({ selectDate }) => {
         onPanelChange={value => {
           if (value.isSameOrAfter(moment(), 'day')) {
             setPanelValue(value);
+            selectDate(value);
           }
         }}
         disabledDate={date => moment(date).isBefore(moment(), 'day')}
