@@ -14,6 +14,7 @@ const GET_ALL_BOOKINGS = gql`
       id
       start
       end
+      remark
       room {
         number
         name

@@ -169,13 +169,14 @@ const BookingBlock = props => {
   const { booking } = props;
   const { start, end } = booking;
 
+  const time = `${moment(start).format('h:mm')} - ${moment(end).format(
+    'h:mm a'
+  )}`;
+
   return (
     <>
       <Typography variant="subtitle1">{booking.room.name}</Typography>
-      <Typography variant="subtitle2">{`${moment(start).format(
-        'h:mm'
-      )} - ${moment(end).format('h:mm a')}`}</Typography>
-      {/*<div style={{ clear: 'both' }} />*/}
+      <Typography variant="subtitle2">{time}</Typography>
     </>
   );
 };

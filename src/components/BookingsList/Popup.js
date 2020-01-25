@@ -11,6 +11,7 @@ import {
   Business,
   CalendarToday,
   DeleteForever,
+  Notes,
   Person,
   Room
 } from '@material-ui/icons';
@@ -76,6 +77,11 @@ export const Popup = ({ open, setOpen, me, booking }) => {
         id: 'user',
         value: `${booking.user.first_name} ${booking.user.last_name} (${booking.user.room_no})`,
         icon: <Person />
+      },
+      {
+        id: 'remark',
+        value: booking.remark ? booking.remark : 'No remark',
+        icon: <Notes />
       }
     ]);
   }
