@@ -33,6 +33,7 @@ export const GET_ALL_BOOKINGS = gql`
       id
       start
       end
+      remark
       room {
         number
         name
@@ -43,6 +44,14 @@ export const GET_ALL_BOOKINGS = gql`
         last_name
         room_no
       }
+    }
+  }
+`;
+
+export const DELETE_BOOKING = gql`
+  mutation deleteBooking($id: ID!) {
+    deleteBooking(id: $id) {
+      id
     }
   }
 `;

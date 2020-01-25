@@ -14,11 +14,14 @@ import { useHistory } from 'react-router-dom';
 import { NavBar } from '../complement/NavBar';
 import { Modals } from '../BookingSummary/Modals';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
+import {
+  CREATE_BOOKING,
+  ROOM_BOOKINGS,
+  GET_ALL_BOOKINGS
+} from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import { Loading } from '../complement/Loading';
 
