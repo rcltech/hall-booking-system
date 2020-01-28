@@ -86,6 +86,8 @@ export const BookingSummary = () => {
   if (loading) return <Loading />;
 
   const handleRemarkChange = event => {
+    const value = event.target.value;
+    if (value.length > 140) return;
     setRemark(event.target.value);
   };
 
@@ -156,9 +158,10 @@ export const BookingSummary = () => {
                 <form noValidate autoComplete="off">
                   <TextField
                     id="remark"
-                    label="Remark"
+                    label="Optional remark"
                     value={remark}
-                    helperText="This is optional."
+                    multiline={true}
+                    helperText="Maximum number of characters is 140."
                     onChange={handleRemarkChange}
                   />
                 </form>
