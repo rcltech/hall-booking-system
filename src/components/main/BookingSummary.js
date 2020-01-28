@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import CommentIcon from '@material-ui/icons/Comment';
+import NotesIcon from '@material-ui/icons/Notes';
 import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
@@ -48,6 +48,10 @@ const useStyles = makeStyles(theme => ({
   summaryPaper: {
     margin: 20,
     borderRadius: '20px'
+  },
+  input: {
+    paddingTop: 0,
+    paddingBottom: 0
   }
 }));
 
@@ -144,9 +148,9 @@ export const BookingSummary = () => {
                 {moment(end).format('hh:mm a')}
               </ListItemText>
             </ListItem>
-            <ListItem>
+            <ListItem className={classes.input}>
               <ListItemIcon>
-                <CommentIcon color={'primary'} />
+                <NotesIcon color={'primary'} />
               </ListItemIcon>
               <ListItemText>
                 <form noValidate autoComplete="off">
