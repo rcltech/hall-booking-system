@@ -10,8 +10,18 @@ export const ROOM_BOOKINGS = gql`
 `;
 
 export const CREATE_BOOKING = gql`
-  mutation booking($room_number: String!, $start: String!, $end: String!) {
-    createBooking(room_number: $room_number, start: $start, end: $end) {
+  mutation booking(
+    $room_number: String!
+    $start: String!
+    $end: String!
+    $remark: String
+  ) {
+    createBooking(
+      room_number: $room_number
+      start: $start
+      end: $end
+      remark: $remark
+    ) {
       createdAt
     }
   }
@@ -23,6 +33,7 @@ export const GET_ALL_BOOKINGS = gql`
       id
       start
       end
+      remark
       room {
         number
         name
@@ -33,6 +44,14 @@ export const GET_ALL_BOOKINGS = gql`
         last_name
         room_no
       }
+    }
+  }
+`;
+
+export const DELETE_BOOKING = gql`
+  mutation deleteBooking($id: ID!) {
+    deleteBooking(id: $id) {
+      id
     }
   }
 `;

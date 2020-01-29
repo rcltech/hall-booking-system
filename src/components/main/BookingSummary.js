@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import RoomIcon from '@material-ui/icons/Room';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import NotesIcon from '@material-ui/icons/Notes';
 import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
@@ -13,10 +14,14 @@ import { useHistory } from 'react-router-dom';
 import { NavBar } from '../complement/NavBar';
 import { Modals } from '../BookingSummary/Modals';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { CREATE_BOOKING, ROOM_BOOKINGS } from '../../gql/bookings';
+import {
+  CREATE_BOOKING,
+  ROOM_BOOKINGS,
+  GET_ALL_BOOKINGS
+} from '../../gql/bookings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { GET_ALL_BOOKINGS } from '../BookingsList/graphql';
+import TextField from '@material-ui/core/TextField';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import { Loading } from '../complement/Loading';
 
@@ -43,6 +48,10 @@ const useStyles = makeStyles(theme => ({
   summaryPaper: {
     margin: 20,
     borderRadius: '20px'
+  },
+  input: {
+    paddingTop: 0,
+    paddingBottom: 0
   }
 }));
 
@@ -65,6 +74,8 @@ export const BookingSummary = () => {
     image: undefined
   });
 
+  const [remark, setRemark] = useState('');
+
   const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
       { query: GET_ALL_BOOKINGS },
@@ -73,6 +84,12 @@ export const BookingSummary = () => {
   });
 
   if (loading) return <Loading />;
+
+  const handleRemarkChange = event => {
+    const value = event.target.value;
+    if (value.length > 140) return;
+    setRemark(event.target.value);
+  };
 
   const handleOnConfirmPress = async () => {
     const startTime = moment(date)
@@ -84,7 +101,8 @@ export const BookingSummary = () => {
     const booking = {
       room_number: room,
       start: moment(startTime).toISOString(),
-      end: moment(endTime).toISOString()
+      end: moment(endTime).toISOString(),
+      remark
     };
     await createBooking({ variables: booking });
     setModal({
@@ -130,6 +148,23 @@ export const BookingSummary = () => {
               <ListItemText>
                 {moment(start).format('hh:mm')} -{' '}
                 {moment(end).format('hh:mm a')}
+              </ListItemText>
+            </ListItem>
+            <ListItem className={classes.input}>
+              <ListItemIcon>
+                <NotesIcon color={'primary'} />
+              </ListItemIcon>
+              <ListItemText>
+                <form noValidate autoComplete="off">
+                  <TextField
+                    id="remark"
+                    label="Optional remark"
+                    value={remark}
+                    multiline={true}
+                    helperText="Maximum number of characters is 140."
+                    onChange={handleRemarkChange}
+                  />
+                </form>
               </ListItemText>
             </ListItem>
           </List>

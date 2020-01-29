@@ -11,11 +11,12 @@ import {
   Business,
   CalendarToday,
   DeleteForever,
+  Notes,
   Person,
   Room
 } from '@material-ui/icons';
 import { useMutation } from '@apollo/react-hooks';
-import { DELETE_BOOKING, GET_ALL_BOOKINGS } from './graphql';
+import { DELETE_BOOKING, GET_ALL_BOOKINGS } from '../../gql/bookings';
 import moment from 'moment';
 import { DeleteModal } from './DeleteModal';
 import { TopBar } from './TopBar';
@@ -76,6 +77,11 @@ export const Popup = ({ open, setOpen, me, booking }) => {
         id: 'user',
         value: `${booking.user.first_name} ${booking.user.last_name} (${booking.user.room_no})`,
         icon: <Person />
+      },
+      {
+        id: 'remark',
+        value: booking.remark ? booking.remark : 'No remark',
+        icon: <Notes />
       }
     ]);
   }
