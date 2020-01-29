@@ -49,7 +49,7 @@ export const ChooseTime = () => {
   const { data: bookingData } = useQuery(GET_BOOKING_DATE);
   const room = roomData.roomNumber;
   const date = bookingData.bookingDate;
-  const { data } = useQuery(ROOM_BOOKINGS, {
+  const { data, refetch } = useQuery(ROOM_BOOKINGS, {
     variables: {
       room
     }
@@ -58,11 +58,13 @@ export const ChooseTime = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (data) {
-      const filteredBookings = shortlistBookings(data.bookings, date);
-      setBookings(filteredBookings);
-    }
-  }, [data, date]);
+    refetch({ room }).then(() => {
+      if (data) {
+        const filteredBookings = shortlistBookings(data.bookings, date);
+        setBookings(filteredBookings);
+      }
+    });
+  }, [data, date, room, refetch]);
 
   const handleNextButtonClick = () => {
     if (validateTime(bookings, date, start, end)) {

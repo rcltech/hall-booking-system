@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-  makeStyles,
-  Modal,
   List as MuiList,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  makeStyles,
+  Modal
 } from '@material-ui/core';
 import {
   Business,
