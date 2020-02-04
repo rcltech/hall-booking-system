@@ -21,8 +21,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     margin: 'auto',
     overflow: 'auto',
-    maxHeight: 'calc(100vh - 70px)',
+    maxHeight: 'calc(100vh - 130px)',
     padding: 0
+  },
+  heading: {
+    background: theme.palette.primary.light,
+    padding: theme.spacing(1)
   },
   groupedBookings: {
     marginBottom: theme.spacing(5)
@@ -31,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.primary.dark,
     padding: theme.spacing(1)
   },
-  monthText: {
+  mainText: {
     padding: '5px 0px 5px 5px',
     color: theme.palette.primary.contrastText
   },
@@ -84,73 +88,82 @@ export const List = ({ me, bookings }) => {
   };
 
   return (
-    <MuiList className={classes.root} dense={true}>
-      {bookingsByMonthAndDate.map(groupedBookings => (
-        <div key={groupedBookings[0][0].id}>
-          <MonthBlock
-            classes={classes}
-            dateTime={groupedBookings[0][0].start}
-          />
-          <div className={classes.groupedBookings}>
-            {groupedBookings.map(bookings => (
-              <ListItem
-                className={classes.listItem}
-                alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
-                key={bookings[0].id}
-              >
-                <ListItemIcon>
-                  <div className={classes.icon}>
-                    <Typography variant={'button'} display="block">
-                      {moment(bookings[0].start).format('ddd')}
-                    </Typography>
-                    <Typography
-                      variant={'h6'}
-                      display="block"
-                      className={`${classes.date} ${
-                        isToday(bookings[0].start) ? classes.highlighted : null
-                      }`}
-                    >
-                      {moment(bookings[0].start).format('DD')}
-                    </Typography>
-                  </div>
-                </ListItemIcon>
-                <Grid container spacing={1}>
-                  {bookings.map(booking => {
-                    const {
-                      user: { username }
-                    } = booking;
-                    return (
-                      <Grid item xs={12} key={booking.id}>
-                        <Paper
-                          elevation={
-                            isUserBooking(me.username, username) ? 3 : 0
-                          }
-                          className={generateBookingClassNames(
-                            booking.user.username
-                          )}
-                          onClick={() => {
-                            setFocusedBooking(booking);
-                            setOpenPopup(true);
-                          }}
-                        >
-                          <BookingBlock booking={booking} />
-                        </Paper>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              </ListItem>
-            ))}
+    <>
+      <div className={classes.heading}>
+        <Typography variant={'h4'} className={classes.mainText}>
+          All Bookings
+        </Typography>
+      </div>
+      <MuiList className={classes.root} dense={true}>
+        {bookingsByMonthAndDate.map(groupedBookings => (
+          <div key={groupedBookings[0][0].id}>
+            <MonthBlock
+              classes={classes}
+              dateTime={groupedBookings[0][0].start}
+            />
+            <div className={classes.groupedBookings}>
+              {groupedBookings.map(bookings => (
+                <ListItem
+                  className={classes.listItem}
+                  alignItems={bookings.length > 2 ? 'flex-start' : 'center'}
+                  key={bookings[0].id}
+                >
+                  <ListItemIcon>
+                    <div className={classes.icon}>
+                      <Typography variant={'button'} display="block">
+                        {moment(bookings[0].start).format('ddd')}
+                      </Typography>
+                      <Typography
+                        variant={'h6'}
+                        display="block"
+                        className={`${classes.date} ${
+                          isToday(bookings[0].start)
+                            ? classes.highlighted
+                            : null
+                        }`}
+                      >
+                        {moment(bookings[0].start).format('DD')}
+                      </Typography>
+                    </div>
+                  </ListItemIcon>
+                  <Grid container spacing={1}>
+                    {bookings.map(booking => {
+                      const {
+                        user: { username }
+                      } = booking;
+                      return (
+                        <Grid item xs={12} key={booking.id}>
+                          <Paper
+                            elevation={
+                              isUserBooking(me.username, username) ? 3 : 0
+                            }
+                            className={generateBookingClassNames(
+                              booking.user.username
+                            )}
+                            onClick={() => {
+                              setFocusedBooking(booking);
+                              setOpenPopup(true);
+                            }}
+                          >
+                            <BookingBlock booking={booking} />
+                          </Paper>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </ListItem>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-      <Popup
-        open={openPopup}
-        setOpen={setOpenPopup}
-        me={me}
-        booking={focusedBooking}
-      />
-    </MuiList>
+        ))}
+        <Popup
+          open={openPopup}
+          setOpen={setOpenPopup}
+          me={me}
+          booking={focusedBooking}
+        />
+      </MuiList>
+    </>
   );
 };
 
@@ -158,7 +171,7 @@ const MonthBlock = props => {
   const { classes, dateTime } = props;
   return (
     <div className={classes.month}>
-      <Typography variant={'h5'} className={classes.monthText}>
+      <Typography variant={'h5'} className={classes.mainText}>
         {moment(dateTime).format('MMMM YYYY')}
       </Typography>
     </div>
