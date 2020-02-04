@@ -40,6 +40,7 @@ export const TopBar = ({ goBack, icons }) => {
           </Button>
         ))}
       </div>
+      <div style={{ clear: 'both' }} />
     </div>
   );
 };

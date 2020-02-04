@@ -11,12 +11,11 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '8vh',
     width: '90vw',
+    maxWidth: 'calc(400px + 5vw)',
     maxHeight: '72vh',
     overflow: 'auto',
     margin: 'auto',
     background: 'white',
-    border: '2px solid',
-    borderColor: theme.palette.primary.dark,
     borderRadius: '8px',
     padding: theme.spacing(1),
     textAlign: 'center'
@@ -25,8 +24,10 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3)
   },
   image: {
-    width: '20vw',
-    height: '20vw'
+    width: '16vw',
+    height: '16vw',
+    maxWidth: '120px',
+    maxHeight: '120px'
   }
 }));
 
