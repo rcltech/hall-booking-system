@@ -116,7 +116,7 @@ export const Popup = ({ open, setOpen, me, booking }) => {
 };
 
 const EventDetails = props => {
-  const { classes, goBack, setOnDelete, fields, deletePermission } = props;
+  const { goBack, setOnDelete, fields, deletePermission } = props;
   return (
     <div>
       <TopBar
