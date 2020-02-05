@@ -1,5 +1,29 @@
 import moment from 'moment';
 
+const dissectBookings = bookings => {
+  //Separate bookings into modular form (1 hour each)
+  //For example : 10-12 pm booking will be dissected into
+  //two separate bookings (10-11 pm and 11-12 pm) for validating purpose
+
+  const dissectedBookings = [];
+  bookings.forEach(booking => {
+    let { start, end } = booking;
+    start = moment(start);
+    end = moment(end);
+
+    for (let i = start; i.isBefore(end); i = i.add(1, 'hours')) {
+      const startTime = moment(i);
+      const endTime = moment(i).add(1, 'hours');
+      dissectedBookings.push({
+        startTime,
+        endTime
+      });
+    }
+  });
+
+  return dissectedBookings;
+};
+
 export const validateTime = (bookings, date, start, end) => {
   const startTime = moment(date)
     .hours(Number(moment(start).format('HH')))
@@ -30,10 +54,12 @@ export const validateTime = (bookings, date, start, end) => {
     alert("You can't book more than 60 days in advance.");
     return false;
   } else {
-    for (let i = 0; i < bookings.length; ++i) {
+    const dissectedBookings = dissectBookings([...bookings]);
+
+    for (let i = 0; i < dissectedBookings.length; ++i) {
       if (
-        moment(bookings[i].start).isSame(startTime, 'hour') ||
-        moment(bookings[i].end).isSame(endTime, 'hour')
+        moment(dissectedBookings[i].startTime).isSame(startTime, 'hour') ||
+        moment(dissectedBookings[i].endTime).isSame(endTime, 'hour')
       ) {
         alert('Timeslot has been booked by someone else.');
         return false;
