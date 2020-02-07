@@ -58,8 +58,12 @@ export const validateTime = (bookings, date, start, end) => {
 
     for (let i = 0; i < dissectedBookings.length; ++i) {
       if (
-        moment(dissectedBookings[i].startTime).isSame(startTime, 'hour') ||
-        moment(dissectedBookings[i].endTime).isSame(endTime, 'hour')
+        dissectedBookings[i].startTime.isBetween(
+          startTime,
+          endTime,
+          'hour',
+          '[)'
+        )
       ) {
         alert('Timeslot has been booked by someone else.');
         return false;
