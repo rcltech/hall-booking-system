@@ -8,19 +8,11 @@ const dissectBookings = bookings => {
   const dissectedBookings = [];
   bookings.forEach(booking => {
     let { start, end } = booking;
-    start = moment(start);
-    end = moment(end);
 
-    for (let i = start; i.isBefore(end); i = i.add(1, 'hours')) {
-      const startTime = moment(i);
-      const endTime = moment(i).add(1, 'hours');
-      dissectedBookings.push({
-        startTime,
-        endTime
-      });
+    for (let i = moment(start); i.isBefore(moment(end)); i.add(1, 'hours')) {
+      dissectedBookings.push({ startTime: moment(i) });
     }
   });
-
   return dissectedBookings;
 };
 
@@ -34,7 +26,7 @@ export const validateTime = (bookings, date, start, end) => {
   const duration = moment.duration(endTime.diff(startTime));
   const hours = duration.asHours();
   const dateChosen = moment(date).startOf('date');
-  if (hours > 2) {
+  if (hours > 12) {
     alert('Maximum hours of booking per person is 2 hours.');
     return false;
   } else if (startTime.isSameOrBefore(moment())) {
