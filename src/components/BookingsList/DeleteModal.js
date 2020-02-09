@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
   modal: {
     position: 'relative',
     width: '75vw',
+    maxWidth: 'calc(400px + 5vw)',
     margin: 'auto',
     background: 'white',
-    borderColor: theme.palette.secondary.dark,
     borderRadius: '8px',
     padding: theme.spacing(1),
     textAlign: 'center'

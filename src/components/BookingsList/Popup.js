@@ -31,16 +31,13 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '8vh',
     width: '90vw',
+    maxWidth: 'calc(600px + 5vw)',
     maxHeight: '72vh',
     overflow: 'auto',
     margin: 'auto',
     background: 'white',
-    borderColor: theme.palette.primary.dark,
     borderRadius: '8px',
     padding: theme.spacing(1)
-  },
-  content: {
-    clear: 'both'
   }
 }));
 
@@ -119,7 +116,7 @@ export const Popup = ({ open, setOpen, me, booking }) => {
 };
 
 const EventDetails = props => {
-  const { classes, goBack, setOnDelete, fields, deletePermission } = props;
+  const { goBack, setOnDelete, fields, deletePermission } = props;
   return (
     <div>
       <TopBar
@@ -136,7 +133,7 @@ const EventDetails = props => {
             : []
         }
       />
-      <MuiList className={classes.content} dense>
+      <MuiList dense>
         {fields.map(field => (
           <ListItem key={field.id}>
             <ListItemIcon>{field.icon}</ListItemIcon>
