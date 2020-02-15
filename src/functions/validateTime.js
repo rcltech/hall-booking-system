@@ -26,7 +26,7 @@ export const validateTime = (bookings, date, start, end) => {
   const duration = moment.duration(endTime.diff(startTime));
   const hours = duration.asHours();
   const dateChosen = moment(date).startOf('date');
-  if (hours > 12) {
+  if (hours > 2) {
     alert('Maximum hours of booking per person is 2 hours.');
     return false;
   } else if (startTime.isSameOrBefore(moment())) {
