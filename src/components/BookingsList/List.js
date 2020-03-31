@@ -32,8 +32,13 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(5)
   },
   month: {
-    background: theme.palette.primary.dark,
     padding: theme.spacing(1)
+  },
+  monthText: {
+    margin: 'auto',
+    padding: '5px 0px 5px 5px',
+    color: theme.palette.primary.light,
+    maxWidth: 'calc(650px + 5vw)'
   },
   mainText: {
     padding: '5px 0px 5px 5px',
@@ -171,7 +176,7 @@ const MonthBlock = props => {
   const { classes, dateTime } = props;
   return (
     <div className={classes.month}>
-      <Typography variant={'h5'} className={classes.mainText}>
+      <Typography variant={'h5'} className={classes.monthText}>
         {moment(dateTime).format('MMMM YYYY')}
       </Typography>
     </div>
