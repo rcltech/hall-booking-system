@@ -26,23 +26,23 @@ export const theme = responsiveFontSizes(
     },
     typography: {
       h1: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 900
       },
       h2: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 800
       },
       h3: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 700
       },
       h4: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 200
       },
       h5: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 600
       },
       h6: {
@@ -59,7 +59,7 @@ export const theme = responsiveFontSizes(
         fontWeight: 200
       },
       button: {
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: 'Didact Gothic, sans-serif',
         fontWeight: 300
       }
     }
