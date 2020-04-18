@@ -30,7 +30,6 @@ export const Homepage = () => {
 
   if (!userData || !userData.me) {
     console.log(userData);
-    alert('Hello');
     redirectToLogin();
   }
 
