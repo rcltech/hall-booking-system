@@ -9,9 +9,11 @@ import { redirectToLogin } from '../../functions/redirectToLogin';
 import { Loading } from '../complement/Loading';
 
 export const Homepage = () => {
-  const { loading: meLoading, error: meError, data: userData } = useQuery(
-    GET_ME
-  );
+  const {
+    loading: meLoading,
+    error: meError,
+    data: userData
+  } = useQuery(GET_ME, { fetchPolicy: 'network-only' });
 
   const {
     loading: bookingsLoading,
@@ -27,7 +29,9 @@ export const Homepage = () => {
   if (bookingsError) console.log(bookingsError);
 
   if (!userData || !userData.me) {
-    return redirectToLogin();
+    console.log(userData);
+    alert('Hello');
+    redirectToLogin();
   }
 
   return (
