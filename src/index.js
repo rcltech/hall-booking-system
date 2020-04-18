@@ -18,7 +18,7 @@ const Index = () => {
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:4000/graphql'
         : 'https://phoenix.rctech.club/graphql';
-    const link = new HttpLink({ uri });
+    const link = new HttpLink({ uri, credentials: 'same-origin' });
 
     const cache = new InMemoryCache();
     cache.writeData({
