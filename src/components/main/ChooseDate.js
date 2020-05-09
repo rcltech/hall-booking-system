@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { NavBar } from '../complement/NavBar';
+import { NavBar } from '../complement';
 import { makeStyles } from '@material-ui/core';
-import { DatePicker } from '../ChooseDate/DatePicker';
+import { DatePicker } from '../ChooseDate';
 import moment from 'moment';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';

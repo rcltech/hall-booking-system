@@ -8,7 +8,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { persistCache } from 'apollo-cache-persist';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Loading } from './components/complement/Loading';
+import { Loading } from './components/complement';
 
 const Index = () => {
   const [client, setClient] = useState(undefined);

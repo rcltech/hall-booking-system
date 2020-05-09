@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { NavBar } from '../complement/NavBar';
-import { Timepicker } from '../ChooseTime/Timepicker';
+import { NavBar } from '../complement';
+import { Timepicker, TimeChooserPanel, List } from '../ChooseTime';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
-import { shortlistBookings } from '../../functions/shortlistBookings';
-import { validateTime } from '../../functions/validateTime';
+import {
+  shortlistBookings,
+  validateTime,
+  getCurrentHour
+} from '../../functions';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
-import { TimeChooserPanel } from '../ChooseTime/TimeChooserPanel';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';
-import { List } from '../ChooseTime/List';
-import { getCurrentHour } from '../../functions/getCurrentHour';
 
 const useStyles = makeStyles(theme => ({
   container: {

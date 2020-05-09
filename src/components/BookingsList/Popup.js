@@ -20,7 +20,7 @@ import { DELETE_BOOKING, GET_ALL_BOOKINGS } from '../../gql/bookings';
 import moment from 'moment';
 import { DeleteModal } from './DeleteModal';
 import { TopBar } from './TopBar';
-import { getCurrentHour } from '../../functions/getCurrentHour';
+import { getCurrentHour } from '../../functions';
 
 const useStyles = makeStyles(theme => ({
   root: {
