@@ -13,6 +13,7 @@ import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fab from '@material-ui/core/Fab';
 import { List } from '../ChooseTime/List';
+import { getCurrentHour } from '../../functions/getCurrentHour';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -51,7 +52,8 @@ export const ChooseTime = () => {
   const date = bookingData.bookingDate;
   const { data, refetch } = useQuery(ROOM_BOOKINGS, {
     variables: {
-      room
+      room,
+      start: getCurrentHour()
     }
   });
 

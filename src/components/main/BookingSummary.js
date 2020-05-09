@@ -24,6 +24,7 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
 import { Loading } from '../complement/Loading';
+import { getCurrentHour } from '../../functions/getCurrentHour';
 
 const moment = require('moment');
 
@@ -78,8 +79,8 @@ export const BookingSummary = () => {
 
   const [createBooking, { loading, error }] = useMutation(CREATE_BOOKING, {
     refetchQueries: [
-      { query: GET_ALL_BOOKINGS },
-      { query: ROOM_BOOKINGS, variables: { room } }
+      { query: GET_ALL_BOOKINGS, variables: { start: getCurrentHour() } },
+      { query: ROOM_BOOKINGS, variables: { room, start: getCurrentHour() } }
     ]
   });
 

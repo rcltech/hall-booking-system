@@ -7,6 +7,7 @@ import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
 import { redirectToLogin } from '../../functions/redirectToLogin';
 import { Loading } from '../complement/Loading';
+import { getCurrentHour } from '../../functions/getCurrentHour';
 
 export const Homepage = () => {
   const {
@@ -19,7 +20,7 @@ export const Homepage = () => {
     loading: bookingsLoading,
     error: bookingsError,
     data: bookingsData
-  } = useQuery(GET_ALL_BOOKINGS);
+  } = useQuery(GET_ALL_BOOKINGS, { variables: { start: getCurrentHour() } });
 
   if (meLoading || bookingsLoading) {
     return <Loading />;
