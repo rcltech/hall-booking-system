@@ -20,7 +20,6 @@ import { DELETE_BOOKING, GET_ALL_BOOKINGS } from '../../gql/bookings';
 import moment from 'moment';
 import { DeleteModal } from './DeleteModal';
 import { TopBar } from './TopBar';
-import { getCurrentHour } from '../../functions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,9 +46,7 @@ export const Popup = ({ open, setOpen, me, booking }) => {
   const [onDelete, setOnDelete] = useState(false);
 
   const [doDelete, { data }] = useMutation(DELETE_BOOKING, {
-    refetchQueries: [
-      { query: GET_ALL_BOOKINGS, variables: { start: getCurrentHour() } }
-    ]
+    refetchQueries: [{ query: GET_ALL_BOOKINGS }]
   });
   if (data) console.log(`${data.deleteBooking.id} deleted`);
 

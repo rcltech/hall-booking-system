@@ -4,11 +4,7 @@ import { NavBar } from '../complement';
 import { Timepicker, TimeChooserPanel, List } from '../ChooseTime';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
-import {
-  shortlistBookings,
-  validateTime,
-  getCurrentHour
-} from '../../functions';
+import { shortlistBookings, validateTime } from '../../functions';
 import { useQuery } from '@apollo/react-hooks';
 import { ROOM_BOOKINGS } from '../../gql/bookings';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
@@ -51,10 +47,7 @@ export const ChooseTime = () => {
   const room = roomData.roomNumber;
   const date = bookingData.bookingDate;
   const { data, refetch } = useQuery(ROOM_BOOKINGS, {
-    variables: {
-      room,
-      start: getCurrentHour()
-    }
+    variables: { room }
   });
 
   const history = useHistory();

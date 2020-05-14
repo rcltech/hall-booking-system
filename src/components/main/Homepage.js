@@ -5,7 +5,7 @@ import { List } from '../BookingsList/List';
 import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
-import { redirectToLogin, getCurrentHour } from '../../functions';
+import { redirectToLogin } from '../../functions';
 import { Loading } from '../complement';
 
 export const Homepage = () => {
@@ -19,7 +19,7 @@ export const Homepage = () => {
     loading: bookingsLoading,
     error: bookingsError,
     data: bookingsData
-  } = useQuery(GET_ALL_BOOKINGS, { variables: { start: getCurrentHour() } });
+  } = useQuery(GET_ALL_BOOKINGS);
 
   if (meLoading || bookingsLoading) {
     return <Loading />;
