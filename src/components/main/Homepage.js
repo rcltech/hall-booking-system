@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Header } from '../Homepage/Header';
+import { Header } from '../Homepage';
 import { List } from '../BookingsList/List';
 import 'antd/dist/antd.css';
 import { GET_ME } from '../../gql/users';
 import { GET_ALL_BOOKINGS } from '../../gql/bookings';
-import { redirectToLogin } from '../../functions/redirectToLogin';
-import { Loading } from '../complement/Loading';
+import { redirectToLogin } from '../../functions';
+import { Loading } from '../complement';
 
 export const Homepage = () => {
   const {

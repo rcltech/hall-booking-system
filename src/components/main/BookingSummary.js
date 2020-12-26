@@ -11,8 +11,8 @@ import { Button, makeStyles } from '@material-ui/core';
 import success from '../../images/modals/success.png';
 import fail from '../../images/modals/fail.png';
 import { useHistory } from 'react-router-dom';
-import { NavBar } from '../complement/NavBar';
-import { Modals } from '../BookingSummary/Modals';
+import { NavBar, Loading } from '../complement';
+import { Modals } from '../BookingSummary';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   CREATE_BOOKING,
@@ -23,7 +23,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { GET_BOOKING_DATE, GET_ROOM_NUMBER } from '../../gql/local/query';
-import { Loading } from '../complement/Loading';
 
 const moment = require('moment');
 

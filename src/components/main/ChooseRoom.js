@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { NavBar } from '../complement/NavBar';
+import { NavBar, Loading } from '../complement';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useApolloClient, useQuery } from '@apollo/react-hooks';
-import { RoomList } from '../ChooseRoom/RoomList';
+import { RoomList } from '../ChooseRoom';
 import Fab from '@material-ui/core/Fab';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Fade from '@material-ui/core/Fade';
 import { GET_ROOMS } from '../../gql/rooms';
-import { Loading } from '../complement/Loading';
 
 const useStyles = makeStyles(theme => ({
   container: {

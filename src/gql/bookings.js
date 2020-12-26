@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 export const ROOM_BOOKINGS = gql`
-  query bookings($room: String!) {
-    bookings(data: { room: { number: $room } }) {
+  query bookings($room: String!, $start_limit: String) {
+    bookings(data: { room: { number: $room } }, start_limit: $start_limit) {
       start
       end
     }
@@ -28,8 +28,8 @@ export const CREATE_BOOKING = gql`
 `;
 
 export const GET_ALL_BOOKINGS = gql`
-  query bookings {
-    bookings {
+  query bookings($start_limit: String) {
+    bookings(start_limit: $start_limit) {
       id
       start
       end
